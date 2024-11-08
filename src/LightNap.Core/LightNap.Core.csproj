@@ -11,12 +11,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="8.0.10" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Identity\Models\" />
-    <Folder Include="Profile\Models\" />
-    <Folder Include="Public\Models\" />
-    <Folder Include="Public\Dto\" />
-    <Folder Include="User\Dto\" />
-    <Folder Include="User\Models\" />
-  </ItemGroup>
 </Project>
