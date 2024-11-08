@@ -4,8 +4,17 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { distinctUntilChanged, filter, map, ReplaySubject, take, tap } from "rxjs";
 import { DataService } from "./data.service";
 import { TimerService } from "../../core/services/timer.service";
-import { LoginRequest, RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest } from "@identity/models";
+import { LoginRequest, RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest, LoginResult } from "@identity/models";
 
+/**
+ * Service responsible for managing user identity, including authentication and token management.
+ *
+ * @remarks
+ * This service handles the acquisition, storage, and refreshing of authentication tokens. It also provides
+ * methods for logging in, registering, logging out, verifying codes, and resetting passwords. The service
+ * uses a timer to periodically check if the token needs to be refreshed and attempts to refresh it if it is
+ * close to expiration.
+ */
 @Injectable({
   providedIn: "root",
 })
@@ -21,13 +30,10 @@ export class IdentityService {
   #token?: string;
   #expires = 0;
 
-  #loggedInBehaviorSubject$ = new ReplaySubject<boolean>(1);
+  #loggedInSubject$ = new ReplaySubject<boolean>(1);
   #loggedInRolesSubject$ = new ReplaySubject<Array<string>>(1);
+  #roles?: Array<string>;
   #requestingRefreshToken = false;
-
-  get loggedIn() {
-    return !!this.#token;
-  }
 
   constructor() {
     this.#timer
@@ -39,9 +45,7 @@ export class IdentityService {
         )
       )
       .subscribe({
-        next: () => {
-          this.#tryRefreshToken();
-        },
+        next: () => this.#tryRefreshToken(),
       });
 
     // BUG: We need to request an access token from the server as soon as we load. However, we can't do it while the constructor is loading or
@@ -68,7 +72,7 @@ export class IdentityService {
 
   #onTokenReceived(token?: string) {
     this.#token = token;
-    this.#loggedInBehaviorSubject$.next(!!this.#token);
+    this.#loggedInSubject$.next(!!this.#token);
 
     if (this.#token) {
       const helper = new JwtHelperService();
@@ -76,39 +80,102 @@ export class IdentityService {
       this.#expires = decodedToken.exp * 1000;
       const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
       if (!roles) {
-        this.#loggedInRolesSubject$.next([]);
+        this.#roles = [];
       } else if (Array.isArray(roles)) {
-        this.#loggedInRolesSubject$.next(roles);
+        this.#roles = roles;
       } else {
-        this.#loggedInRolesSubject$.next([roles]);
+        this.#roles = [roles];
       }
     } else {
       this.#expires = 0;
-      this.#loggedInRolesSubject$.next([]);
+      this.#roles = [];
     }
+
+    this.#loggedInRolesSubject$.next(this.#roles);
   }
 
+  /**
+   * @property loggedIn
+   * @description Returns whether the user is currently logged in.
+   * @returns {boolean} True if the user is logged in, false otherwise.
+   * @readonly
+   * @remarks Prefer using watchLoggedIn$() to observe changes in the login status.
+   */
+  get loggedIn() {
+    return !!this.#token;
+  }
+
+  /**
+   * @method watchLoggedIn$
+   * @description Watches for changes in the login status.
+   * @returns {Observable<boolean>} Emits true when the user logs in and false when the user logs out.
+   */
   watchLoggedIn$() {
-    return this.#loggedInBehaviorSubject$.pipe(distinctUntilChanged());
+    return this.#loggedInSubject$.pipe(distinctUntilChanged());
   }
 
+  /**
+   * @method isUserInRole
+   * @description Checks if the user has a specific role.
+   * @param {string} role - The role to check for.
+   * @returns {boolean} True if the user has the role, false otherwise.
+   * @remarks Prefer using watchLoggedInToRole$() to observe changes in the login status and role. This method is
+   * suitable only for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
+   */
+  isUserInRole(role: string) {
+    return this.isUserInAnyRole([role]);
+  }
+
+  /**
+   * @method isUserInAnyRole
+   * @description Checks if the user has any of the specified roles.
+   * @param {Array<string>} roles - The roles to check for.
+   * @returns {boolean} True if the user has any of the roles, false otherwise.
+   * @remarks Prefer using watchLoggedInToAnyRole$() to observe changes in the login status and roles. This method is
+   * suitable only for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
+   */
+  isUserInAnyRole(roles: Array<string>) {
+    return roles.some(role => this.#roles?.includes(role));
+  }
+
+  /**
+   * @method watchLoggedInToRole$
+   * @description Watches for changes in the login status and checks if the user has a specific role.
+   * @param {string} allowedRole - The role to check for.
+   * @returns {Observable<boolean>} Emits true when the user is logged into the role, otherwise false.
+   */
   watchLoggedInToRole$(allowedRole: string) {
     return this.watchLoggedInToAnyRole$([allowedRole]);
   }
 
+  /**
+   * @method watchLoggedInToAnyRole$
+   * @description Watches for changes in the login status and checks if the user has any of the specified roles.
+   * @param {Array<string>} allowedRoles - The roles to check for.
+   * @returns {Observable<boolean>} Emits true when the user is logged into any of the roles, otherwise false.
+   */
   watchLoggedInToAnyRole$(allowedRoles: Array<string>) {
     return this.#loggedInRolesSubject$.pipe(
-      map(roles => {
-        return allowedRoles.some(role => roles?.includes(role));
-      })
+      map(roles => this.isUserInAnyRole(allowedRoles)),
     );
   }
 
+  /**
+   * @method getBearerToken
+   * @description Returns the current authorization header string.
+   * @returns {string | undefined} The bearer token authorization header string if the user is logged in, otherwise undefined.
+   */
   getBearerToken() {
     if (!this.#token) return undefined;
     return `Bearer ${this.#token}`;
   }
 
+  /**
+   * @method logIn
+   * @description Logs the user in.
+   * @param {LoginRequest} loginRequest - The request object containing login information.
+   * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
+   */
   logIn(loginRequest: LoginRequest) {
     return this.#dataService.logIn(loginRequest).pipe(
       tap(response => {
@@ -117,6 +184,12 @@ export class IdentityService {
     );
   }
 
+  /**
+   * @method register
+   * @description Registers a new user.
+   * @param {RegisterRequest} registerRequest - The request object containing registration information.
+   * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
+   */
   register(registerRequest: RegisterRequest) {
     return this.#dataService.register(registerRequest).pipe(
       tap(response => {
@@ -125,6 +198,11 @@ export class IdentityService {
     );
   }
 
+  /**
+   * @method logOut
+   * @description Logs the user out.
+   * @returns {Observable<ApiResponse<boolean>>} An observable containing the result of the operation.
+   */
   logOut() {
     return this.#dataService.logOut().pipe(
       tap(response => {
@@ -135,6 +213,12 @@ export class IdentityService {
     );
   }
 
+  /**
+   * @method verifyCode
+   * @description Verifies a two-factor login code.
+   * @param {VerifyCodeRequest} verifyCodeRequest - The request object containing the code to verify.
+   * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
+   */
   verifyCode(verifyCodeRequest: VerifyCodeRequest) {
     return this.#dataService.verifyCode(verifyCodeRequest).pipe(
       tap(response => {
@@ -143,10 +227,22 @@ export class IdentityService {
     );
   }
 
+  /**
+   * @method resetPassword
+   * @description Resets the user's password.
+   * @param {ResetPasswordRequest} resetPasswordRequest - The request object containing password reset information.
+   * @returns {Observable<ApiResponse<boolean>>} An observable containing the result of the operation.
+   */
   resetPassword(resetPasswordRequest: ResetPasswordRequest) {
     return this.#dataService.resetPassword(resetPasswordRequest);
   }
 
+  /**
+   * @method newPassword
+   * @description Sets a new password for the user.
+   * @param {NewPasswordRequest} newPasswordRequest - The request object containing the new password information.
+   * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
+   */
   newPassword(newPasswordRequest: NewPasswordRequest) {
     return this.#dataService.newPassword(newPasswordRequest).pipe(
       tap(response => {
