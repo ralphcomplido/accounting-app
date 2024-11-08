@@ -18,7 +18,7 @@ namespace LightNap.Scaffolding.Tests
                 new(typeof(int), "TestInt"),
                 new(typeof(string), "TestString")
             };
-            var serviceParameters = new ServiceParameters("TestClass", "./", "LightNap.Core", "", "");
+            var serviceParameters = new ServiceParameters("TestClass", "./", "LightNap.Core", "", "", false);
 
             // Act
             var templateParameters = new TemplateParameters(pascalName, propertiesDetails, serviceParameters);

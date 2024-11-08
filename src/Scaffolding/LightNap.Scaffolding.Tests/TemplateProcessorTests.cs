@@ -27,7 +27,7 @@ namespace LightNap.Scaffolding.Tests
                     new(typeof(string), "TestString"),
                     new(typeof(DateTime), "TestDateTime")
                 ],
-                new ServiceParameters("", "./", "LightNap.Core", "", ""));
+                new ServiceParameters("", "./", "LightNap.Core", "", "", false));
 
             // Act
             var result = TemplateProcessor.ProcessTemplate(templateContent, templateParameters);
@@ -45,7 +45,9 @@ namespace LightNap.Scaffolding.Tests
                     }
                 }";
 
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
             Assert.AreEqual(Regex.Replace(@"\s+", " ", expected), Regex.Replace(@"\s+", " ", result));
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
         }
     }
 }

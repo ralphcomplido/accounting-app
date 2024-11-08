@@ -11,27 +11,27 @@ namespace LightNap.Scaffolding.AssemblyManager
         /// <summary>
         /// The property type.
         /// </summary>
-        public required Type Type { get; set; }
+        public readonly Type Type;
 
         /// <summary>
         /// The property name.
         /// </summary>
-        public required string Name { get; set; }
+        public readonly string Name;
 
         /// <summary>
         /// Camel case.
         /// </summary>
-        public required string CamelName { get; set; }
+        public readonly string CamelName;
 
         /// <summary>
         /// The string representation of the property type for the server (C#).
         /// </summary>
-        public required string ServerTypeString { get; set; }
+        public readonly string ServerTypeString;
 
         /// <summary>
         /// The string representation of the property type for the client (Typescript).
         /// </summary>
-        public required string ClientTypeString { get; set; }
+        public readonly string ClientTypeString;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypePropertyDetails"/> class.

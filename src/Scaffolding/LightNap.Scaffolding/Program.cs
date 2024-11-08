@@ -28,6 +28,11 @@ Option<string> angularProjectNameOption =
     new("--angular-project",
         getDefaultValue: () => "lightnap-ng",
         description: "The name of the Angular project");
+Option<bool> overwriteOption =
+    new("--overwrite",
+        getDefaultValue: () => false,
+        description: "Automatically overwrite files if they exist");
+
 
 var rootCommand = new RootCommand()
 {
@@ -39,11 +44,11 @@ var rootCommand = new RootCommand()
     angularProjectNameOption,
 };
 
-rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName) =>
+rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite) =>
 {
     ServiceRunner runner = new(new ProjectManager(), new TemplateManager(), new AssemblyManager());
-    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName));
+    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite));
 },
-classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption);
+classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption, overwriteOption);
 
 return await rootCommand.InvokeAsync(args);

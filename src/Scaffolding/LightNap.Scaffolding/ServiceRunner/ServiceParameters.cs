@@ -8,54 +8,59 @@ namespace LightNap.Scaffolding.ServiceRunner
     public class ServiceParameters
     {
         /// <summary>
-        /// Gets or sets the class name.
+        /// The class name to scaffold.
         /// </summary>
-        public required string ClassName { get; set; }
+        public readonly string ClassName;
 
         /// <summary>
-        /// Gets or sets the source path.
+        /// The path to the /src directory relative to the working directory.
         /// </summary>
-        public required string SourcePath { get; set; }
+        public readonly string SourcePath;
 
         /// <summary>
-        /// Gets or sets the core project name.
+        /// The core project name.
         /// </summary>
-        public required string CoreProjectName { get; set; }
+        public readonly string CoreProjectName;
 
         /// <summary>
-        /// Gets or sets the Web API project name.
+        /// The Web API project name.
         /// </summary>
-        public required string WebApiProjectName { get; set; }
+        public readonly string WebApiProjectName;
 
         /// <summary>
-        /// Gets or sets the Angular project name.
+        /// The Angular project name.
         /// </summary>
-        public required string AngularProjectName { get; set; }
+        public readonly string AngularProjectName;
 
         /// <summary>
-        /// Gets or sets the Web API project path.
+        /// The Web API project path.
         /// </summary>
-        public required string WebApiProjectPath { get; set; }
+        public readonly string WebApiProjectPath;
 
         /// <summary>
-        /// Gets or sets the Web API project file path.
+        /// The Web API project file path.
         /// </summary>
-        public required string WebApiProjectFilePath { get; set; }
+        public readonly string WebApiProjectFilePath;
 
         /// <summary>
-        /// Gets or sets the core project path.
+        /// The core project path.
         /// </summary>
-        public required string CoreProjectPath { get; set; }
+        public readonly string CoreProjectPath;
 
         /// <summary>
-        /// Gets or sets the core project file path.
+        /// The core project file path.
         /// </summary>
-        public required string CoreProjectFilePath { get; set; }
+        public readonly string CoreProjectFilePath;
 
         /// <summary>
-        /// Gets or sets the client application path.
+        /// The client application path.
         /// </summary>
-        public required string ClientAppPath { get; set; }
+        public readonly string ClientAppPath;
+
+        /// <summary>
+        /// Whether to automatically overwrite existing files.
+        /// </summary>
+        public readonly bool Overwrite;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceParameters"/> class.
@@ -65,14 +70,16 @@ namespace LightNap.Scaffolding.ServiceRunner
         /// <param name="coreProjectName">The core project name.</param>
         /// <param name="webApiProjectName">The Web API project name.</param>
         /// <param name="angularProjectName">The Angular project name.</param>
+        /// <param name="angularProjectName">The Angular project name.</param>
         [SetsRequiredMembers]
-        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName, string angularProjectName)
+        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName, string angularProjectName, bool overwrite)
         {
             this.ClassName = className;
             this.SourcePath = Path.GetFullPath(sourcePath);
             this.CoreProjectName = coreProjectName;
             this.WebApiProjectName = webApiProjectName;
             this.AngularProjectName = angularProjectName;
+            this.Overwrite = overwrite;
 
             this.WebApiProjectPath = Path.Combine(this.SourcePath, webApiProjectName);
             this.WebApiProjectFilePath = Path.Combine(this.WebApiProjectPath, $"{webApiProjectName}.csproj");
