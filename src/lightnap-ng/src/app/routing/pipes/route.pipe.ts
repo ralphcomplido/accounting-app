@@ -20,7 +20,6 @@ export class RoutePipe implements PipeTransform {
      * @returns The route string corresponding to the provided `RouteAlias`.
      */
     transform(alias: RouteAlias, value?: any) {
-        console.log(alias, value);
         return this.#routeAlias.getRoute(alias, value);
     }
 }
