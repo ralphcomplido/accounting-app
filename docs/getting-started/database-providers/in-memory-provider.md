@@ -5,6 +5,8 @@ parent: Database Providers
 nav_order: 300
 ---
 
+# {{ page.title }}
+
 An in-memory database provider is included in the project to make it easier to develop and test the solution. Since the data itself is reset across sessions, it's not suitable for production use.
 
 ## Configuration

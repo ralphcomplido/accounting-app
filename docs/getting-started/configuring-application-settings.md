@@ -5,6 +5,8 @@ parent: Getting Started
 nav_order: 300
 ---
 
+# {{ page.title }}
+
 Application settings need to be [configured in `appsettings.json`](./application-configuration) or your deployment host.
 
 - `ApplicationSettings.AutomaticallyApplyEfMigrations`: `true` to automatically apply Entity Framework migrations. If this is set to false, EF migrations must be manually applied. This setting is ignored for non-relational databases like the in-memory provider.

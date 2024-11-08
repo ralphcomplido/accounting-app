@@ -5,6 +5,8 @@ parent: Email Providers
 nav_order: 200
 ---
 
+# {{ page.title }}
+
 The Log To Console email provider is included in the project to make it easier to develop and test the solution. Instead of attempting to send emails, they are simply logged to the console for review.
 
 ## Configuration

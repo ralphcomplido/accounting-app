@@ -5,6 +5,8 @@ parent: Getting Started
 nav_order: 900
 ---
 
+# {{ page.title }}
+
 ## Back-End Projects
 
 - `LightNap.Core`: .NET shared library for common server-side components.

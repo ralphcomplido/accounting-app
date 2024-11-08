@@ -5,6 +5,8 @@ parent: GitHub Actions Workflows
 nav_order: 1000
 ---
 
+# {{ page.title }}
+
 The `github-pages.yaml` runs on a `main` branch commit to the `docs` folder. This workflow automates the deployment of a
 Jekyll-based documentation site to GitHub Pages. The site is based on [Just the Docs](https://just-the-docs.com/).
 

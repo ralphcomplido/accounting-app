@@ -5,6 +5,8 @@ parent: Getting Started
 nav_order: 100
 ---
 
+# {{ page.title }}
+
 ## Prerequisites
 
 - .NET Core SDK

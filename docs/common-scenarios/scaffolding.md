@@ -5,14 +5,19 @@ parent: Common Scenarios
 nav_order: 200
 ---
 
+# {{ page.title }}
+
 {: .important }
 Scaffolding support is experimental. Please be sure to stash or commit changes before running the scaffolder in case it doesn't quite work the way you expect it to.
 
-The scaffolder takes an entity as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data to and from the database to the browser following the patterns used throughout the solution.
+The scaffolder takes [an entity](./adding-entities) as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data to and from the database to the browser following the patterns used throughout the solution.
+
+- TOC
+{:toc}
 
 ## Set Up Your Entity
 
-The scaffolder assumes you're scaffolding an entity model intended for typical CRUD operations in a database. It's not required, but there is some code in the generated service that expects it.
+The scaffolder assumes you're scaffolding an entity model intended for typical CRUD operations in a database. It's not required that the target object be an EF entity, but there is some code in the generated service that expects it.
 
 It's recommended that entities are stored in the `Data\Entities` folder of the `LightNap.Core` project. We'll use `TestEntity` as the example for this tutorial.
 
@@ -38,7 +43,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     ...
 ```
 
-Note that it's expected that the `DbSet` will use the pluralized version of the entity name.
+Note that it's expected that the `DbSet` will use the pluralized version of the entity name. If you don't have it set up this way then some of the generated code won't compile without minor edits.
 
 ## Running the Scaffolder
 
@@ -54,6 +59,8 @@ At this time, the scaffolder is provided in source form in the `src/Scaffolding`
 The script above is run from the repo's main `src` directory to cleanly align with the default parameters. You can override most of these parameters if needed.
 
 ## Generated Files
+
+New files are generated to create a new area based around the provided entity. Instead of changing content within the other areas (`Profile`, `Admin`, etc.) the new area will match the entity name (like `TestEntity`) and provide a starting point for integration. It's up to the developer to decide whether and which items are merged into other areas or kept contained within the newly created area.
 
 In the Core project, everything is added in a new `TestEntities` area folder:
 
@@ -93,7 +100,7 @@ In the Angular project, everything is added in a new `app/test-entities` area fo
 | `components/pages/edit/edit.component.ts`        | Code for the edit item page.                        |
 | `components/pages/routes.ts`                     | Relative routes for the area pages.                 |
 
-## Final Setup
+## Final Configuration
 
 After the scaffolder completes there are still a couple of things that need to be done for it to be ready for testing.
 

@@ -5,6 +5,8 @@ parent: Getting Started
 nav_order: 200
 ---
 
+# {{ page.title }}
+
 All back-end configuration can be done from the `appsettings.json` in `LightNap.WebApi`.
 
 {: .important}

@@ -5,6 +5,8 @@ parent: Database Providers
 nav_order: 400
 ---
 
+# {{ page.title }}
+
 Use the Entity Framework Core tools to create and apply migrations.
 
 {: .note}

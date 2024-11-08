@@ -5,11 +5,13 @@ parent: Email Providers
 nav_order: 100
 ---
 
+# {{ page.title }}
+
 The SMTP email provider uses the configured SMTP settings to send email.
 
 ## Configuration
 
-To use the SMTP provider you will need to [configure `appsettings.json`](../../getting-started/configuring-app-settings) or your deployment host with:
+To use the SMTP provider you will need to [configure `appsettings.json`](../configuring-application-settings.md) or your deployment host with:
 
 - `EmailProvider` set to `Smtp`.
 - `Smtp.Host` set to the SMTP host.

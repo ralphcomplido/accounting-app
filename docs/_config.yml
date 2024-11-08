@@ -24,11 +24,7 @@ plugins:
 mermaid:
   version: "11.4.0"
 
-markdown: kramdown
 kramdown:
-  input: GFM
-  auto_ids: true
-  toc_levels: 1..6
-  entity_output: as_char
-  smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
