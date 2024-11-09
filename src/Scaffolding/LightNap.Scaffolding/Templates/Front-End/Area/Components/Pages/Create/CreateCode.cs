@@ -162,14 +162,7 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"");
-            
-            #line 55 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")));
-            
-            #line default
-            #line hidden
-            this.Write("\", [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(\"2024-11-08T20:11:21Z\", [Validators.required]),\r\n");
             
             #line 56 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
@@ -184,14 +177,8 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"");
-            
-            #line 58 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Guid.NewGuid().ToString()));
-            
-            #line default
-            #line hidden
-            this.Write("\", [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(\"7bb47262-a295-457a-88f2-65700219e2bb\", [Validators.required])" +
+                    ",\r\n");
             
             #line 59 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }

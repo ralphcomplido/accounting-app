@@ -38,6 +38,22 @@ namespace LightNap.Scaffolding.ServiceRunner
             Console.WriteLine($"Analyzing {type.Name} ({type.FullName})");
 
             List<TypePropertyDetails> propertiesDetails = TypeHelper.GetPropertyDetails(type);
+            if (!propertiesDetails.Any())
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"No usable properties found in type '{type.Name}'");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine($"{"Name",-30}{"Back-End",-10}{"Front-End",-10}{"Get?",-6}{"Set?",-6}");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            foreach (var property in propertiesDetails)
+            {
+                Console.WriteLine($"{property.Name,-30}{property.ServerTypeString,-10}{property.ClientTypeString,-10}{property.CanGet,-6}{property.CanSet,-6}");
+            }
+            Console.ResetColor();
+
             TemplateParameters templateParameters = new(type.Name, propertiesDetails, parameters);
 
             string pascalNamePlural = templateParameters.PascalNamePlural;
@@ -95,14 +111,27 @@ namespace LightNap.Scaffolding.ServiceRunner
                     }
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Will overwrite existing file '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}'");
+                    Console.WriteLine($"May overwrite existing file '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}'");
                     Console.ResetColor();
                 }
             }
 
+            int newFiles = 0;
+            int overwrittenFiles = 0;
             foreach (var template in templateItems)
             {
                 string generatedCode = template.Template.TransformText();
+                if (File.Exists(template.OutputFile))
+                {
+                    // Ignore files that haven't changed.
+                    if (File.ReadAllText(template.OutputFile) == generatedCode) { continue; }
+                    overwrittenFiles++;
+                }
+                else
+                {
+                    newFiles++;
+                }
+
                 Directory.CreateDirectory(Path.GetDirectoryName(template.OutputFile)!);
                 File.WriteAllText(template.OutputFile, generatedCode);
 
@@ -111,8 +140,12 @@ namespace LightNap.Scaffolding.ServiceRunner
                 Console.ResetColor();
             }
 
-            Console.WriteLine(@$"
-Scaffolding completed successfully. Please see TODO comments in generated code to complete integration.
+            if (newFiles + overwrittenFiles > 0)
+            {
+                Console.WriteLine(@$"
+Scaffolding completed successfully. {newFiles} new files generated, {overwrittenFiles} files overwritten.
+
+Please see TODO comments in generated code to complete integration.
 
     {parameters.CoreProjectName}:
     - Update client and server DTO properties in {pascalNamePlural}/Dto to only those you want included.
@@ -126,7 +159,16 @@ Scaffolding completed successfully. Please see TODO comments in generated code t
     - Update the models in {kebabNamePlural}/models to match the updated server DTOs.
     - Update authorization for the routes in {kebabNamePlural}/components/pages/routes.ts.
     - Add {kebabNamePlural} routes to the root route collection in routing/routes.ts.");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("No changes detected, so no files were added or changed.");
+                Console.ResetColor();
+            }
         }
+
 
         /// <summary>
         /// Validates the provided service parameters.

@@ -52,10 +52,10 @@ export class CreateComponent {
 <#              break;
             default:
                 if (property.ServerTypeString == "DateTime") { #>
-	<#= property.CamelName #>: this.#fb.control("<#= DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") #>", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("2024-11-08T20:11:21Z", [Validators.required]),
 <#              }
                 else if (property.ServerTypeString == "Guid") { #>
-	<#= property.CamelName #>: this.#fb.control("<#= Guid.NewGuid().ToString() #>", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("7bb47262-a295-457a-88f2-65700219e2bb", [Validators.required]),
 <#              }
                 else { #>
 	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),

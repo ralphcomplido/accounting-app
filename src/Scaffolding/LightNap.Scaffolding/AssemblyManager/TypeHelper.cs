@@ -30,9 +30,8 @@
                             Nullable.GetUnderlyingType(property.PropertyType) == typeof(DateTime) ||
                             Nullable.GetUnderlyingType(property.PropertyType) == typeof(Guid) ||
                             Nullable.GetUnderlyingType(property.PropertyType) == typeof(decimal)))
-                    {                        
+                    {
                         propertiesDetails.Add(new TypePropertyDetails(property.PropertyType, property.Name, property.GetMethod != null, property.SetMethod != null));
-                        Console.WriteLine($"Found {property.Name} ({property.PropertyType.Name})");
                     }
                     else
                     {
