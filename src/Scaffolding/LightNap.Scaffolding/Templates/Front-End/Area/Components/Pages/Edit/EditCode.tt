@@ -16,11 +16,26 @@ import { Observable, tap } from "rxjs";
 import { Update<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabNamePlural #>/models/request/update-<#= Parameters.KebabName #>-request";
 import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
 import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from "primeng/inputnumber";
+import { CheckboxModule } from "primeng/checkbox";
 
 @Component({
   standalone: true,
   templateUrl: "./edit.component.html",
-  imports: [CommonModule, CardModule, ReactiveFormsModule, RouterLink, ApiResponseComponent, ConfirmPopupComponent, ButtonModule, ErrorListComponent],
+  imports: [
+    CommonModule,
+    CardModule,
+    ReactiveFormsModule,
+    ApiResponseComponent,
+    ConfirmPopupComponent,
+    RouterLink,
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CheckboxModule,
+    ErrorListComponent,
+  ],
 })
 export class EditComponent implements OnInit {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
@@ -30,11 +45,32 @@ export class EditComponent implements OnInit {
   #toast = inject(ToastService);
   #fb = inject(FormBuilder);
 
-  form = this.#fb.group({
-    json: this.#fb.control("", [Validators.required]),
-  });
-
   errors = new Array<string>();
+
+  form = this.#fb.group({
+	// TODO: Update these fields to match the right parameters.
+<#  foreach (var property in Parameters.SetProperties) {
+        switch (property.ClientTypeString) {
+            case "boolean": #>
+	<#= property.CamelName #>: this.#fb.control(false),
+<#              break;
+            case "number": #>
+	<#= property.CamelName #>: this.#fb.control(0),
+<#              break;
+            default:
+                if (property.ServerTypeString == "DateTime") { #>
+	<#= property.CamelName #>: this.#fb.control("<#= DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") #>", [Validators.required]),
+<#              }
+                else if (property.ServerTypeString == "Guid") { #>
+	<#= property.CamelName #>: this.#fb.control("<#= Guid.NewGuid().ToString() #>", [Validators.required]),
+<#              }
+                else { #>
+	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),
+<#              }
+            break;
+        }
+    }#>
+  });
 
   @Input() <#= Parameters.IdProperty.CamelName #>: number;
   <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
@@ -43,7 +79,7 @@ export class EditComponent implements OnInit {
     this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>).pipe(
       tap(response => {
         if (response.result) {
-          this.form.setValue({ json: JSON.stringify(response.result, undefined, 4) });
+          this.form.patchValue(response.result);
         }
       })
     );
@@ -52,13 +88,7 @@ export class EditComponent implements OnInit {
   saveClicked() {
     this.errors = [];
 
-    let request: Update<#= Parameters.PascalName #>Request;
-    try {
-      request = <Update<#= Parameters.PascalName #>Request>JSON.parse(this.form.value.json);
-    } catch (e) {
-      this.errors = ["The JSON is invalid."];
-      return;
-    }
+    const request = <Update<#= Parameters.PascalName #>Request>this.form.value;
 
     this.#<#= Parameters.CamelName #>Service.update<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>, request).subscribe(response => {
       if (!response.result) {

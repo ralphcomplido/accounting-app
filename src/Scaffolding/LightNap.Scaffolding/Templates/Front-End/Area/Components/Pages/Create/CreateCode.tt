@@ -8,17 +8,29 @@ import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { InputTextareaModule } from "primeng/inputtextarea";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { Create<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabNamePlural #>/models/request/create-<#= Parameters.KebabName #>-request";
-import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+import { Create<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabName #>/models/request/create-<#= Parameters.KebabName #>-request";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabName #>/services/<#= Parameters.KebabName #>.service";
 import { ErrorListComponent } from "@core";
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from "primeng/inputnumber";
+import { CheckboxModule } from "primeng/checkbox";
 
 @Component({
   standalone: true,
   templateUrl: "./create.component.html",
-  imports: [CommonModule, CardModule, ReactiveFormsModule, RouterLink, ButtonModule, InputTextareaModule, ErrorListComponent],
+  imports: [
+    CommonModule,
+    CardModule,
+    ReactiveFormsModule,
+    RouterLink,
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    CheckboxModule,
+    ErrorListComponent,
+  ],
 })
 export class CreateComponent {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
@@ -29,24 +41,34 @@ export class CreateComponent {
   errors = new Array<string>();
 
   form = this.#fb.group({
-    json: this.#fb.control(
-      JSON.stringify(<Create<#= Parameters.PascalName #>Request>{
-        // TODO: Initialize this with some default values for testing.
-      }, undefined, 4),
-      [Validators.required]
-    ),
+	// TODO: Update these fields to match the right parameters.
+<#  foreach (var property in Parameters.SetProperties) {
+        switch (property.ClientTypeString) {
+            case "boolean": #>
+	<#= property.CamelName #>: this.#fb.control(false),
+<#              break;
+            case "number": #>
+	<#= property.CamelName #>: this.#fb.control(0),
+<#              break;
+            default:
+                if (property.ServerTypeString == "DateTime") { #>
+	<#= property.CamelName #>: this.#fb.control("<#= DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") #>", [Validators.required]),
+<#              }
+                else if (property.ServerTypeString == "Guid") { #>
+	<#= property.CamelName #>: this.#fb.control("<#= Guid.NewGuid().ToString() #>", [Validators.required]),
+<#              }
+                else { #>
+	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),
+<#              }
+            break;
+        }
+    }#>
   });
 
   createClicked() {
     this.errors = [];
 
-    let request: Create<#= Parameters.PascalName #>Request;
-    try {
-      request = <Create<#= Parameters.PascalName #>Request>JSON.parse(this.form.value.json);
-    } catch (e) {
-      this.errors = ["The JSON is invalid."];
-      return;
-    }
+    const request = <Create<#= Parameters.PascalName #>Request>this.form.value;
 
     this.#<#= Parameters.CamelName #>Service.create<#= Parameters.PascalName #>(request).subscribe(response => {
       if (!response.result) {

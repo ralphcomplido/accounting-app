@@ -173,7 +173,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(";\r\n");
             
             #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Extensions\Extensions.tt"
- foreach (var property in Parameters.SetProperties) { 
+ foreach (var property in Parameters.GetProperties) { 
             
             #line default
             #line hidden

@@ -84,6 +84,7 @@ namespace LightNap.Scaffolding.AssemblyManager
             if (type == typeof(string)) { return "string"; }
             if (type == typeof(Guid)) { return "Guid"; }
             if (type == typeof(DateTime)) { return "DateTime"; }
+            if (type == typeof(bool)) { return "bool"; }
             return type.Name;
         }
 
@@ -106,6 +107,10 @@ namespace LightNap.Scaffolding.AssemblyManager
                 type == typeof(ulong))
             {
                 return "number";
+            }
+            if (type == typeof(bool))
+            {
+                return "boolean";
             }
             return "string";
         }
