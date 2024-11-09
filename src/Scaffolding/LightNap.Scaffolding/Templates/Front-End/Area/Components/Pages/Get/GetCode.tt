@@ -5,28 +5,28 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 import { CommonModule } from "@angular/common";
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { Component, inject, input, OnInit } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { ApiResponse, ApiResponseComponent, ConfirmPopupComponent } from "@core";
+import { ApiResponse, ApiResponseComponent } from "@core";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { Observable } from "rxjs";
-import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
-import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabNamePlural #>";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabNamePlural #>.service";
 
 @Component({
   standalone: true,
   templateUrl: "./get.component.html",
-  imports: [CommonModule, CardModule, RouterLink, ApiResponseComponent, ConfirmPopupComponent, ButtonModule],
+  imports: [CommonModule, CardModule, RouterLink, ApiResponseComponent, ButtonModule],
 })
 export class GetComponent implements OnInit {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
   errors = new Array<string>();
 
-  @Input() <#= Parameters.IdProperty.CamelName #>: number;
-  <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
+  readonly id = input<number>(undefined);
+  <#= Parameters.CamelName #>$?: Observable<ApiResponse<<#= Parameters.PascalName #>>>;
 
   ngOnInit() {
-    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>);
+    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id());
   }
 }

@@ -43,23 +43,48 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(">\r\n      <div class=\"flex gap-1 mb-1\">\r\n        <p-button [routerLink]=\"[\'..\']\" i" +
-                    "con=\"pi pi-arrow-up\" label=\"Up to all\" />\r\n        <p-button [routerLink]=\"[\'..\'" +
-                    ", ");
+            this.Write(@">
+      <div class=""flex gap-1 mb-1"">
+        <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""Up to all"" />
+        <p-button [routerLink]=""['..', id(), 'edit']"" icon=""pi pi-pencil"" label=""Edit"" />
+      </div>
+      <div class=""w-30rem flex flex-column gap-4"">
+");
             
-            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+ foreach (var property in Parameters.GetProperties) { 
             
             #line default
             #line hidden
-            this.Write(", \'edit\']\" icon=\"pi pi-pencil\" label=\"Edit\" />\r\n      </div>\r\n      <pre>{{ ");
+            this.Write("        <div>\r\n          <label class=\"block text-900 font-medium mb-2\">");
             
-            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+            #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write("</label>\r\n          <div>{{ ");
+            
+            #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(" | json }}</pre>\r\n    </ng-template>\r\n  </api-response>\r\n</p-card>\r\n");
+            this.Write(".");
+            
+            #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(" }}</div>\r\n        </div>\r\n");
+            
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("      </div>\r\n    </ng-template>\r\n  </api-response>\r\n</p-card>");
             return this.GenerationEnvironment.ToString();
         }
     }

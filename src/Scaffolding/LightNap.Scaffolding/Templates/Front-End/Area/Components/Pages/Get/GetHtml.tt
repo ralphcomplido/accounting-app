@@ -9,9 +9,16 @@
     <ng-template #success let-<#= Parameters.CamelName #>>
       <div class="flex gap-1 mb-1">
         <p-button [routerLink]="['..']" icon="pi pi-arrow-up" label="Up to all" />
-        <p-button [routerLink]="['..', <#= Parameters.IdProperty.CamelName #>, 'edit']" icon="pi pi-pencil" label="Edit" />
+        <p-button [routerLink]="['..', id(), 'edit']" icon="pi pi-pencil" label="Edit" />
       </div>
-      <pre>{{ <#= Parameters.CamelName #> | json }}</pre>
+      <div class="w-30rem flex flex-column gap-4">
+<# foreach (var property in Parameters.GetProperties) { #>
+        <div>
+          <label class="block text-900 font-medium mb-2"><#= property.Name #></label>
+          <div>{{ <#= Parameters.CamelName #>.<#= property.CamelName #> }}</div>
+        </div>
+<# } #>
+      </div>
     </ng-template>
   </api-response>
 </p-card>

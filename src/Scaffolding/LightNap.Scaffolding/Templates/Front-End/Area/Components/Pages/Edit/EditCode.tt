@@ -5,20 +5,20 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 import { CommonModule } from "@angular/common";
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { Component, inject, input, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ApiResponse, ApiResponseComponent, ConfirmPopupComponent, ErrorListComponent, ToastService } from "@core";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
+import { CheckboxModule } from "primeng/checkbox";
+import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
 import { Observable, tap } from "rxjs";
 import { Update<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabNamePlural #>/models/request/update-<#= Parameters.KebabName #>-request";
 import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
 import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
-import { InputTextModule } from "primeng/inputtext";
-import { InputNumberModule } from "primeng/inputnumber";
-import { CheckboxModule } from "primeng/checkbox";
 
 @Component({
   standalone: true,
@@ -72,11 +72,11 @@ export class EditComponent implements OnInit {
     }#>
   });
 
-  @Input() <#= Parameters.IdProperty.CamelName #>: number;
+  readonly id = input<number>(undefined);
   <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
 
   ngOnInit() {
-    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>).pipe(
+    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>()).pipe(
       tap(response => {
         if (response.result) {
           this.form.patchValue(response.result);
@@ -90,7 +90,7 @@ export class EditComponent implements OnInit {
 
     const request = <Update<#= Parameters.PascalName #>Request>this.form.value;
 
-    this.#<#= Parameters.CamelName #>Service.update<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>, request).subscribe(response => {
+    this.#<#= Parameters.CamelName #>Service.update<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>(), request).subscribe(response => {
       if (!response.result) {
         this.errors = response.errorMessages;
         return;
@@ -109,7 +109,7 @@ export class EditComponent implements OnInit {
       target: event.target,
       key: "delete",
       accept: () => {
-        this.#<#= Parameters.CamelName #>Service.delete<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>).subscribe(response => {
+        this.#<#= Parameters.CamelName #>Service.delete<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>()).subscribe(response => {
           if (!response.result) {
             this.errors = response.errorMessages;
             return;
