@@ -17,9 +17,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
 {
     public class <#= Parameters.PascalName #>Service(ApplicationDbContext db) : I<#= Parameters.PascalName #>Service
     {
-        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id)
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>)
         {
-            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
             return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item?.ToDto());
         }
 
@@ -50,18 +50,18 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
             return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
         }
 
-        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id, Update<#= Parameters.PascalName #>Dto dto)
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto)
         {
-            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
             if (item is null) { return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
             item.UpdateFromDto(dto);
             await db.SaveChangesAsync();
             return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
         }
 
-        public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id)
+        public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>)
         {
-            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
             if (item is null) { return ApiResponseDto<bool>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
             db.<#= Parameters.PascalNamePlural #>.Remove(item);
             await db.SaveChangesAsync();

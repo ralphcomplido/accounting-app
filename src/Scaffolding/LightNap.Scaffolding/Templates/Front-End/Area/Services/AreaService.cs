@@ -85,10 +85,17 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("(id: ");
+            this.Write("(");
             
             #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": ");
+            
+            #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
             
             #line default
             #line hidden
@@ -99,7 +106,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("(id);\r\n    }\r\n\r\n    search");
+            this.Write("(");
+            
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n    }\r\n\r\n    search");
             
             #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalNamePlural));
@@ -148,10 +162,17 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("(id: ");
+            this.Write("(");
             
             #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": ");
+            
+            #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
             
             #line default
             #line hidden
@@ -176,10 +197,17 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("(id: ");
+            this.Write("(");
             
             #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": ");
+            
+            #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
             
             #line default
             #line hidden
@@ -190,7 +218,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("(id);\r\n    }\r\n}\r\n");
+            this.Write("(");
+            
+            #line 36 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

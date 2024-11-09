@@ -136,8 +136,14 @@ export class EditComponent implements OnInit {
 
   errors = new Array<string>();
 
-  @Input() id: number;
-  ");
+  @Input() ");
+            
+            #line 39 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": number;\r\n  ");
             
             #line 40 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
@@ -172,7 +178,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(@"(this.id).pipe(
+            this.Write("(this.");
+            
+            #line 43 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(@").pipe(
       tap(response => {
         if (response.result) {
           this.form.setValue({ json: JSON.stringify(response.result, undefined, 4) });
@@ -213,7 +226,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(@"(this.id, request).subscribe(response => {
+            this.Write("(this.");
+            
+            #line 63 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(@", request).subscribe(response => {
       if (!response.result) {
         this.errors = response.errorMessages;
         return;
@@ -246,7 +266,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(@"(this.id).subscribe(response => {
+            this.Write("(this.");
+            
+            #line 82 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(@").subscribe(response => {
           if (!response.result) {
             this.errors = response.errorMessages;
             return;

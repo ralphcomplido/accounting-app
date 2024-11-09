@@ -21,11 +21,11 @@ namespace <#= Parameters.WebApiNamespace #>.Controllers
     [Route("api/[controller]")]
     public class <#= Parameters.PascalNamePlural #>Controller(I<#= Parameters.PascalName #>Service <#= Parameters.CamelNamePlural #>Service) : ControllerBase
     {
-        [HttpGet("{id}")]
+        [HttpGet("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
-        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Get<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id)
+        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Get<#= Parameters.PascalName #>Async(id);
+            return await <#= Parameters.CamelNamePlural #>Service.Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>);
         }
 
         [HttpPost("search")]
@@ -42,18 +42,18 @@ namespace <#= Parameters.WebApiNamespace #>.Controllers
             return await <#= Parameters.CamelNamePlural #>Service.Create<#= Parameters.PascalName #>Async(dto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
-        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Update<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id, [FromBody] Update<#= Parameters.PascalName #>Dto dto)
+        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>, [FromBody] Update<#= Parameters.PascalName #>Dto dto)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Update<#= Parameters.PascalName #>Async(id, dto);
+            return await <#= Parameters.CamelNamePlural #>Service.Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>, dto);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> Delete<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id)
+        public async Task<ActionResult<ApiResponseDto<bool>>> Delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.CamelName #>)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Delete<#= Parameters.PascalName #>Async(id);
+            return await <#= Parameters.CamelNamePlural #>Service.Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>);
         }
     }
 }

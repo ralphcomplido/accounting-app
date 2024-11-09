@@ -35,14 +35,43 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Request extends PaginationRequest {\r\n  ");
+            this.Write("Request extends PaginationRequest {\r\n\t// TODO: Update these fields to match the s" +
+                    "erver\'s Search");
             
             #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\SearchRequest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientOptionalPropertiesList));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("\r\n}\r\n");
+            this.Write("Dto.\r\n");
+            
+            #line 10 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\SearchRequest.tt"
+ foreach (var property in Parameters.GetProperties) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\SearchRequest.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("?: ");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\SearchRequest.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.ClientTypeString));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\SearchRequest.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

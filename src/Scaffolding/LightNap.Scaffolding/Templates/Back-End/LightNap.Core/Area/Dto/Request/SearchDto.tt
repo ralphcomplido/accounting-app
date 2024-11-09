@@ -11,6 +11,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Req
     public class Search<#= Parameters.PascalNamePlural #>Dto : PaginationRequestDtoBase
     {
         // TODO: Update to reflect which fields to include for searches.
-        <#= Parameters.ServerOptionalPropertiesList #>
+<# foreach (var property in Parameters.GetProperties) { #>
+        public <#= property.ServerTypeString #>? <#= property.Name #> { get; set; }
+<# } #>
+
     }
 }

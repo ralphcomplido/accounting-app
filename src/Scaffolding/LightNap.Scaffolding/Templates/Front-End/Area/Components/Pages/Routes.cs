@@ -64,10 +64,23 @@ namespace LightNap.Scaffolding.Templates
 export const Routes: AppRoute[] = [
   { path: """", loadComponent: () => import(""./index/index.component"").then(m => m.IndexComponent) },
   { path: ""create"", loadComponent: () => import(""./create/create.component"").then(m => m.CreateComponent) },
-  { path: "":id"", loadComponent: () => import(""./get/get.component"").then(m => m.GetComponent) },
-  { path: "":id/edit"", loadComponent: () => import(""./edit/edit.component"").then(m => m.EditComponent) },
-];
-");
+  { path: "":");
+            
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Routes.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("\", loadComponent: () => import(\"./get/get.component\").then(m => m.GetComponent) }" +
+                    ",\r\n  { path: \":");
+            
+            #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Routes.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("/edit\", loadComponent: () => import(\"./edit/edit.component\").then(m => m.EditComp" +
+                    "onent) },\r\n];\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

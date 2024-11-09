@@ -6,5 +6,7 @@
 
 export interface Create<#= Parameters.PascalName #>Request {
 	// TODO: Update these fields to match the server's Create<#= Parameters.PascalName #>Dto.
-	<#= Parameters.ClientPropertiesList #>
+<# foreach (var property in Parameters.SetProperties) { #>
+	<#= property.CamelName #>: <#= property.ClientTypeString #>;
+<# } #>
 }

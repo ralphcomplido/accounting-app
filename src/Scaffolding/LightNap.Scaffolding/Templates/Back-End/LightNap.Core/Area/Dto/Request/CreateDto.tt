@@ -9,6 +9,8 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Req
     public class Create<#= Parameters.PascalName #>Dto
     {
         // TODO: Update which fields to include when creating this item.
-        <#= Parameters.ServerPropertiesList #>
+<# foreach (var property in Parameters.SetProperties) { #>
+        public <#= property.ServerTypeString #> <#= property.Name #> { get; set; }
+<# } #>
     }
 }

@@ -101,11 +101,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id);\r\n        Task<ApiResponseDto<PagedResponse<");
+            this.Write(" ");
+            
+            #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n        Task<ApiResponseDto<PagedResponse<");
             
             #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -164,11 +171,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id, Update");
+            this.Write(" ");
+            
+            #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(", Update");
             
             #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -185,11 +199,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id);\r\n    }\r\n}\r\n");
+            this.Write(" ");
+            
+            #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

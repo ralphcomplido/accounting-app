@@ -19,6 +19,6 @@ import { AppRoute } from "@routing";
 export const Routes: AppRoute[] = [
   { path: "", loadComponent: () => import("./index/index.component").then(m => m.IndexComponent) },
   { path: "create", loadComponent: () => import("./create/create.component").then(m => m.CreateComponent) },
-  { path: ":id", loadComponent: () => import("./get/get.component").then(m => m.GetComponent) },
-  { path: ":id/edit", loadComponent: () => import("./edit/edit.component").then(m => m.EditComponent) },
+  { path: ":<#= Parameters.IdProperty.CamelName #>", loadComponent: () => import("./get/get.component").then(m => m.GetComponent) },
+  { path: ":<#= Parameters.IdProperty.CamelName #>/edit", loadComponent: () => import("./edit/edit.component").then(m => m.EditComponent) },
 ];

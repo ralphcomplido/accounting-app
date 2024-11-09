@@ -16,7 +16,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ext
         {
             // TODO: Update these fields to match the DTO.
             var item = new <#= Parameters.PascalName #>();
-            <#= Parameters.ServerPropertiesFromDto #>
+<# foreach (var property in Parameters.SetProperties) { #>
+            item.<#= property.Name #> = dto.<#= property.Name #>;
+<# } #>
             return item;
         }
 
@@ -24,15 +26,19 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ext
         {
             // TODO: Update these fields to match the DTO.
             var dto = new <#= Parameters.PascalName #>Dto();
-            dto.Id = item.Id;
-            <#= Parameters.ServerPropertiesToDto #>
+            dto.<#= Parameters.IdProperty.Name #> = item.<#= Parameters.IdProperty.Name #>;
+<# foreach (var property in Parameters.SetProperties) { #>
+            dto.<#= property.Name #> = item.<#= property.Name #>;
+<# } #>
             return dto;
         }
 
         public static void UpdateFromDto(this <#= Parameters.PascalName #> item, Update<#= Parameters.PascalName #>Dto dto)
         {
             // TODO: Update these fields to match the DTO.
-            <#= Parameters.ServerPropertiesFromDto #>
+<# foreach (var property in Parameters.SetProperties) { #>
+            item.<#= property.Name #> = dto.<#= property.Name #>;
+<# } #>
         }
     }
 }

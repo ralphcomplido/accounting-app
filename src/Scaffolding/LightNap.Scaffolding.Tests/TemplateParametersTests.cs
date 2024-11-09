@@ -14,11 +14,11 @@ namespace LightNap.Scaffolding.Tests
             string pascalName = "TestClass";
             var propertiesDetails = new List<TypePropertyDetails>
             {
-                new(typeof(int), "Id"),
-                new(typeof(int), "TestInt"),
-                new(typeof(string), "TestString")
+                new(typeof(int), "Id", true, true),
+                new(typeof(int), "TestInt", true, true),
+                new(typeof(string), "TestString", true, true)
             };
-            var serviceParameters = new ServiceParameters("TestClass", "./", "LightNap.Core", "", "", false);
+            var serviceParameters = new ServiceParameters("TestClass", "./", "LightNap.Core", "", "", false, false);
 
             // Act
             var templateParameters = new TemplateParameters(pascalName, propertiesDetails, serviceParameters);
@@ -31,20 +31,8 @@ namespace LightNap.Scaffolding.Tests
             Assert.AreEqual("testClasses", templateParameters.CamelNamePlural);
             Assert.AreEqual("test-class", templateParameters.KebabName);
             Assert.AreEqual("test-classes", templateParameters.KebabNamePlural);
-            Assert.AreEqual("number", templateParameters.ClientIdType);
-            Assert.AreEqual("int", templateParameters.ServerIdType);
-            Assert.IsTrue(templateParameters.ServerPropertiesList.Contains("public string TestString { get; set; }"));
-            Assert.IsTrue(templateParameters.ServerPropertiesList.Contains("public int TestInt { get; set; }"));
-            Assert.IsTrue(templateParameters.ServerOptionalPropertiesList.Contains("public string? TestString { get; set; }"));
-            Assert.IsTrue(templateParameters.ServerOptionalPropertiesList.Contains("public int? TestInt { get; set; }"));
-            Assert.IsTrue(templateParameters.ServerPropertiesToDto.Contains("dto.TestString = item.TestString;"));
-            Assert.IsTrue(templateParameters.ServerPropertiesToDto.Contains("dto.TestInt = item.TestInt;"));
-            Assert.IsTrue(templateParameters.ServerPropertiesFromDto.Contains("item.TestString = dto.TestString;"));
-            Assert.IsTrue(templateParameters.ServerPropertiesFromDto.Contains("item.TestInt = dto.TestInt;"));
-            Assert.IsTrue(templateParameters.ClientPropertiesList.Contains("testString: string;"));
-            Assert.IsTrue(templateParameters.ClientPropertiesList.Contains("testInt: number;"));
-            Assert.IsTrue(templateParameters.ClientOptionalPropertiesList.Contains("testString?: string;"));
-            Assert.IsTrue(templateParameters.ClientOptionalPropertiesList.Contains("testInt?: number;"));
+            Assert.AreEqual("number", templateParameters.IdProperty!.ClientTypeString);
+            Assert.AreEqual("int", templateParameters.IdProperty!.ServerTypeString);
         }
     }
 }

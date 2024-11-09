@@ -57,10 +57,31 @@ namespace LightNap.Scaffolding.Templates
             #line default
             #line hidden
             this.Write("Dto : PaginationRequestDtoBase\r\n    {\r\n        // TODO: Update to reflect which f" +
-                    "ields to include for searches.\r\n        ");
+                    "ields to include for searches.\r\n");
             
             #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerOptionalPropertiesList));
+ foreach (var property in Parameters.GetProperties) { 
+            
+            #line default
+            #line hidden
+            this.Write("        public ");
+            
+            #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.ServerTypeString));
+            
+            #line default
+            #line hidden
+            this.Write("? ");
+            
+            #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get; set; }\r\n");
+            
+            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.tt"
+ } 
             
             #line default
             #line hidden

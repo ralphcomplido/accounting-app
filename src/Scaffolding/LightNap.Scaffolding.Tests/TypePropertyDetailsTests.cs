@@ -13,7 +13,7 @@ namespace LightNap.Scaffolding.Tests
             var name = "TestName";
 
             // Act
-            var details = new TypePropertyDetails(type, name);
+            var details = new TypePropertyDetails(type, name, true, true);
 
             // Assert
             Assert.AreEqual(type, details.Type);

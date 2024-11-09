@@ -45,8 +45,14 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write(">\r\n      <div class=\"flex gap-1 mb-1\">\r\n        <p-button [routerLink]=\"[\'..\']\" i" +
                     "con=\"pi pi-arrow-up\" label=\"Up to all\" />\r\n        <p-button [routerLink]=\"[\'..\'" +
-                    ", id, \'edit\']\" icon=\"pi pi-pencil\" label=\"Edit\" />\r\n      </div>\r\n      <pre>{{ " +
-                    "");
+                    ", ");
+            
+            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(", \'edit\']\" icon=\"pi pi-pencil\" label=\"Edit\" />\r\n      </div>\r\n      <pre>{{ ");
             
             #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));

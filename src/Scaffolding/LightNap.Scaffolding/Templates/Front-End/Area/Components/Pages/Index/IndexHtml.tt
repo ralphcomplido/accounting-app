@@ -13,7 +13,7 @@
       <ul>
         @for(<#= Parameters.CamelName #> of <#= Parameters.CamelNamePlural #>.data; track $index) {
         <li>
-          <a [routerLink]="<#= Parameters.CamelName #>.id">{{ <#= Parameters.CamelName #> | json }}</a>
+          <a [routerLink]="<#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #>">{{ <#= Parameters.CamelName #> | json }}</a>
         </li>
         } @empty {
         <li>There are no items yet</li>

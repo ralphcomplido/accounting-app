@@ -143,8 +143,14 @@ export class CreateComponent {
             #line hidden
             this.Write("(request).subscribe(response => {\r\n      if (!response.result) {\r\n        this.er" +
                     "rors = response.errorMessages;\r\n        return;\r\n      }\r\n\r\n      this.#router.n" +
-                    "avigate([response.result.id], { relativeTo: this.#activeRoute.parent });\r\n    })" +
-                    ";\r\n  }\r\n}\r\n");
+                    "avigate([response.result.");
+            
+            #line 57 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("], { relativeTo: this.#activeRoute.parent });\r\n    });\r\n  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

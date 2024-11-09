@@ -2,7 +2,7 @@
   "profiles": {
     "LightNap.Scaffolding": {
       "commandName": "Project",
-      "commandLineArgs": "ClassDetails --src-path \"../../../../..\""
+      "commandLineArgs": "ClassDetails --src-path \"../../../../..\" --overwrite true"
     }
   }
 }

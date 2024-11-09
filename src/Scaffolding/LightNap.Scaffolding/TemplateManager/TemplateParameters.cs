@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using LightNap.Scaffolding.AssemblyManager;
 using LightNap.Scaffolding.ServiceRunner;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace LightNap.Scaffolding.TemplateManager
@@ -17,16 +18,12 @@ namespace LightNap.Scaffolding.TemplateManager
         public readonly string CamelNamePlural;
         public readonly string KebabName;
         public readonly string KebabNamePlural;
-        public readonly string ClientIdType;
-        public readonly string ServerIdType;
-        public readonly string ServerPropertiesList;
-        public readonly string ServerOptionalPropertiesList;
-        public readonly string ServerPropertiesToDto;
-        public readonly string ServerPropertiesFromDto;
-        public readonly string ClientPropertiesList;
-        public readonly string ClientOptionalPropertiesList;
         public readonly string CoreNamespace;
         public readonly string WebApiNamespace;
+        public readonly ReadOnlyCollection<TypePropertyDetails> AllProperties;
+        public readonly TypePropertyDetails IdProperty;
+        public readonly ReadOnlyCollection<TypePropertyDetails> GetProperties;
+        public readonly ReadOnlyCollection<TypePropertyDetails> SetProperties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateParameters"/> class.
@@ -50,18 +47,13 @@ namespace LightNap.Scaffolding.TemplateManager
             this.KebabName = pascalName.Kebaberize();
             this.KebabNamePlural = pascalName.Kebaberize().Pluralize();
 
-            // Take a guess that the shortest property ending with "id" is the id property.
-            TypePropertyDetails? idProperty = propertiesDetails.Where(p => p.Name.EndsWith("id", StringComparison.OrdinalIgnoreCase)).OrderBy(id => id.Name.Length).FirstOrDefault();
-            this.ClientIdType = idProperty?.ClientTypeString ?? "string";
-            this.ServerIdType = idProperty?.ServerTypeString ?? "string";
+            this.AllProperties = propertiesDetails.AsReadOnly();
 
-            // I promise I will come back and move this to the templates now that we have the processor in place.
-            this.ServerPropertiesList = string.Join("\n\t\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"public {p.ServerTypeString} {p.Name} {{ get; set; }}"));
-            this.ServerOptionalPropertiesList = string.Join("\n\t\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"public {p.ServerTypeString}? {p.Name} {{ get; set; }}"));
-            this.ServerPropertiesToDto = string.Join("\n\t\t\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"dto.{p.Name} = item.{p.Name};"));
-            this.ServerPropertiesFromDto = string.Join("\n\t\t\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"item.{p.Name} = dto.{p.Name};"));
-            this.ClientPropertiesList = string.Join("\n\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"{p.CamelName}: {p.ClientTypeString};"));
-            this.ClientOptionalPropertiesList = string.Join("\n\t", propertiesDetails.Where(p => p != idProperty).Select(p => $"{p.CamelName}?: {p.ClientTypeString};"));
+            // Take a guess that the shortest property ending with "id" is the id property. If there is none, then we'll nudge in the right direction.
+            this.IdProperty = propertiesDetails.Where(p => p.Name.EndsWith("id", StringComparison.OrdinalIgnoreCase)).OrderBy(id => id.Name.Length).FirstOrDefault()
+                ?? new TypePropertyDetails(typeof(int), "Id", true, true);
+            this.GetProperties = propertiesDetails.Where(p => p != this.IdProperty && p.CanGet).ToList().AsReadOnly();
+            this.SetProperties = propertiesDetails.Where(p => p != this.IdProperty && p.CanSet).ToList().AsReadOnly();
 
             this.CoreNamespace = serviceParameters.CoreProjectName;
             this.WebApiNamespace = serviceParameters.WebApiProjectName;

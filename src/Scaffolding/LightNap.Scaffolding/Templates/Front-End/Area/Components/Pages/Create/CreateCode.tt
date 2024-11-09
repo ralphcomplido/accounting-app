@@ -54,7 +54,7 @@ export class CreateComponent {
         return;
       }
 
-      this.#router.navigate([response.result.id], { relativeTo: this.#activeRoute.parent });
+      this.#router.navigate([response.result.<#= Parameters.IdProperty.CamelName #>], { relativeTo: this.#activeRoute.parent });
     });
   }
 }

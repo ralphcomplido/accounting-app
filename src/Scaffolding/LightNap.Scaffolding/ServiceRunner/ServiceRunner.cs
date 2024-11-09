@@ -57,6 +57,17 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new UpdateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
                     new(new Controller() { Parameters = templateParameters }, $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
 
+                    new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
+                    new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
+                    new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
+                    new(new Response() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
+                    new(new DataService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/data.service.ts"),
+                    new(new AreaService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
+                };
+
+            if (!parameters.SkipComponents)
+            {
+                templateItems.AddRange([
                     new(new Routes() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/routes.ts"),
                     new(new IndexHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.html"),
                     new(new IndexCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.ts"),
@@ -66,13 +77,8 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new CreateCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.ts"),
                     new(new EditHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.html"),
                     new(new EditCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.ts"),
-                    new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
-                    new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
-                    new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
-                    new(new Response() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
-                    new(new DataService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/data.service.ts"),
-                    new(new AreaService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
-                };
+                    ]);
+            }
 
             foreach (var template in templateItems)
             {
@@ -82,6 +88,8 @@ namespace LightNap.Scaffolding.ServiceRunner
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Bailing out: File '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}' already exists!");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"Use the '--overwrite true' switch to overwrite files that already exist");
                         Console.ResetColor();
                         return;
                     }
@@ -99,7 +107,7 @@ namespace LightNap.Scaffolding.ServiceRunner
                 File.WriteAllText(template.OutputFile, generatedCode);
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Generated {Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}");
+                Console.WriteLine($"Generated '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}'");
                 Console.ResetColor();
             }
 

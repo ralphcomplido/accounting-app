@@ -23,10 +23,10 @@ export class GetComponent implements OnInit {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
   errors = new Array<string>();
 
-  @Input() id: number;
+  @Input() <#= Parameters.IdProperty.CamelName #>: number;
   <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
 
   ngOnInit() {
-    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id);
+    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>);
   }
 }

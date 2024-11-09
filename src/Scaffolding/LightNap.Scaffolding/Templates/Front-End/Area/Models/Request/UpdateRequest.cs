@@ -42,14 +42,35 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Dto.\r\n\t");
+            this.Write("Dto.\r\n");
             
             #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\UpdateRequest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientPropertiesList));
+ foreach (var property in Parameters.SetProperties) { 
             
             #line default
             #line hidden
-            this.Write("\r\n}");
+            this.Write("\t");
+            
+            #line 10 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\UpdateRequest.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": ");
+            
+            #line 10 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\UpdateRequest.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.ClientTypeString));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\UpdateRequest.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("}");
             return this.GenerationEnvironment.ToString();
         }
     }

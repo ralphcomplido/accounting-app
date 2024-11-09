@@ -125,8 +125,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Service) : ControllerBase\r\n    {\r\n        [HttpGet(\"{id}\")]\r\n        [ProducesRes" +
-                    "ponseType(typeof(ApiResponseDto<");
+            this.Write("Service) : ControllerBase\r\n    {\r\n        [HttpGet(\"{");
+            
+            #line 24 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("}\")]\r\n        [ProducesResponseType(typeof(ApiResponseDto<");
             
             #line 25 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -150,11 +156,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id)\r\n        {\r\n            return await ");
+            this.Write(" ");
+            
+            #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(")\r\n        {\r\n            return await ");
             
             #line 28 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelNamePlural));
@@ -168,8 +181,15 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Async(id);\r\n        }\r\n\r\n        [HttpPost(\"search\")]\r\n        [ProducesResponseT" +
-                    "ype(typeof(ApiResponseDto<PagedResponse<");
+            this.Write("Async(");
+            
+            #line 28 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n        }\r\n\r\n        [HttpPost(\"search\")]\r\n        [ProducesResponseType(type" +
+                    "of(ApiResponseDto<PagedResponse<");
             
             #line 32 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -255,8 +275,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Async(dto);\r\n        }\r\n\r\n        [HttpPut(\"{id}\")]\r\n        [ProducesResponseTyp" +
-                    "e(typeof(ApiResponseDto<");
+            this.Write("Async(dto);\r\n        }\r\n\r\n        [HttpPut(\"{");
+            
+            #line 45 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("}\")]\r\n        [ProducesResponseType(typeof(ApiResponseDto<");
             
             #line 46 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -280,11 +306,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 47 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id, [FromBody] Update");
+            this.Write(" ");
+            
+            #line 47 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(", [FromBody] Update");
             
             #line 47 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -305,9 +338,22 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Async(id, dto);\r\n        }\r\n\r\n        [HttpDelete(\"{id}\")]\r\n        [ProducesResp" +
-                    "onseType(typeof(ApiResponseDto<bool>), 200)]\r\n        public async Task<ActionRe" +
-                    "sult<ApiResponseDto<bool>>> Delete");
+            this.Write("Async(");
+            
+            #line 49 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(", dto);\r\n        }\r\n\r\n        [HttpDelete(\"{");
+            
+            #line 52 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("}\")]\r\n        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]\r\n        " +
+                    "public async Task<ActionResult<ApiResponseDto<bool>>> Delete");
             
             #line 54 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -317,11 +363,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 54 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id)\r\n        {\r\n            return await ");
+            this.Write(" ");
+            
+            #line 54 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(")\r\n        {\r\n            return await ");
             
             #line 56 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelNamePlural));
@@ -335,7 +388,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("Async(id);\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("Async(");
+            
+            #line 56 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

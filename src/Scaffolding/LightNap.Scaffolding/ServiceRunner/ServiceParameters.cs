@@ -58,6 +58,11 @@ namespace LightNap.Scaffolding.ServiceRunner
         public readonly string ClientAppPath;
 
         /// <summary>
+        /// Whether to skip generating Angular components.
+        /// </summary>
+        public readonly bool SkipComponents;
+
+        /// <summary>
         /// Whether to automatically overwrite existing files.
         /// </summary>
         public readonly bool Overwrite;
@@ -71,14 +76,18 @@ namespace LightNap.Scaffolding.ServiceRunner
         /// <param name="webApiProjectName">The Web API project name.</param>
         /// <param name="angularProjectName">The Angular project name.</param>
         /// <param name="angularProjectName">The Angular project name.</param>
+        /// <param name="skipComponents">True to skip [re]generating Angular components.</param>
+        /// <param name="overwrite">True to overwrite existing files.</param>
         [SetsRequiredMembers]
-        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName, string angularProjectName, bool overwrite)
+        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName, 
+            string angularProjectName, bool skipComponents, bool overwrite)
         {
             this.ClassName = className;
             this.SourcePath = Path.GetFullPath(sourcePath);
             this.CoreProjectName = coreProjectName;
             this.WebApiProjectName = webApiProjectName;
             this.AngularProjectName = angularProjectName;
+            this.SkipComponents = skipComponents;
             this.Overwrite = overwrite;
 
             this.WebApiProjectPath = Path.Combine(this.SourcePath, webApiProjectName);

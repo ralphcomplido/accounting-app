@@ -50,21 +50,49 @@ namespace LightNap.Scaffolding.Templates
             #line default
             #line hidden
             this.Write("Dto\r\n    {\r\n        // TODO: Finalize which fields to include when returning this" +
-                    " item.\r\n        public ");
+                    " item.\r\n\t\tpublic ");
             
             #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" Id { get; set; }\r\n        ");
+            this.Write(" ");
+            
+            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get; set; }\r\n");
             
             #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerPropertiesList));
+ foreach (var property in Parameters.GetProperties) { 
             
             #line default
             #line hidden
-            this.Write("\r\n    }\r\n}\r\n");
+            this.Write("        public ");
+            
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.ServerTypeString));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get; set; }\r\n");
+            
+            #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

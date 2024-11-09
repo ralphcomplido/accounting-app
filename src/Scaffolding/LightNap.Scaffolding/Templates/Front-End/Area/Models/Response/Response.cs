@@ -35,28 +35,56 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(" {\r\n  // TODO: Update these fields to match the server\'s ");
+            this.Write(" {\r\n\t// TODO: Update these fields to match the server\'s ");
             
             #line 8 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("Dto.\r\n  id: ");
+            this.Write("Dto.\r\n\t");
             
             #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
             #line hidden
-            this.Write(";\r\n  ");
+            this.Write(": ");
+            
+            #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
             
             #line 10 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ClientPropertiesList));
+ foreach (var property in Parameters.GetProperties) { 
             
             #line default
             #line hidden
-            this.Write("\r\n}\r\n");
+            this.Write("\t");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": ");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.ClientTypeString));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

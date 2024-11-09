@@ -34,15 +34,29 @@ namespace LightNap.Scaffolding.AssemblyManager
         public readonly string ClientTypeString;
 
         /// <summary>
+        /// True if the property has a getter.
+        /// </summary>
+        public readonly bool CanGet;
+
+        /// <summary>
+        /// True if the property has a setter.
+        /// </summary>
+        public readonly bool CanSet;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TypePropertyDetails"/> class.
         /// </summary>
         /// <param name="type">The type of the property.</param>
         /// <param name="name">The name of the property.</param>
+        /// <param name="canGet">True if the property has a getter.</param>
+        /// <param name="canSet">True if the property has a setter.</param>
         [SetsRequiredMembers]
-        public TypePropertyDetails(Type type, string name)
+        public TypePropertyDetails(Type type, string name, bool canGet, bool canSet)
         {
             this.Type = type;
             this.Name = name;
+            this.CanGet = canGet;
+            this.CanSet = canSet;
             this.CamelName = this.Name.Camelize();
             this.ServerTypeString = TypePropertyDetails.GetServerTypeString(type);
             this.ClientTypeString = TypePropertyDetails.GetClientTypeString(type);

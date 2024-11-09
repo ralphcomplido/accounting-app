@@ -36,11 +36,11 @@ export class EditComponent implements OnInit {
 
   errors = new Array<string>();
 
-  @Input() id: number;
+  @Input() <#= Parameters.IdProperty.CamelName #>: number;
   <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
 
   ngOnInit() {
-    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id).pipe(
+    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>).pipe(
       tap(response => {
         if (response.result) {
           this.form.setValue({ json: JSON.stringify(response.result, undefined, 4) });
@@ -60,7 +60,7 @@ export class EditComponent implements OnInit {
       return;
     }
 
-    this.#<#= Parameters.CamelName #>Service.update<#= Parameters.PascalName #>(this.id, request).subscribe(response => {
+    this.#<#= Parameters.CamelName #>Service.update<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>, request).subscribe(response => {
       if (!response.result) {
         this.errors = response.errorMessages;
         return;
@@ -79,7 +79,7 @@ export class EditComponent implements OnInit {
       target: event.target,
       key: "delete",
       accept: () => {
-        this.#<#= Parameters.CamelName #>Service.delete<#= Parameters.PascalName #>(this.id).subscribe(response => {
+        this.#<#= Parameters.CamelName #>Service.delete<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>).subscribe(response => {
           if (!response.result) {
             this.errors = response.errorMessages;
             return;

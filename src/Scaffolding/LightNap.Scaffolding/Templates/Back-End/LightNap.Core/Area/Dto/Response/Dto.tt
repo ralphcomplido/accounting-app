@@ -9,7 +9,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Res
     public class <#= Parameters.PascalName #>Dto
     {
         // TODO: Finalize which fields to include when returning this item.
-        public <#= Parameters.ServerIdType #> Id { get; set; }
-        <#= Parameters.ServerPropertiesList #>
+		public <#= Parameters.IdProperty.ServerTypeString #> <#= Parameters.IdProperty.Name #> { get; set; }
+<# foreach (var property in Parameters.GetProperties) { #>
+        public <#= property.ServerTypeString #> <#= property.Name #> { get; set; }
+<# } #>
     }
 }

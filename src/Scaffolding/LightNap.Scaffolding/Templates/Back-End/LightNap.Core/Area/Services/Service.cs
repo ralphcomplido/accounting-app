@@ -150,18 +150,32 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id)\r\n        {\r\n            var item = await db.");
+            this.Write(" ");
+            
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(")\r\n        {\r\n            var item = await db.");
             
             #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalNamePlural));
             
             #line default
             #line hidden
-            this.Write(".FindAsync(id);\r\n            return ApiResponseDto<");
+            this.Write(".FindAsync(");
+            
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n            return ApiResponseDto<");
             
             #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -286,11 +300,18 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 53 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id, Update");
+            this.Write(" ");
+            
+            #line 53 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(", Update");
             
             #line 53 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -304,7 +325,14 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(".FindAsync(id);\r\n            if (item is null) { return ApiResponseDto<");
+            this.Write(".FindAsync(");
+            
+            #line 55 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n            if (item is null) { return ApiResponseDto<");
             
             #line 56 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -337,19 +365,33 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Async(");
             
             #line 62 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.ServerIdType));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
             
             #line default
             #line hidden
-            this.Write(" id)\r\n        {\r\n            var item = await db.");
+            this.Write(" ");
+            
+            #line 62 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(")\r\n        {\r\n            var item = await db.");
             
             #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalNamePlural));
             
             #line default
             #line hidden
-            this.Write(".FindAsync(id);\r\n            if (item is null) { return ApiResponseDto<bool>.Crea" +
-                    "teError(\"The specified ");
+            this.Write(".FindAsync(");
+            
+            #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n            if (item is null) { return ApiResponseDto<bool>.CreateError(\"The " +
+                    "specified ");
             
             #line 65 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));

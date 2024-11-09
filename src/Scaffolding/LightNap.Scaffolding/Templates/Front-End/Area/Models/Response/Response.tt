@@ -5,7 +5,9 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 export interface <#= Parameters.PascalName #> {
-  // TODO: Update these fields to match the server's <#= Parameters.PascalName #>Dto.
-  id: <#= Parameters.ClientIdType #>;
-  <#= Parameters.ClientPropertiesList #>
+	// TODO: Update these fields to match the server's <#= Parameters.PascalName #>Dto.
+	<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>;
+<# foreach (var property in Parameters.GetProperties) { #>
+	<#= property.CamelName #>: <#= property.ClientTypeString #>;
+<# } #>
 }

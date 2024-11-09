@@ -27,6 +27,10 @@ Option<string> angularProjectNameOption =
     new("--angular-project",
         getDefaultValue: () => "lightnap-ng",
         description: "The name of the Angular project");
+Option<bool> skipComponentsOption =
+    new("--skip-components",
+        getDefaultValue: () => false,
+        description: "Skip [re]generating Angular components");
 Option<bool> overwriteOption =
     new("--overwrite",
         getDefaultValue: () => false,
@@ -41,14 +45,15 @@ var rootCommand = new RootCommand()
     coreProjectNameOption,
     webApiProjectNameOption,
     angularProjectNameOption,
+    skipComponentsOption,
     overwriteOption
 };
 
-rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite) =>
+rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, skipComponents, overwrite) =>
 {
     ServiceRunner runner = new(new ProjectManager(), new AssemblyManager());
-    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite));
+    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName, skipComponents, overwrite));
 },
-classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption, overwriteOption);
+classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption, skipComponentsOption, overwriteOption);
 
 return await rootCommand.InvokeAsync(args);

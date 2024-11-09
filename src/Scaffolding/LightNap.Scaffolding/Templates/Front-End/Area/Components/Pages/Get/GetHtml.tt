@@ -9,7 +9,7 @@
     <ng-template #success let-<#= Parameters.CamelName #>>
       <div class="flex gap-1 mb-1">
         <p-button [routerLink]="['..']" icon="pi pi-arrow-up" label="Up to all" />
-        <p-button [routerLink]="['..', id, 'edit']" icon="pi pi-pencil" label="Edit" />
+        <p-button [routerLink]="['..', <#= Parameters.IdProperty.CamelName #>, 'edit']" icon="pi pi-pencil" label="Edit" />
       </div>
       <pre>{{ <#= Parameters.CamelName #> | json }}</pre>
     </ng-template>

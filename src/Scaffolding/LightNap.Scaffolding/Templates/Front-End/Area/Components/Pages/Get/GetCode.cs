@@ -95,7 +95,14 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  @Input() id: number;\r\n  ");
+            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  @Input() ");
+            
+            #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": number;\r\n  ");
             
             #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
@@ -130,7 +137,14 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("(this.id);\r\n  }\r\n}\r\n");
+            this.Write("(this.");
+            
+            #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
