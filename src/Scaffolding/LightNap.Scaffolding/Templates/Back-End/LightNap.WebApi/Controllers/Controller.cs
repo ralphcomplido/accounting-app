@@ -156,7 +156,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
             #line hidden
@@ -306,7 +306,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 47 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
             #line hidden
@@ -363,7 +363,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write("(");
             
             #line 54 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
             #line hidden

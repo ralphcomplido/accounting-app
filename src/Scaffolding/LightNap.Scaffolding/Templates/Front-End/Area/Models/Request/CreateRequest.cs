@@ -59,7 +59,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 10 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Request\CreateRequest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.FrontEndType));
             
             #line default
             #line hidden

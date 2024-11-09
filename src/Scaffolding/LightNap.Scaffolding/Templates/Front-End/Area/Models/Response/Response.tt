@@ -6,8 +6,8 @@
 
 export interface <#= Parameters.PascalName #> {
 	// TODO: Update these fields to match the server's <#= Parameters.PascalName #>Dto.
-	<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>;
+	<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>;
 <# foreach (var property in Parameters.GetProperties) { #>
-	<#= property.CamelName #>: <#= property.ClientTypeString #>;
+	<#= property.CamelName #>: <#= property.FrontEndType #>;
 <# } #>
 }

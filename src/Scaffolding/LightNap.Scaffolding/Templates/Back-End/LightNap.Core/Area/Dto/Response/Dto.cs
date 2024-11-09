@@ -53,7 +53,7 @@ namespace LightNap.Scaffolding.Templates
                     " item.\r\n\t\tpublic ");
             
             #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
             #line hidden
@@ -74,7 +74,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write("        public ");
             
             #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.BackEndType));
             
             #line default
             #line hidden

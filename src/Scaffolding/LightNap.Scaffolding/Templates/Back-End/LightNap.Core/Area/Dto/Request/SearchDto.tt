@@ -12,7 +12,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Req
     {
         // TODO: Update to reflect which fields to include for searches.
 <# foreach (var property in Parameters.GetProperties) { #>
-        public <#= property.ServerTypeString #>? <#= property.Name #> { get; set; }
+        public <#= property.BackEndType #>? <#= property.Name #> { get; set; }
 <# } #>
 
     }

@@ -95,7 +95,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden
@@ -172,7 +172,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden
@@ -207,7 +207,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Services\AreaService.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden

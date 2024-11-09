@@ -153,7 +153,7 @@ export class EditComponent implements OnInit {
             
             #line 52 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
   foreach (var property in Parameters.SetProperties) {
-        switch (property.ClientTypeString) {
+        switch (property.FrontEndType) {
             case "boolean": 
             
             #line default
@@ -185,7 +185,7 @@ export class EditComponent implements OnInit {
             #line 59 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
             default:
-                if (property.ServerTypeString == "DateTime") { 
+                if (property.BackEndType == "DateTime") { 
             
             #line default
             #line hidden
@@ -200,7 +200,7 @@ export class EditComponent implements OnInit {
             
             #line 63 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }
-                else if (property.ServerTypeString == "Guid") { 
+                else if (property.BackEndType == "Guid") { 
             
             #line default
             #line hidden

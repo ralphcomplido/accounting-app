@@ -52,7 +52,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden
@@ -73,7 +73,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(": ");
             
             #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.ClientTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.FrontEndType));
             
             #line default
             #line hidden

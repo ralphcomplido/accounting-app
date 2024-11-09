@@ -60,7 +60,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write("        public ");
             
             #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\UpdateDto.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.ServerTypeString));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.BackEndType));
             
             #line default
             #line hidden

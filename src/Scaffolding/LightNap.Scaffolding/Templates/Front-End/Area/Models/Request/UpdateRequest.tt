@@ -7,6 +7,6 @@
 export interface Update<#= Parameters.PascalName #>Request {
 	// TODO: Update these fields to match the server's Update<#= Parameters.PascalName #>Dto.
 <# foreach (var property in Parameters.SetProperties) { #>
-	<#= property.CamelName #>: <#= property.ClientTypeString #>;
+	<#= property.CamelName #>: <#= property.FrontEndType #>;
 <# } #>
 }

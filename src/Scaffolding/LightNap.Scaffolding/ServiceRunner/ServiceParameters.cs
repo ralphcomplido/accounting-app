@@ -53,9 +53,9 @@ namespace LightNap.Scaffolding.ServiceRunner
         public readonly string CoreProjectFilePath;
 
         /// <summary>
-        /// The client application path.
+        /// The front-end application path.
         /// </summary>
-        public readonly string ClientAppPath;
+        public readonly string FrontEndAppPath;
 
         /// <summary>
         /// Whether to skip generating Angular components.
@@ -79,7 +79,7 @@ namespace LightNap.Scaffolding.ServiceRunner
         /// <param name="skipComponents">True to skip [re]generating Angular components.</param>
         /// <param name="overwrite">True to overwrite existing files.</param>
         [SetsRequiredMembers]
-        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName, 
+        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName,
             string angularProjectName, bool skipComponents, bool overwrite)
         {
             this.ClassName = className;
@@ -94,7 +94,7 @@ namespace LightNap.Scaffolding.ServiceRunner
             this.WebApiProjectFilePath = Path.Combine(this.WebApiProjectPath, $"{webApiProjectName}.csproj");
             this.CoreProjectPath = Path.Combine(this.SourcePath, coreProjectName);
             this.CoreProjectFilePath = Path.Combine(this.CoreProjectPath, $"{coreProjectName}.csproj");
-            this.ClientAppPath = Path.Combine(this.SourcePath, angularProjectName, "src/app");
+            this.FrontEndAppPath = Path.Combine(this.SourcePath, angularProjectName, "src/app");
         }
     }
 }

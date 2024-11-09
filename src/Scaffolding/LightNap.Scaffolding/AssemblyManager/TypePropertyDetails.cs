@@ -24,14 +24,14 @@ namespace LightNap.Scaffolding.AssemblyManager
         public readonly string CamelName;
 
         /// <summary>
-        /// The string representation of the property type for the server (C#).
+        /// The string representation of the property type for the back-end (C#).
         /// </summary>
-        public readonly string ServerTypeString;
+        public readonly string BackEndType;
 
         /// <summary>
-        /// The string representation of the property type for the client (Typescript).
+        /// The string representation of the property type for the front-end (Typescript).
         /// </summary>
-        public readonly string ClientTypeString;
+        public readonly string FrontEndType;
 
         /// <summary>
         /// True if the property has a getter.
@@ -58,16 +58,16 @@ namespace LightNap.Scaffolding.AssemblyManager
             this.CanGet = canGet;
             this.CanSet = canSet;
             this.CamelName = this.Name.Camelize();
-            this.ServerTypeString = TypePropertyDetails.GetServerTypeString(type);
-            this.ClientTypeString = TypePropertyDetails.GetClientTypeString(type);
+            this.BackEndType = TypePropertyDetails.GetBackEndType(type);
+            this.FrontEndType = TypePropertyDetails.GetFrontEndType(type);
         }
 
         /// <summary>
-        /// Gets the server type string for the specified type.
+        /// Gets the back-end type string for the specified type.
         /// </summary>
-        /// <param name="type">The type to get the server type string for.</param>
+        /// <param name="type">The type to get the back-end type string for.</param>
         /// <returns>The C# type string.</returns>
-        public static string GetServerTypeString(Type type)
+        public static string GetBackEndType(Type type)
         {
             if (type == typeof(int)) { return "int"; }
             if (type == typeof(long)) { return "long"; }
@@ -84,16 +84,15 @@ namespace LightNap.Scaffolding.AssemblyManager
             if (type == typeof(string)) { return "string"; }
             if (type == typeof(Guid)) { return "Guid"; }
             if (type == typeof(DateTime)) { return "DateTime"; }
-            if (type == typeof(bool)) { return "bool"; }
             return type.Name;
         }
 
         /// <summary>
-        /// Gets the client type string for the specified type.
+        /// Gets the front-end type string for the specified type.
         /// </summary>
-        /// <param name="type">The type to get the client type string for.</param>
+        /// <param name="type">The type to get the front-end type string for.</param>
         /// <returns>The TypeScript type string.</returns>
-        public static string GetClientTypeString(Type type)
+        public static string GetFrontEndType(Type type)
         {
             if (type == typeof(int) ||
                 type == typeof(long) ||

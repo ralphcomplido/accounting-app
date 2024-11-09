@@ -35,11 +35,26 @@
             </td>
             <td>{{<#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #>}}</td>
 <#      foreach (var property in Parameters.GetProperties) { 
-            if (property.ServerTypeString == "DateTime") { #>
+            switch (property.BackEndType) {
+				case "DateTime": #>
             <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #> | date}}</td>
-<#          } else { #>
+<#                  break;
+				case "int":
+                case "long":
+                case "double":
+                case "float":
+                case "decimal":
+                case "short":
+                case "byte":
+                case "ushort":
+                case "uint":
+                case "ulong": #>
+            <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #> | number}}</td>
+<#                  break;
+				default: #>
             <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #>}}</td>
-<#          }
+<#                  break;
+            }
         } #>
           </tr>
         </ng-template>

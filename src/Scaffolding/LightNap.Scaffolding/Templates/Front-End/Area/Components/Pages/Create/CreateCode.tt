@@ -43,7 +43,7 @@ export class CreateComponent {
   form = this.#fb.group({
 	// TODO: Update these fields to match the right parameters.
 <#  foreach (var property in Parameters.SetProperties) {
-        switch (property.ClientTypeString) {
+        switch (property.FrontEndType) {
             case "boolean": #>
 	<#= property.CamelName #>: this.#fb.control(false),
 <#              break;
@@ -51,10 +51,10 @@ export class CreateComponent {
 	<#= property.CamelName #>: this.#fb.control(0),
 <#              break;
             default:
-                if (property.ServerTypeString == "DateTime") { #>
+                if (property.BackEndType == "DateTime") { #>
 	<#= property.CamelName #>: this.#fb.control("2024-11-08T20:11:21Z", [Validators.required]),
 <#              }
-                else if (property.ServerTypeString == "Guid") { #>
+                else if (property.BackEndType == "Guid") { #>
 	<#= property.CamelName #>: this.#fb.control("7bb47262-a295-457a-88f2-65700219e2bb", [Validators.required]),
 <#              }
                 else { #>

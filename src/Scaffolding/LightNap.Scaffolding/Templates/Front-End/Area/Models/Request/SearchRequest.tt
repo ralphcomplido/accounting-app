@@ -8,6 +8,6 @@ import { PaginationRequest } from "@core";
 export interface Search<#= Parameters.PascalNamePlural #>Request extends PaginationRequest {
 	// TODO: Update these fields to match the server's Search<#= Parameters.PascalName #>Dto.
 <# foreach (var property in Parameters.GetProperties) { #>
-	<#= property.CamelName #>?: <#= property.ClientTypeString #>;
+	<#= property.CamelName #>?: <#= property.FrontEndType #>;
 <# } #>
 }

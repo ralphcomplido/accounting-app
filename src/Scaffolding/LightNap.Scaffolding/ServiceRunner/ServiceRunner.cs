@@ -50,7 +50,7 @@ namespace LightNap.Scaffolding.ServiceRunner
             Console.ForegroundColor = ConsoleColor.Cyan;
             foreach (var property in propertiesDetails)
             {
-                Console.WriteLine($"{property.Name,-30}{property.ServerTypeString,-10}{property.ClientTypeString,-10}{property.CanGet,-6}{property.CanSet,-6}");
+                Console.WriteLine($"{property.Name,-30}{property.BackEndType,-10}{property.FrontEndType,-10}{property.CanGet,-6}{property.CanSet,-6}");
             }
             Console.ResetColor();
 
@@ -73,34 +73,34 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new UpdateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
                     new(new Controller() { Parameters = templateParameters }, $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
 
-                    new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
-                    new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
-                    new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
-                    new(new Response() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
-                    new(new DataService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/data.service.ts"),
-                    new(new AreaService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
+                    new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
+                    new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
+                    new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
+                    new(new Response() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
+                    new(new DataService() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/services/data.service.ts"),
+                    new(new AreaService() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
                 };
 
             if (!parameters.SkipComponents)
             {
                 templateItems.AddRange([
-                    new(new Routes() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/routes.ts"),
-                    new(new IndexHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.html"),
-                    new(new IndexCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.ts"),
-                    new(new GetHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.html"),
-                    new(new GetCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.ts"),
-                    new(new CreateHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.html"),
-                    new(new CreateCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.ts"),
-                    new(new EditHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.html"),
-                    new(new EditCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.ts"),
+                    new(new Routes() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/routes.ts"),
+                    new(new IndexHtml() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/index/index.component.html"),
+                    new(new IndexCode() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/index/index.component.ts"),
+                    new(new GetHtml() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/get/get.component.html"),
+                    new(new GetCode() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/get/get.component.ts"),
+                    new(new CreateHtml() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/create/create.component.html"),
+                    new(new CreateCode() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/create/create.component.ts"),
+                    new(new EditHtml() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.html"),
+                    new(new EditCode() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.ts"),
                     ]);
             }
 
-            foreach (var template in templateItems)
+            if (!parameters.Overwrite)
             {
-                if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
+                foreach (var template in templateItems)
                 {
-                    if (!parameters.Overwrite)
+                    if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Bailing out: File '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}' already exists!");
@@ -109,10 +109,6 @@ namespace LightNap.Scaffolding.ServiceRunner
                         Console.ResetColor();
                         return;
                     }
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"May overwrite existing file '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}'");
-                    Console.ResetColor();
                 }
             }
 
@@ -148,7 +144,7 @@ Scaffolding completed successfully. {newFiles} new files generated, {overwritten
 Please see TODO comments in generated code to complete integration.
 
     {parameters.CoreProjectName}:
-    - Update client and server DTO properties in {pascalNamePlural}/Dto to only those you want included.
+    - Update front-end and back-end DTO properties in {pascalNamePlural}/Dto to only those you want included.
     - Update extension method mappers between DTOs and the entity in Extensions/{type.Name}Extensions.cs.
 
     {parameters.WebApiProjectName}:
@@ -156,7 +152,7 @@ Please see TODO comments in generated code to complete integration.
     - Register Web API controller parameter dependency in Extensions/ApplicationServiceExtensions.cs.
 
     {parameters.AngularProjectName}:
-    - Update the models in {kebabNamePlural}/models to match the updated server DTOs.
+    - Update the models in {kebabNamePlural}/models to match the updated back-end DTOs.
     - Update authorization for the routes in {kebabNamePlural}/components/pages/routes.ts.
     - Add {kebabNamePlural} routes to the root route collection in routing/routes.ts.");
             }
@@ -195,9 +191,9 @@ Please see TODO comments in generated code to complete integration.
                 return false;
             }
 
-            if (!Directory.Exists(parameters.ClientAppPath))
+            if (!Directory.Exists(parameters.FrontEndAppPath))
             {
-                Console.WriteLine($"Angular project not found at: {parameters.ClientAppPath}");
+                Console.WriteLine($"Angular project not found at: {parameters.FrontEndAppPath}");
                 return false;
             }
 

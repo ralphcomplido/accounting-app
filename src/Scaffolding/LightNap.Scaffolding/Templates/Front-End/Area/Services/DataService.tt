@@ -19,7 +19,7 @@ export class DataService {
   #http = inject(HttpClient);
   #apiUrlRoot = `${inject(API_URL_ROOT)}<#= Parameters.PascalNamePlural #>/`;
 
-  get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>) {
+  get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
     return this.#http.get<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`);
   }
 
@@ -31,11 +31,11 @@ export class DataService {
     return this.#http.post<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}`, request);
   }
 
-  update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>, request: Update<#= Parameters.PascalName #>Request) {
+  update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>, request: Update<#= Parameters.PascalName #>Request) {
     return this.#http.put<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`, request);
   }
 
-  delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>) {
+  delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
     return this.#http.delete<ApiResponse<boolean>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`);
   }
 }

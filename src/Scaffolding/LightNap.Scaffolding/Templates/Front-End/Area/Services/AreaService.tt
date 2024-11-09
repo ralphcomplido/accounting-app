@@ -16,7 +16,7 @@ import { DataService } from "./data.service";
 export class <#= Parameters.PascalName #>Service {
   #dataService = inject(DataService);
 
-    get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>) {
+    get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
         return this.#dataService.get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>);
     }
 
@@ -28,11 +28,11 @@ export class <#= Parameters.PascalName #>Service {
         return this.#dataService.create<#= Parameters.PascalName #>(request);
     }
 
-    update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>, request: Update<#= Parameters.PascalName #>Request) {
+    update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>, request: Update<#= Parameters.PascalName #>Request) {
         return this.#dataService.update<#= Parameters.PascalName #>(id, request);
     }
 
-    delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.ClientTypeString #>) {
+    delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
         return this.#dataService.delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>);
     }
 }
