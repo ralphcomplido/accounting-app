@@ -12,84 +12,258 @@
     <PackageReference Include="Microsoft.Build" Version="15.1.548" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548" ExcludeAssets="runtime" />
+    <PackageReference Include="System.CodeDom" Version="8.0.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\Client\edit.component.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\UpdateDto.tt">
+      <LastGenOutput>UpdateDto.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\create.component.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.tt">
+      <LastGenOutput>SearchDto.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\edit.component.html.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt">
+      <LastGenOutput>CreateDto.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\create.component.html.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt">
+      <LastGenOutput>Dto.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\get.component.html.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Extensions\Extensions.tt">
+      <LastGenOutput>Extensions.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\get.component.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.tt">
+      <LastGenOutput>Interface.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\index.component.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.Core\Area\Services\Service.tt">
+      <LastGenOutput>Service.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\index.component.html.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Back-End\LightNap.WebApi\Controllers\Controller.tt">
+      <LastGenOutput>Controller.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\routes.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\BaseTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
+      <LastGenOutput>BaseTemplate.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Client\create-request.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt">
+      <LastGenOutput>CreateCode.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\data.service.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt">
+      <LastGenOutput>CreateHtml.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\response.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt">
+      <LastGenOutput>EditCode.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\search-request.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Edit\EditHtml.tt">
+      <LastGenOutput>EditHtml.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\service.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Get\GetCode.tt">
+      <LastGenOutput>GetCode.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Client\update-request.ts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt">
+      <LastGenOutput>GetHtml.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\Controller.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Index\IndexCode.tt">
+      <LastGenOutput>IndexCode.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\Extensions.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt">
+      <LastGenOutput>IndexHtml.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\SearchDto.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Components\Pages\Routes.tt">
+      <LastGenOutput>Routes.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\Dto.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Models\Request\CreateRequest.tt">
+      <LastGenOutput>CreateRequest.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\Interface.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Models\Request\UpdateRequest.tt">
+      <LastGenOutput>UpdateRequest.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\Service.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Models\Request\SearchRequest.tt">
+      <LastGenOutput>SearchRequest.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\CreateDto.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Generator></Generator>
+    <None Update="Templates\Front-End\Area\Models\Response\Response.tt">
+      <LastGenOutput>Response.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
-    <None Update="Templates\Server\UpdateDto.cs.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Templates\Front-End\Area\Services\DataService.tt">
+      <LastGenOutput>DataService.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
+    </None>
+    <None Update="Templates\Front-End\Area\Services\AreaService.tt">
+      <LastGenOutput>AreaService.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>LightNap.Scaffolding.Templates</CustomToolNamespace>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CreateDto.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\SearchDto.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SearchDto.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Dto\Request\UpdateDto.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UpdateDto.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dto.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Extensions\Extensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Extensions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Interfaces\Interface.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Interface.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.Core\Area\Services\Service.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Service.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Back-End\LightNap.WebApi\Controllers\Controller.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Controller.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\BaseTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BaseTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Create\CreateCode.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CreateCode.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Create\CreateHtml.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CreateHtml.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Edit\EditCode.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EditCode.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Edit\EditHtml.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EditHtml.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Get\GetCode.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetCode.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Get\GetHtml.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetHtml.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Index\IndexCode.cs">
+      <DependentUpon>IndexCode.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Index\IndexHtml.cs">
+      <DependentUpon>IndexHtml.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Components\Pages\Routes.cs">
+      <DependentUpon>Routes.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Models\Request\CreateRequest.cs">
+      <DependentUpon>CreateRequest.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Models\Request\UpdateRequest.cs">
+      <DependentUpon>UpdateRequest.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Models\Request\SearchRequest.cs">
+      <DependentUpon>SearchRequest.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Models\Response\Response.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Response.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Services\DataService.cs">
+      <DependentUpon>DataService.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\Front-End\Area\Services\AreaService.cs">
+      <DependentUpon>AreaService.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
 
 </Project>

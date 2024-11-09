@@ -1,0 +1,32 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+import { CommonModule } from "@angular/common";
+import { Component, inject, Input, OnInit } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { ApiResponse, ApiResponseComponent, ConfirmPopupComponent } from "@core";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { Observable } from "rxjs";
+import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+
+@Component({
+  standalone: true,
+  templateUrl: "./get.component.html",
+  imports: [CommonModule, CardModule, RouterLink, ApiResponseComponent, ConfirmPopupComponent, ButtonModule],
+})
+export class GetComponent implements OnInit {
+  #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
+  errors = new Array<string>();
+
+  @Input() id: number;
+  <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
+
+  ngOnInit() {
+    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id);
+  }
+}

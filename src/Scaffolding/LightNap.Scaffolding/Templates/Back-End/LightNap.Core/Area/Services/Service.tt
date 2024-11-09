@@ -1,0 +1,71 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using <#= Parameters.CoreNamespace #>.Api;
+using <#= Parameters.CoreNamespace #>.Data;
+using <#= Parameters.CoreNamespace #>.Data.Entities;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Extensions;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using Microsoft.EntityFrameworkCore;
+
+namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Services
+{
+    public class <#= Parameters.PascalName #>Service(ApplicationDbContext db) : I<#= Parameters.PascalName #>Service
+    {
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id)
+        {
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item?.ToDto());
+        }
+
+        public async Task<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto)
+        {
+            var query = db.<#= Parameters.PascalNamePlural #>.AsQueryable();
+
+            // Add filters and sorting
+
+            int totalCount = await query.CountAsync();
+
+            if (dto.PageNumber > 1)
+            {
+                query = query.Skip((dto.PageNumber - 1) * dto.PageSize);
+            }
+
+            var items = await query.Take(dto.PageSize).Select(user => user.ToDto()).ToListAsync();
+
+            return ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>.CreateSuccess(
+                new PagedResponse<<#= Parameters.PascalName #>Dto>(items, dto.PageNumber, dto.PageSize, totalCount));
+        }
+
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Create<#= Parameters.PascalName #>Async(Create<#= Parameters.PascalName #>Dto dto)
+        {
+            <#= Parameters.PascalName #> item = dto.ToCreate();
+            db.<#= Parameters.PascalNamePlural #>.Add(item);
+            await db.SaveChangesAsync();
+            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
+        }
+
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id, Update<#= Parameters.PascalName #>Dto dto)
+        {
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            if (item is null) { return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
+            item.UpdateFromDto(dto);
+            await db.SaveChangesAsync();
+            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
+        }
+
+        public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.ServerIdType #> id)
+        {
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(id);
+            if (item is null) { return ApiResponseDto<bool>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
+            db.<#= Parameters.PascalNamePlural #>.Remove(item);
+            await db.SaveChangesAsync();
+            return ApiResponseDto<bool>.CreateSuccess(true);
+        }
+    }
+}

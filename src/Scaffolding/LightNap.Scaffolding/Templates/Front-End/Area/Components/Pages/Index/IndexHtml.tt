@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<p-card header="All">
+  <api-response [apiResponse]="<#= Parameters.CamelNamePlural #>$" errorMessage="Error loading" loadingMessage="Loading...">
+    <ng-template #success let-<#= Parameters.CamelNamePlural #>>
+      <div class="flex gap-1 mb-1">
+        <p-button [routerLink]="['create']" severity="success" icon="pi pi-plus" label="Create" />
+      </div>
+      <ul>
+        @for(<#= Parameters.CamelName #> of <#= Parameters.CamelNamePlural #>.data; track $index) {
+        <li>
+          <a [routerLink]="<#= Parameters.CamelName #>.id">{{ <#= Parameters.CamelName #> | json }}</a>
+        </li>
+        } @empty {
+        <li>There are no items yet</li>
+        }
+      </ul>
+    </ng-template>
+  </api-response>
+</p-card>

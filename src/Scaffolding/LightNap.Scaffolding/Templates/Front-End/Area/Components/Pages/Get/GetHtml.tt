@@ -1,0 +1,17 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<p-card header="Get">
+  <api-response [apiResponse]="<#= Parameters.CamelName #>$" errorMessage="Error loading" loadingMessage="Loading...">
+    <ng-template #success let-<#= Parameters.CamelName #>>
+      <div class="flex gap-1 mb-1">
+        <p-button [routerLink]="['..']" icon="pi pi-arrow-up" label="Up to all" />
+        <p-button [routerLink]="['..', id, 'edit']" icon="pi pi-pencil" label="Edit" />
+      </div>
+      <pre>{{ <#= Parameters.CamelName #> | json }}</pre>
+    </ng-template>
+  </api-response>
+</p-card>

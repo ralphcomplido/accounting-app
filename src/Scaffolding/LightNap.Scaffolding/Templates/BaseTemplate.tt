@@ -1,0 +1,5 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="LightNap.Scaffolding.TemplateManager" #>
+<#+ 
+    public TemplateParameters Parameters { get; set; }
+#>

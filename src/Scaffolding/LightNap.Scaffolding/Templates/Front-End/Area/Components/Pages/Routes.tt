@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+import { AppRoute } from "@routing";
+
+// TODO: Add this route list to app/routing/routes.ts.
+//
+// At the top of the file, import the routes:
+//
+// import { Routes as <#= Parameters.PascalName #>Routes } from "../<#= Parameters.KebabNamePlural #>/components/pages/routes";
+//
+// Then add the routes to the list:
+//
+// { path: "<#= Parameters.KebabNamePlural #>", children: <#= Parameters.PascalName #>Routes }
+//
+export const Routes: AppRoute[] = [
+  { path: "", loadComponent: () => import("./index/index.component").then(m => m.IndexComponent) },
+  { path: "create", loadComponent: () => import("./create/create.component").then(m => m.CreateComponent) },
+  { path: ":id", loadComponent: () => import("./get/get.component").then(m => m.GetComponent) },
+  { path: ":id/edit", loadComponent: () => import("./edit/edit.component").then(m => m.EditComponent) },
+];

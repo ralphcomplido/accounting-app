@@ -1,5 +1,0 @@
-export interface <#= PascalName #> {
-  // TODO: Update these fields to match the server's <#= PascalName #>Dto.
-  id: <#= ClientIdType #>;
-  <#= ClientPropertiesList #>
-}

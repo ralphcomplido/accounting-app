@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<p-card header="Edit">
+  <api-response [apiResponse]="<#= Parameters.CamelName #>$" errorMessage="Error loading" loadingMessage="Loading...">
+    <ng-template #success let-<#= Parameters.CamelName #>>
+      <div class="flex gap-1 mb-1">
+        <p-button [routerLink]="['../..']" icon="pi pi-arrow-up" label="Up to all" />
+        <p-button [routerLink]="['..']" icon="pi pi-arrow-left" label="Back to item" />
+        <p-button (onClick)="deleteClicked($event)" severity="danger" icon="pi pi-trash" label="Delete" />
+        <confirm-popup key="delete" confirmSeverity="danger" confirmIcon="pi pi-trash" />
+      </div>
+      <form [formGroup]="form" (ngSubmit)="saveClicked()" autocomplete="off">
+        <div class="flex flex-column gap-1">
+          <textarea rows="10" cols="30" pInputTextarea formControlName="json"></textarea>
+          <error-list [errors]="errors" />
+          <p-button type="submit" label="Save" icon="pi pi-save" severity="success" [disabled]="!form.valid" />
+        </div>
+      </form>
+    </ng-template>
+  </api-response>
+</p-card>

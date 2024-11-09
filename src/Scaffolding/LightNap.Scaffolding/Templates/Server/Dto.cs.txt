@@ -1,9 +1,0 @@
-﻿namespace <#= CoreNamespace #>.<#= NameForNamespace #>.Response.Dto
-{
-    public class <#= PascalName #>Dto
-    {
-        // TODO: Finalize which fields to include when returning this item.
-        public <#= ServerIdType #> Id { get; set; }
-        <#= ServerPropertiesList #>
-    }
-}

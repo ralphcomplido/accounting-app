@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { ApiResponseComponent } from "@core";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+
+@Component({
+  standalone: true,
+  templateUrl: "./index.component.html",
+  imports: [CommonModule, CardModule, ApiResponseComponent, RouterModule, ButtonModule],
+})
+export class IndexComponent {
+  #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
+  <#= Parameters.CamelNamePlural #>$ = this.#<#= Parameters.CamelName #>Service.search<#= Parameters.PascalNamePlural #>({ pageNumber: 1, pageSize: 10 });
+}

@@ -1,13 +1,14 @@
 ﻿using LightNap.Scaffolding.AssemblyManager;
 using LightNap.Scaffolding.ProjectManager;
 using LightNap.Scaffolding.TemplateManager;
+using LightNap.Scaffolding.Templates;
 
 namespace LightNap.Scaffolding.ServiceRunner
 {
     /// <summary>
     /// Runs the service scaffolding process.
     /// </summary>
-    public class ServiceRunner(IProjectManager projectManager, ITemplateManager templateManager, IAssemblyManager assemblyManager)
+    public class ServiceRunner(IProjectManager projectManager, IAssemblyManager assemblyManager)
     {
         /// <summary>
         /// Executes the service scaffolding process with the provided parameters.
@@ -39,52 +40,57 @@ namespace LightNap.Scaffolding.ServiceRunner
             List<TypePropertyDetails> propertiesDetails = TypeHelper.GetPropertyDetails(type);
             TemplateParameters templateParameters = new(type.Name, propertiesDetails, parameters);
 
-            string pascalNamePlural = templateParameters.Replacements["PascalNamePlural"];
-            string kebabName = templateParameters.Replacements["KebabName"];
-            string kebabNamePlural = templateParameters.Replacements["KebabNamePlural"];
+            string pascalNamePlural = templateParameters.PascalNamePlural;
+            string kebabName = templateParameters.KebabName;
+            string kebabNamePlural = templateParameters.KebabNamePlural;
 
             string executingPath = assemblyManager.GetExecutingPath();
 
             var templateItems = new List<TemplateItem>
                 {
-                    new(Path.Combine(executingPath, "Templates/Server/CreateDto.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Create{type.Name}Dto.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/Dto.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Response/{type.Name}Dto.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/Extensions.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Extensions/{type.Name}Extensions.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/Interface.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Interfaces/I{type.Name}Service.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/SearchDto.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Search{type.Name}Dto.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/Service.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Services/{type.Name}Service.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/UpdateDto.cs.txt"), $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
-                    new(Path.Combine(executingPath, "Templates/Server/Controller.cs.txt"), $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
+                    new(new CreateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Create{type.Name}Dto.cs"),
+                    new(new Dto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Response/{type.Name}Dto.cs"),
+                    new(new Extensions() { Parameters = templateParameters },$"{parameters.CoreProjectPath}/{pascalNamePlural}/Extensions/{type.Name}Extensions.cs"),
+                    new(new Interface() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Interfaces/I{type.Name}Service.cs"),
+                    new(new SearchDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Search{type.Name}Dto.cs"),
+                    new(new Service() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Services/{type.Name}Service.cs"),
+                    new(new UpdateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
+                    new(new Controller() { Parameters = templateParameters }, $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
 
-                    new(Path.Combine(executingPath, "Templates/Client/routes.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/routes.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/index.component.html.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.html"),
-                    new(Path.Combine(executingPath, "Templates/Client/index.component.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/get.component.html.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.html"),
-                    new(Path.Combine(executingPath, "Templates/Client/get.component.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/create.component.html.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.html"),
-                    new(Path.Combine(executingPath, "Templates/Client/create.component.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/edit.component.html.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.html"),
-                    new(Path.Combine(executingPath, "Templates/Client/edit.component.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/create-request.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/search-request.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/update-request.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/response.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/data.service.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/services/data.service.ts"),
-                    new(Path.Combine(executingPath, "Templates/Client/service.ts.txt"), $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
+                    new(new Routes() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/routes.ts"),
+                    new(new IndexHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.html"),
+                    new(new IndexCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/index/index.component.ts"),
+                    new(new GetHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.html"),
+                    new(new GetCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/get/get.component.ts"),
+                    new(new CreateHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.html"),
+                    new(new CreateCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/create/create.component.ts"),
+                    new(new EditHtml() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.html"),
+                    new(new EditCode() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/components/pages/edit/edit.component.ts"),
+                    new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
+                    new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
+                    new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),
+                    new(new Response() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/models/response/{kebabName}.ts"),
+                    new(new DataService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/data.service.ts"),
+                    new(new AreaService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
                 };
 
-            foreach (var template in templateItems)
+            if (!parameters.Overwrite)
             {
-                if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
+                foreach (var template in templateItems)
                 {
-                    Console.WriteLine($"Bailing out: File '{template.OutputFile}' already exists!");
-                    return;
+                    if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
+                    {
+                        Console.WriteLine($"Bailing out: File '{template.OutputFile}' already exists!");
+                        return;
+                    }
                 }
             }
 
             foreach (var template in templateItems)
             {
-                templateManager.ProcessTemplate(template, templateParameters);
+                string generatedCode = template.Template.TransformText();
+                Directory.CreateDirectory(Path.GetDirectoryName(template.OutputFile)!);
+                File.WriteAllText(template.OutputFile, generatedCode);
 
                 Console.WriteLine($"Generated {template.OutputFile}");
             }

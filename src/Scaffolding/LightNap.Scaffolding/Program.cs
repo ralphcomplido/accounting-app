@@ -1,7 +1,6 @@
 ﻿using LightNap.Scaffolding.AssemblyManager;
 using LightNap.Scaffolding.ProjectManager;
 using LightNap.Scaffolding.ServiceRunner;
-using LightNap.Scaffolding.TemplateManager;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 
@@ -46,7 +45,7 @@ var rootCommand = new RootCommand()
 
 rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite) =>
 {
-    ServiceRunner runner = new(new ProjectManager(), new TemplateManager(), new AssemblyManager());
+    ServiceRunner runner = new(new ProjectManager(), new AssemblyManager());
     runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite));
 },
 classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption, overwriteOption);

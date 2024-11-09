@@ -1,4 +1,0 @@
-export interface Create<#= PascalName #>Request {
-	// TODO: Update these fields to match the server's Create<#= PascalName #>Dto.
-	<#= ClientPropertiesList #>
-}

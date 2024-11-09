@@ -1,22 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using LightNap.Scaffolding.Templates;
 
 namespace LightNap.Scaffolding.TemplateManager
 {
     /// <summary>
-    /// Represents a template item with a template file, output file, and an optional project path.
+    /// Matches a template to run with its output file.
     /// </summary>
-    [method: SetsRequiredMembers]
-    public class TemplateItem(string templateFile, string outputFile)
+    public class TemplateItem(BaseTemplate template, string outputFile)
     {
         /// <summary>
-        /// Gets or sets the template file path.
+        /// The template to run.
         /// </summary>
-        public required string TemplateFile { get; set; } = templateFile;
+        public readonly BaseTemplate Template = template;
 
         /// <summary>
-        /// Gets or sets the output file path.
+        /// The output file path
         /// </summary>
-        public required string OutputFile { get; set; } = outputFile;
-
+        public readonly string OutputFile = outputFile;
     }
 }

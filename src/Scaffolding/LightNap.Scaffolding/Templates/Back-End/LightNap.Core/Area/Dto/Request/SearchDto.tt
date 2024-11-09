@@ -1,0 +1,16 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using <#= Parameters.CoreNamespace #>.Api;
+
+namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto
+{
+    public class Search<#= Parameters.PascalNamePlural #>Dto : PaginationRequestDtoBase
+    {
+        // TODO: Update to reflect which fields to include for searches.
+        <#= Parameters.ServerOptionalPropertiesList #>
+    }
+}

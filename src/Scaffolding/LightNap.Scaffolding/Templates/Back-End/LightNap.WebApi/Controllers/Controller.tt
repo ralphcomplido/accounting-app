@@ -1,0 +1,59 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using <#= Parameters.CoreNamespace #>.Api;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using Microsoft.AspNetCore.Mvc;
+
+namespace <#= Parameters.WebApiNamespace #>.Controllers
+{
+    // TODO: Update authorization for methods via the Authorize attribute at the controller or method level.
+    // Also register this controller's dependencies in the AddApplicationServices method of Extensions/ApplicationServiceExtensions.cs:
+    //
+    // services.AddScoped<I<#= Parameters.PascalName #>Service, <#= Parameters.PascalName #>Service>();
+    //
+    [ApiController]
+    [Route("api/[controller]")]
+    public class <#= Parameters.PascalNamePlural #>Controller(I<#= Parameters.PascalName #>Service <#= Parameters.CamelNamePlural #>Service) : ControllerBase
+    {
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
+        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Get<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id)
+        {
+            return await <#= Parameters.CamelNamePlural #>Service.Get<#= Parameters.PascalName #>Async(id);
+        }
+
+        [HttpPost("search")]
+        [ProducesResponseType(typeof(ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>), 200)]
+        public async Task<ActionResult<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>>> Search<#= Parameters.PascalNamePlural #>([FromBody] Search<#= Parameters.PascalNamePlural #>Dto dto)
+        {
+            return await <#= Parameters.CamelNamePlural #>Service.Search<#= Parameters.PascalNamePlural #>Async(dto);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 201)]
+        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Create<#= Parameters.PascalName #>([FromBody] Create<#= Parameters.PascalName #>Dto dto)
+        {
+            return await <#= Parameters.CamelNamePlural #>Service.Create<#= Parameters.PascalName #>Async(dto);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
+        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Update<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id, [FromBody] Update<#= Parameters.PascalName #>Dto dto)
+        {
+            return await <#= Parameters.CamelNamePlural #>Service.Update<#= Parameters.PascalName #>Async(id, dto);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        public async Task<ActionResult<ApiResponseDto<bool>>> Delete<#= Parameters.PascalName #>(<#= Parameters.ServerIdType #> id)
+        {
+            return await <#= Parameters.CamelNamePlural #>Service.Delete<#= Parameters.PascalName #>Async(id);
+        }
+    }
+}

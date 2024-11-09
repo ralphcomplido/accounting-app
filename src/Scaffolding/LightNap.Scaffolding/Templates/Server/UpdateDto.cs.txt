@@ -1,8 +1,0 @@
-﻿namespace <#= CoreNamespace #>.<#= NameForNamespace #>.Request.Dto
-{
-    public class Update<#= PascalName #>Dto
-    {
-        // TODO: Update which fields to include when updating this item.
-        <#= ServerPropertiesList #>
-    }
-}

@@ -1,0 +1,20 @@
+﻿<#@ template language="C#" inherits="LightNap.Scaffolding.Templates.BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<p-card header="Create">
+  <div class="flex gap-1 mb-1">
+    <p-button [routerLink]="['..']" icon="pi pi-arrow-up" label="Up to all" />
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="createClicked()" autocomplete="off">
+    <div class="flex flex-column gap-1">
+      <textarea rows="10" cols="30" pInputTextarea formControlName="json"></textarea>
+
+      <error-list [errors]="errors" />
+      <p-button type="submit" label="Create" icon="pi pi-plus" severity="success" [disabled]="!form.valid" />
+    </div>
+  </form>
+</p-card>
