@@ -31,8 +31,8 @@ namespace LightNap.Scaffolding.Tests
             Assert.AreEqual("testClasses", templateParameters.CamelNamePlural);
             Assert.AreEqual("test-class", templateParameters.KebabName);
             Assert.AreEqual("test-classes", templateParameters.KebabNamePlural);
-            Assert.AreEqual("number", templateParameters.IdProperty!.ClientTypeString);
-            Assert.AreEqual("int", templateParameters.IdProperty!.ServerTypeString);
+            Assert.AreEqual("number", templateParameters.IdProperty!.FrontEndType);
+            Assert.AreEqual("int", templateParameters.IdProperty!.BackEndType);
         }
     }
 }

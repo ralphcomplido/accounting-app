@@ -19,52 +19,52 @@ namespace LightNap.Scaffolding.Tests
             Assert.AreEqual(type, details.Type);
             Assert.AreEqual(name, details.Name);
             Assert.AreEqual("testName", details.CamelName);
-            Assert.AreEqual("int", details.ServerTypeString);
-            Assert.AreEqual("number", details.ClientTypeString);
+            Assert.AreEqual("int", details.BackEndType);
+            Assert.AreEqual("number", details.FrontEndType);
         }
 
         [TestMethod]
-        public void GetServerTypeString_ShouldReturnCorrectString()
+        public void GetBackEndType_ShouldReturnCorrectString()
         {
             // Arrange & Act & Assert
-            Assert.AreEqual("int", TypePropertyDetails.GetServerTypeString(typeof(int)));
-            Assert.AreEqual("long", TypePropertyDetails.GetServerTypeString(typeof(long)));
-            Assert.AreEqual("string", TypePropertyDetails.GetServerTypeString(typeof(string)));
-            Assert.AreEqual("Guid", TypePropertyDetails.GetServerTypeString(typeof(Guid)));
-            Assert.AreEqual("double", TypePropertyDetails.GetServerTypeString(typeof(double)));
-            Assert.AreEqual("DateTime", TypePropertyDetails.GetServerTypeString(typeof(DateTime)));
-            Assert.AreEqual("float", TypePropertyDetails.GetServerTypeString(typeof(float)));
-            Assert.AreEqual("decimal", TypePropertyDetails.GetServerTypeString(typeof(decimal)));
-            Assert.AreEqual("short", TypePropertyDetails.GetServerTypeString(typeof(short)));
-            Assert.AreEqual("byte", TypePropertyDetails.GetServerTypeString(typeof(byte)));
-            Assert.AreEqual("ushort", TypePropertyDetails.GetServerTypeString(typeof(ushort)));
-            Assert.AreEqual("uint", TypePropertyDetails.GetServerTypeString(typeof(uint)));
-            Assert.AreEqual("ulong", TypePropertyDetails.GetServerTypeString(typeof(ulong)));
-            Assert.AreEqual("bool", TypePropertyDetails.GetServerTypeString(typeof(bool)));
-            Assert.AreEqual("char", TypePropertyDetails.GetServerTypeString(typeof(char)));
-            Assert.AreEqual("CustomType", TypePropertyDetails.GetServerTypeString(typeof(CustomType)));
+            Assert.AreEqual("int", TypePropertyDetails.GetBackEndType(typeof(int)));
+            Assert.AreEqual("long", TypePropertyDetails.GetBackEndType(typeof(long)));
+            Assert.AreEqual("string", TypePropertyDetails.GetBackEndType(typeof(string)));
+            Assert.AreEqual("Guid", TypePropertyDetails.GetBackEndType(typeof(Guid)));
+            Assert.AreEqual("double", TypePropertyDetails.GetBackEndType(typeof(double)));
+            Assert.AreEqual("DateTime", TypePropertyDetails.GetBackEndType(typeof(DateTime)));
+            Assert.AreEqual("float", TypePropertyDetails.GetBackEndType(typeof(float)));
+            Assert.AreEqual("decimal", TypePropertyDetails.GetBackEndType(typeof(decimal)));
+            Assert.AreEqual("short", TypePropertyDetails.GetBackEndType(typeof(short)));
+            Assert.AreEqual("byte", TypePropertyDetails.GetBackEndType(typeof(byte)));
+            Assert.AreEqual("ushort", TypePropertyDetails.GetBackEndType(typeof(ushort)));
+            Assert.AreEqual("uint", TypePropertyDetails.GetBackEndType(typeof(uint)));
+            Assert.AreEqual("ulong", TypePropertyDetails.GetBackEndType(typeof(ulong)));
+            Assert.AreEqual("bool", TypePropertyDetails.GetBackEndType(typeof(bool)));
+            Assert.AreEqual("char", TypePropertyDetails.GetBackEndType(typeof(char)));
+            Assert.AreEqual("CustomType", TypePropertyDetails.GetBackEndType(typeof(CustomType)));
         }
 
         [TestMethod]
-        public void GetClientTypeString_ShouldReturnCorrectString()
+        public void GetFrontEndType_ShouldReturnCorrectString()
         {
             // Arrange & Act & Assert
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(int)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(long)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(string)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(Guid)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(double)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(DateTime)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(float)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(decimal)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(short)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(byte)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(ushort)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(uint)));
-            Assert.AreEqual("number", TypePropertyDetails.GetClientTypeString(typeof(ulong)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(bool)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(char)));
-            Assert.AreEqual("string", TypePropertyDetails.GetClientTypeString(typeof(CustomType)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(int)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(long)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(string)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(Guid)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(double)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(DateTime)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(float)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(decimal)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(short)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(byte)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(ushort)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(uint)));
+            Assert.AreEqual("number", TypePropertyDetails.GetFrontEndType(typeof(ulong)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(bool)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(char)));
+            Assert.AreEqual("string", TypePropertyDetails.GetFrontEndType(typeof(CustomType)));
         }
 
         private class CustomType { }
