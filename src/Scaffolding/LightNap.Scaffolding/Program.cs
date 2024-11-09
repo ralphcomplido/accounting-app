@@ -41,6 +41,7 @@ var rootCommand = new RootCommand()
     coreProjectNameOption,
     webApiProjectNameOption,
     angularProjectNameOption,
+    overwriteOption
 };
 
 rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, overwrite) =>

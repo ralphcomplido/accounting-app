@@ -74,15 +74,21 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new AreaService() { Parameters = templateParameters }, $"{parameters.ClientAppPath}/{kebabNamePlural}/services/{kebabName}.service.ts"),
                 };
 
-            if (!parameters.Overwrite)
+            foreach (var template in templateItems)
             {
-                foreach (var template in templateItems)
+                if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
                 {
-                    if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
+                    if (!parameters.Overwrite)
                     {
-                        Console.WriteLine($"Bailing out: File '{template.OutputFile}' already exists!");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Bailing out: File '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}' already exists!");
+                        Console.ResetColor();
                         return;
                     }
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Will overwrite existing file '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}'");
+                    Console.ResetColor();
                 }
             }
 
@@ -92,11 +98,13 @@ namespace LightNap.Scaffolding.ServiceRunner
                 Directory.CreateDirectory(Path.GetDirectoryName(template.OutputFile)!);
                 File.WriteAllText(template.OutputFile, generatedCode);
 
-                Console.WriteLine($"Generated {template.OutputFile}");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Generated {Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}");
+                Console.ResetColor();
             }
 
-            Console.WriteLine(
-@$"Scaffolding completed successfully. Please see TODO comments in generated code to complete integration.
+            Console.WriteLine(@$"
+Scaffolding completed successfully. Please see TODO comments in generated code to complete integration.
 
     {parameters.CoreProjectName}:
     - Update client and server DTO properties in {pascalNamePlural}/Dto to only those you want included.
