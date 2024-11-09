@@ -7,17 +7,38 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { ApiResponseComponent } from "@core";
+import { ApiResponseComponent, EmptyPagedResponse, SuccessApiResponse } from "@core";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
+import { TableLazyLoadEvent, TableModule } from "primeng/table";
+import { startWith, Subject, switchMap } from "rxjs";
+import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabNamePlural #>";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabNamePlural #>.service";
 
 @Component({
   standalone: true,
   templateUrl: "./index.component.html",
-  imports: [CommonModule, CardModule, ApiResponseComponent, RouterModule, ButtonModule],
+  imports: [CommonModule, CardModule, ApiResponseComponent, TableModule, RouterModule, ButtonModule],
 })
 export class IndexComponent {
+  pageSize = 10;
+
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
-  <#= Parameters.CamelNamePlural #>$ = this.#<#= Parameters.CamelName #>Service.search<#= Parameters.PascalNamePlural #>({ pageNumber: 1, pageSize: 10 });
+
+  #lazyLoadEventSubject = new Subject<TableLazyLoadEvent>();
+  searchResults$ = this.#lazyLoadEventSubject.pipe(
+    switchMap(event =>
+      this.#<#= Parameters.CamelName #>Service.search<#= Parameters.PascalNamePlural #>({
+        pageSize: this.pageSize,
+        pageNumber: event.first / this.pageSize + 1,
+      })
+    ),
+    // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to
+    // fake an empty response so we can avoid a redundant call to the API.
+    startWith(new SuccessApiResponse(new EmptyPagedResponse<<#= Parameters.PascalName #>>()))
+  );
+
+  onLazyLoad(event: TableLazyLoadEvent) {
+    this.#lazyLoadEventSubject.next(event);
+  }
 }

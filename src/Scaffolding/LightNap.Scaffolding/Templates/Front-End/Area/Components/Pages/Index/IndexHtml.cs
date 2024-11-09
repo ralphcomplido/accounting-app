@@ -28,61 +28,152 @@ namespace LightNap.Scaffolding.Templates
         /// </summary>
         public override string TransformText()
         {
-            this.Write("\r\n<p-card header=\"All\">\r\n  <api-response [apiResponse]=\"");
+            this.Write(@"
+<p-card header=""All"">
+  <div class=""flex gap-1 mb-1"">
+    <p-button [routerLink]=""['create']"" severity=""success"" icon=""pi pi-plus"" label=""Create"" />
+  </div>
+
+  <api-response [apiResponse]=""searchResults$"" errorMessage=""Error loading items"" loadingMessage=""Loading items..."">
+    <ng-template #success let-searchResults>
+      <p-table
+        [value]=""searchResults.data""
+        [paginator]=""true""
+        [rows]=""pageSize""
+        [totalRecords]=""searchResults.totalCount""
+        [lazy]=""true""
+        (onLazyLoad)=""onLazyLoad($event)""
+      >
+        <ng-template pTemplate=""header"">
+          <tr>
+            <th></th>
+            <th>");
             
-            #line 8 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelNamePlural));
+            #line 25 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.Name));
             
             #line default
             #line hidden
-            this.Write("$\" errorMessage=\"Error loading\" loadingMessage=\"Loading...\">\r\n    <ng-template #s" +
-                    "uccess let-");
+            this.Write("</th>\r\n");
             
-            #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelNamePlural));
+            #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+      foreach (var property in Parameters.GetProperties) { 
             
             #line default
             #line hidden
-            this.Write(">\r\n      <div class=\"flex gap-1 mb-1\">\r\n        <p-button [routerLink]=\"[\'create\'" +
-                    "]\" severity=\"success\" icon=\"pi pi-plus\" label=\"Create\" />\r\n      </div>\r\n      <" +
-                    "ul>\r\n        @for(");
+            this.Write("            <th>");
             
-            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write("</th>\r\n");
+            
+            #line 28 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+      } 
+            
+            #line default
+            #line hidden
+            this.Write("          </tr>\r\n        </ng-template>\r\n        <ng-template pTemplate=\"body\" le" +
+                    "t-");
+            
+            #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(" of ");
+            this.Write(">\r\n          <tr>\r\n            <td>\r\n              <p-button [routerLink]=\"[");
             
-            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelNamePlural));
-            
-            #line default
-            #line hidden
-            this.Write(".data; track $index) {\r\n        <li>\r\n          <a [routerLink]=\"");
-            
-            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            #line 34 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            #line 34 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
             #line hidden
-            this.Write("\">{{ ");
+            this.Write("]\" icon=\"pi pi-eye\" />\r\n            </td>\r\n            <td>{{");
             
-            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            #line 36 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(" | json }}</a>\r\n        </li>\r\n        } @empty {\r\n        <li>There are no items" +
-                    " yet</li>\r\n        }\r\n      </ul>\r\n    </ng-template>\r\n  </api-response>\r\n</p-ca" +
-                    "rd>\r\n");
+            this.Write(".");
+            
+            #line 36 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("}}</td>\r\n");
+            
+            #line 37 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+      foreach (var property in Parameters.GetProperties) { 
+            if (property.ServerTypeString == "DateTime") { 
+            
+            #line default
+            #line hidden
+            this.Write("            <td>{{");
+            
+            #line 39 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 39 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(" | date}}</td>\r\n");
+            
+            #line 40 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+          } else { 
+            
+            #line default
+            #line hidden
+            this.Write("            <td>{{");
+            
+            #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("}}</td>\r\n");
+            
+            #line 42 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
+          }
+        } 
+            
+            #line default
+            #line hidden
+            this.Write(@"          </tr>
+        </ng-template>
+        <ng-template pTemplate=""emptymessage"">
+          <tr>
+            <td colspan=""100%"">There are no items.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+  </api-response>
+</p-card>
+");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -5,20 +5,50 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 <p-card header="All">
-  <api-response [apiResponse]="<#= Parameters.CamelNamePlural #>$" errorMessage="Error loading" loadingMessage="Loading...">
-    <ng-template #success let-<#= Parameters.CamelNamePlural #>>
-      <div class="flex gap-1 mb-1">
-        <p-button [routerLink]="['create']" severity="success" icon="pi pi-plus" label="Create" />
-      </div>
-      <ul>
-        @for(<#= Parameters.CamelName #> of <#= Parameters.CamelNamePlural #>.data; track $index) {
-        <li>
-          <a [routerLink]="<#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #>">{{ <#= Parameters.CamelName #> | json }}</a>
-        </li>
-        } @empty {
-        <li>There are no items yet</li>
-        }
-      </ul>
+  <div class="flex gap-1 mb-1">
+    <p-button [routerLink]="['create']" severity="success" icon="pi pi-plus" label="Create" />
+  </div>
+
+  <api-response [apiResponse]="searchResults$" errorMessage="Error loading items" loadingMessage="Loading items...">
+    <ng-template #success let-searchResults>
+      <p-table
+        [value]="searchResults.data"
+        [paginator]="true"
+        [rows]="pageSize"
+        [totalRecords]="searchResults.totalCount"
+        [lazy]="true"
+        (onLazyLoad)="onLazyLoad($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th><#= Parameters.IdProperty.Name #></th>
+<#      foreach (var property in Parameters.GetProperties) { #>
+            <th><#= property.Name #></th>
+<#      } #>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-<#= Parameters.CamelName #>>
+          <tr>
+            <td>
+              <p-button [routerLink]="[<#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #>]" icon="pi pi-eye" />
+            </td>
+            <td>{{<#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #>}}</td>
+<#      foreach (var property in Parameters.GetProperties) { 
+            if (property.ServerTypeString == "DateTime") { #>
+            <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #> | date}}</td>
+<#          } else { #>
+            <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #>}}</td>
+<#          }
+        } #>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="100%">There are no items.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </ng-template>
   </api-response>
 </p-card>
