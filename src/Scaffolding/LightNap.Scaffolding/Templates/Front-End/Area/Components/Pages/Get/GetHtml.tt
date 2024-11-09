@@ -12,6 +12,10 @@
         <p-button [routerLink]="['..', id(), 'edit']" icon="pi pi-pencil" label="Edit" />
       </div>
       <div class="w-30rem flex flex-column gap-4">
+        <div>
+          <label class="block text-900 font-medium mb-2"><#= Parameters.IdProperty.Name #></label>
+          <div>{{ <#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #> }}</div>
+        </div>
 <# foreach (var property in Parameters.GetProperties) { #>
         <div>
           <label class="block text-900 font-medium mb-2"><#= property.Name #></label>
