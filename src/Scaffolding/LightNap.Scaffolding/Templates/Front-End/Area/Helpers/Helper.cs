@@ -63,28 +63,66 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(") {\r\n    if (");
+            this.Write(") {\r\n");
             
             #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+  foreach (var property in Parameters.GetProperties) {
+        if (property.FrontEndType == "Date") { 
+            
+            #line default
+            #line hidden
+            this.Write("    if (");
+            
+            #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(".dateTime) {\r\n      ");
+            this.Write(".");
             
-            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+            #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(") {\r\n      ");
+            
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(".dateTime = new Date(");
+            this.Write(".");
             
-            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(" = new Date(");
+            
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write(".dateTime);\r\n    }\r\n  }\r\n}\r\n");
+            this.Write(".");
+            
+            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n    }\r\n");
+            
+            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Helpers\Helper.tt"
+      }
+    }
+
+            
+            #line default
+            #line hidden
+            this.Write("  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
