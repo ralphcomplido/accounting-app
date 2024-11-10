@@ -69,21 +69,23 @@ namespace LightNap.Scaffolding.AssemblyManager
         /// <returns>The C# type string.</returns>
         public static string GetBackEndType(Type type)
         {
-            if (type == typeof(int)) { return "int"; }
-            if (type == typeof(long)) { return "long"; }
-            if (type == typeof(double)) { return "double"; }
-            if (type == typeof(float)) { return "float"; }
-            if (type == typeof(decimal)) { return "decimal"; }
-            if (type == typeof(short)) { return "short"; }
             if (type == typeof(byte)) { return "byte"; }
+            if (type == typeof(short)) { return "short"; }
             if (type == typeof(ushort)) { return "ushort"; }
+            if (type == typeof(int)) { return "int"; }
             if (type == typeof(uint)) { return "uint"; }
+            if (type == typeof(long)) { return "long"; }
             if (type == typeof(ulong)) { return "ulong"; }
+            if (type == typeof(float)) { return "float"; }
+            if (type == typeof(double)) { return "double"; }
+            if (type == typeof(decimal)) { return "decimal"; }
             if (type == typeof(bool)) { return "bool"; }
             if (type == typeof(char)) { return "char"; }
             if (type == typeof(string)) { return "string"; }
             if (type == typeof(Guid)) { return "Guid"; }
             if (type == typeof(DateTime)) { return "DateTime"; }
+            if (type == typeof(DateTimeOffset)) { return "DateTimeOffset"; }
+            if (type == typeof(TimeSpan)) { return "TimeSpan"; }
             return type.Name;
         }
 
@@ -111,7 +113,7 @@ namespace LightNap.Scaffolding.AssemblyManager
             {
                 return "boolean";
             }
-            if (type == typeof(DateTime))
+            if (type == typeof(DateTime) || type == typeof(DateTimeOffset))
             {
                 return "Date";
             }

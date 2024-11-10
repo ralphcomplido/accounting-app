@@ -184,7 +184,7 @@ export class CreateComponent {
             
             #line 61 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
-                else { 
+                else if (property.BackEndType == "TimeSpan") { 
             
             #line default
             #line hidden
@@ -195,9 +195,24 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"string\", [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(\"01:00:00\", [Validators.required]),\r\n");
             
             #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+              }
+                else { 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 66 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": this.#fb.control(\"string\", [Validators.required]),\r\n");
+            
+            #line 67 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
             break;
         }
@@ -208,21 +223,21 @@ export class CreateComponent {
             this.Write("  });\r\n\r\n  createClicked() {\r\n    this.errors = [];\r\n\r\n    const request = <Creat" +
                     "e");
             
-            #line 73 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 76 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("Request>this.form.value;\r\n\r\n    this.#");
             
-            #line 75 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 78 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service.create");
             
-            #line 75 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 78 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
@@ -231,7 +246,7 @@ export class CreateComponent {
                     "rors = response.errorMessages;\r\n        return;\r\n      }\r\n\r\n      this.#router.n" +
                     "avigate([response.result.");
             
-            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 84 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default

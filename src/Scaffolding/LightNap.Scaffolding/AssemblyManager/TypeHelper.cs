@@ -23,6 +23,8 @@
                     if (property.PropertyType.IsPrimitive ||
                         property.PropertyType == typeof(string) ||
                         property.PropertyType == typeof(DateTime) ||
+                        property.PropertyType == typeof(DateTimeOffset) ||
+                        property.PropertyType == typeof(TimeSpan) ||
                         property.PropertyType == typeof(Guid) ||
                         property.PropertyType == typeof(decimal) ||
                         property.PropertyType.IsEnum ||
