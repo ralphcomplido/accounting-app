@@ -64,7 +64,7 @@ export class EditComponent implements OnInit {
 <#              break;
             default:
                 if (property.BackEndType == "Guid") { #>
-	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-5417-f1acc1d171e5", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-f00d-f1acc1d171e5", [Validators.required]),
 <#              }
                 else { #>
 	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),

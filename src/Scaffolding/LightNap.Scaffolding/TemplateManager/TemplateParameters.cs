@@ -24,6 +24,7 @@ namespace LightNap.Scaffolding.TemplateManager
         public readonly TypePropertyDetails IdProperty;
         public readonly ReadOnlyCollection<TypePropertyDetails> GetProperties;
         public readonly ReadOnlyCollection<TypePropertyDetails> SetProperties;
+        public readonly ReadOnlyCollection<string> AdditionalDtoNamespaces;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateParameters"/> class.
@@ -57,6 +58,15 @@ namespace LightNap.Scaffolding.TemplateManager
 
             this.CoreNamespace = serviceParameters.CoreProjectName;
             this.WebApiNamespace = serviceParameters.WebApiProjectName;
+
+            this.AdditionalDtoNamespaces = propertiesDetails
+                                            .Select(p => p.Type.Namespace)
+                                            .Where(ns => !string.IsNullOrWhiteSpace(ns) && ns != "System")
+                                            .Cast<string>()
+                                            .OrderBy(ns => ns)
+                                            .Distinct()
+                                            .ToList()
+                                            .AsReadOnly();
         }
     }
 }

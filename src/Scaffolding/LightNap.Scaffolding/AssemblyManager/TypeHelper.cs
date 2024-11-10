@@ -19,23 +19,25 @@
             {
                 try
                 {
-                    // Check if the property type is a common Entity Framework type
+                    // Check if the property type is a common Entity Framework type or an enum
                     if (property.PropertyType.IsPrimitive ||
                         property.PropertyType == typeof(string) ||
                         property.PropertyType == typeof(DateTime) ||
                         property.PropertyType == typeof(Guid) ||
                         property.PropertyType == typeof(decimal) ||
-                        property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                        property.PropertyType.IsEnum ||
+                        (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
                             (Nullable.GetUnderlyingType(property.PropertyType) == typeof(int) ||
                             Nullable.GetUnderlyingType(property.PropertyType) == typeof(DateTime) ||
                             Nullable.GetUnderlyingType(property.PropertyType) == typeof(Guid) ||
-                            Nullable.GetUnderlyingType(property.PropertyType) == typeof(decimal)))
+                            Nullable.GetUnderlyingType(property.PropertyType) == typeof(decimal) ||
+                            Nullable.GetUnderlyingType(property.PropertyType)!.IsEnum)))
                     {
                         propertiesDetails.Add(new TypePropertyDetails(property.PropertyType, property.Name, property.GetMethod != null, property.SetMethod != null));
                     }
                     else
                     {
-                        Console.WriteLine($"Ignoring '{property.Name}': Not a type supported in this scaffolder  ({property.PropertyType.Name})");
+                        Console.WriteLine($"Ignoring '{property.Name}': Not a type supported in this scaffolder ({property.PropertyType.Name})");
                     }
                 }
                 catch (Exception ex)

@@ -5,6 +5,9 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 using <#= Parameters.CoreNamespace #>.Api;
+<# foreach (string ns in Parameters.AdditionalDtoNamespaces) { #>
+using <#= ns #>;
+<# } #>
 
 namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto
 {

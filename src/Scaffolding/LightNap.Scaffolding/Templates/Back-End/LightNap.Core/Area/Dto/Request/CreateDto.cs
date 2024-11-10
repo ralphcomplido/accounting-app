@@ -28,23 +28,44 @@ namespace LightNap.Scaffolding.Templates
         /// </summary>
         public override string TransformText()
         {
-            this.Write("\r\nnamespace ");
+            this.Write("\r\n");
             
             #line 7 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+ foreach (string ns in Parameters.AdditionalDtoNamespaces) { 
+            
+            #line default
+            #line hidden
+            this.Write("using ");
+            
+            #line 8 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ns));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\r\nnamespace ");
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CoreNamespace));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 7 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.NameForNamespace));
             
             #line default
             #line hidden
             this.Write(".Request.Dto\r\n{\r\n    public class Create");
             
-            #line 9 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
@@ -52,28 +73,28 @@ namespace LightNap.Scaffolding.Templates
             this.Write("Dto\r\n    {\r\n        // TODO: Update which fields to include when creating this it" +
                     "em.\r\n");
             
-            #line 12 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
  foreach (var property in Parameters.SetProperties) { 
             
             #line default
             #line hidden
             this.Write("        public ");
             
-            #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.BackEndType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 13 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
  } 
             
             #line default

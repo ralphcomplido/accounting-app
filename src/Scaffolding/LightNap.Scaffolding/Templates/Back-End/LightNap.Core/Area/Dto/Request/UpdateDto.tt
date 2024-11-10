@@ -4,6 +4,10 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 
+<# foreach (var ns in Parameters.AdditionalDtoNamespaces) { #>
+using <#= ns #>;
+<# } #>
+
 namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto
 {
     public class Update<#= Parameters.PascalName #>Dto
