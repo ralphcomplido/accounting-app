@@ -111,6 +111,10 @@ namespace LightNap.Scaffolding.AssemblyManager
             {
                 return "boolean";
             }
+            if (type == typeof(DateTime))
+            {
+                return "Date";
+            }
             return "string";
         }
     }

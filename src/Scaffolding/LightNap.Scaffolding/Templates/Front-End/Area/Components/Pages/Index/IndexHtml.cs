@@ -134,7 +134,7 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(" | date}}</td>\r\n");
+            this.Write(" | date : \'long\'}}</td>\r\n");
             
             #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
                   break;

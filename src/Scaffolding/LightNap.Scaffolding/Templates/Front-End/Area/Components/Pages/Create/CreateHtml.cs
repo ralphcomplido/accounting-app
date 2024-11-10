@@ -69,11 +69,11 @@ namespace LightNap.Scaffolding.Templates
             
             #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
               break;
-            case "number": 
+            case "Date": 
             
             #line default
             #line hidden
-            this.Write("          <label for=\"");
+            this.Write("              <label for=\"");
             
             #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
@@ -87,9 +87,45 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("</label>\r\n");
+            this.Write("</label>\r\n              <p-calendar id=\"");
             
             #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("\" formControlName=\"");
+            
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("\" [showTime]=\"true\" [showIcon]=\"true\" />\r\n");
+            
+            #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+              break;            
+            case "number": 
+            
+            #line default
+            #line hidden
+            this.Write("          <label for=\"");
+            
+            #line 25 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write("\" class=\"block text-900 font-medium mb-2\">");
+            
+            #line 25 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write("</label>\r\n");
+            
+            #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
               switch(property.BackEndType) {
 				    case "double":
 				    case "float":
@@ -100,21 +136,21 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write("          <p-inputNumber id=\"");
             
-            #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" formControlName=\"");
             
-            #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" styleClass=\"w-full\" mode=\"decimal\" [minFractionDigits]=\"2\" />\r\n");
             
-            #line 28 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 32 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
                       break;
                     default: 
             
@@ -122,21 +158,21 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write("          <p-inputNumber id=\"");
             
-            #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 34 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" formControlName=\"");
             
-            #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 34 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" styleClass=\"w-full\" />\r\n");
             
-            #line 31 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
                   break;
 			    }
                 break;
@@ -146,35 +182,35 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write("          <label for=\"");
             
-            #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 39 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" class=\"block text-900 font-medium mb-2\">");
             
-            #line 35 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 39 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write("</label>\r\n          <input pInputText id=\"");
             
-            #line 36 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 40 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" formControlName=\"");
             
-            #line 36 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 40 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write("\" class=\"w-full\" />\r\n");
             
-            #line 37 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
           break;      
         }
             
@@ -182,7 +218,7 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write("      </div>\r\n");
             
-            #line 40 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
+            #line 44 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateHtml.tt"
  } 
             
             #line default

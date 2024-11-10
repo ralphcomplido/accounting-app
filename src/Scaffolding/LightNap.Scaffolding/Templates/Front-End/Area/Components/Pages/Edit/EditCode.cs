@@ -36,6 +36,7 @@ import { ActivatedRoute, Router, RouterLink } from ""@angular/router"";
 import { ApiResponse, ApiResponseComponent, ConfirmPopupComponent, ErrorListComponent, ToastService } from ""@core"";
 import { ConfirmationService } from ""primeng/api"";
 import { ButtonModule } from ""primeng/button"";
+import { CalendarModule } from ""primeng/calendar"";
 import { CardModule } from ""primeng/card"";
 import { CheckboxModule } from ""primeng/checkbox"";
 import { InputNumberModule } from ""primeng/inputnumber"";
@@ -43,63 +44,63 @@ import { InputTextModule } from ""primeng/inputtext"";
 import { Observable, tap } from ""rxjs"";
 import { Update");
             
-            #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("Request } from \"src/app/");
             
-            #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabNamePlural));
             
             #line default
             #line hidden
             this.Write("/models/request/update-");
             
-            #line 19 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabName));
             
             #line default
             #line hidden
             this.Write("-request\";\r\nimport { ");
             
-            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write(" } from \"src/app/");
             
-            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabNamePlural));
             
             #line default
             #line hidden
             this.Write("/models/response/");
             
-            #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabName));
             
             #line default
             #line hidden
             this.Write("\";\r\nimport { ");
             
-            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("Service } from \"src/app/");
             
-            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabNamePlural));
             
             #line default
             #line hidden
             this.Write("/services/");
             
-            #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 22 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabName));
             
             #line default
@@ -116,6 +117,7 @@ import { Update");
     ApiResponseComponent,
     ConfirmPopupComponent,
     RouterLink,
+    CalendarModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,
@@ -126,14 +128,14 @@ import { Update");
 export class EditComponent implements OnInit {
   #");
             
-            #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 43 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service = inject(");
             
-            #line 41 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 43 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
@@ -151,7 +153,7 @@ export class EditComponent implements OnInit {
 	// TODO: Update these fields to match the right parameters.
 ");
             
-            #line 52 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 54 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
   foreach (var property in Parameters.SetProperties) {
         switch (property.FrontEndType) {
             case "boolean": 
@@ -160,14 +162,14 @@ export class EditComponent implements OnInit {
             #line hidden
             this.Write("\t");
             
-            #line 55 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 57 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(false),\r\n");
+            this.Write(": this.#fb.control(false, [Validators.required]),\r\n");
             
-            #line 56 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 58 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
             case "number": 
             
@@ -175,46 +177,46 @@ export class EditComponent implements OnInit {
             #line hidden
             this.Write("\t");
             
-            #line 58 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 60 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(0),\r\n");
+            this.Write(": this.#fb.control(0, [Validators.required]),\r\n");
             
-            #line 59 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 61 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
-            default:
-                if (property.BackEndType == "DateTime") { 
+            case "Date": 
             
             #line default
             #line hidden
             this.Write("\t");
-            
-            #line 62 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
-            
-            #line default
-            #line hidden
-            this.Write(": this.#fb.control(\"2024-11-08T20:11:21Z\", [Validators.required]),\r\n");
             
             #line 63 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
-              }
-                else if (property.BackEndType == "Guid") { 
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": this.#fb.control(new Date(), [Validators.required]),\r\n");
+            
+            #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+              break;
+            default:
+                if (property.BackEndType == "Guid") { 
             
             #line default
             #line hidden
             this.Write("\t");
             
-            #line 65 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 67 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"7bb47262-a295-457a-88f2-65700219e2bb\", [Validators.required])" +
+            this.Write(": this.#fb.control(\"a0641a12-dead-beef-5417-f1acc1d171e5\", [Validators.required])" +
                     ",\r\n");
             
-            #line 66 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 68 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }
                 else { 
             
@@ -222,14 +224,14 @@ export class EditComponent implements OnInit {
             #line hidden
             this.Write("\t");
             
-            #line 68 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 70 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
             
             #line default
             #line hidden
             this.Write(": this.#fb.control(\"string\", [Validators.required]),\r\n");
             
-            #line 69 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 71 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }
             break;
         }
@@ -239,42 +241,42 @@ export class EditComponent implements OnInit {
             #line hidden
             this.Write("  });\r\n\r\n  readonly id = input<number>(undefined);\r\n  ");
             
-            #line 76 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 78 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("$ = new Observable<ApiResponse<");
             
-            #line 76 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 78 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write(">>();\r\n\r\n  ngOnInit() {\r\n    this.");
             
-            #line 79 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("$ = this.#");
             
-            #line 79 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service.get");
             
-            #line 79 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("(this.");
             
-            #line 79 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
@@ -283,28 +285,28 @@ export class EditComponent implements OnInit {
                     "s.form.patchValue(response.result);\r\n        }\r\n      })\r\n    );\r\n  }\r\n\r\n  saveC" +
                     "licked() {\r\n    this.errors = [];\r\n\r\n    const request = <Update");
             
-            #line 91 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 93 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("Request>this.form.value;\r\n\r\n    this.#");
             
-            #line 93 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 95 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service.update");
             
-            #line 93 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 95 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("(this.");
             
-            #line 93 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 95 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
@@ -330,21 +332,21 @@ export class EditComponent implements OnInit {
       accept: () => {
         this.#");
             
-            #line 112 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 114 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service.delete");
             
-            #line 112 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 114 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("(this.");
             
-            #line 112 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            #line 114 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default

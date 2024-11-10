@@ -24,7 +24,7 @@ namespace LightNap.Scaffolding.ServiceRunner
             var projectBuildResult = projectManager.BuildProject(parameters.CoreProjectFilePath);
             if (!projectBuildResult.Success)
             {
-                Console.WriteLine("Please fix the build failures and try again.");
+                Console.WriteLine($"{parameters.CoreProjectName} build failed. Please fix the errors and try again.");
                 return;
             }
 
@@ -73,6 +73,7 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new UpdateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
                     new(new Controller() { Parameters = templateParameters }, $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
 
+                    new(new Helper() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/helpers/{kebabName}.helper.ts"),
                     new(new CreateRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/create-{kebabName}-request.ts"),
                     new(new SearchRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/search-{kebabNamePlural}-request.ts"),
                     new(new UpdateRequest() { Parameters = templateParameters }, $"{parameters.FrontEndAppPath}/{kebabNamePlural}/models/request/update-{kebabName}-request.ts"),

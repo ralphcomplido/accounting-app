@@ -53,7 +53,7 @@ import { ");
             this.Write("/models/response/");
             
             #line 14 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabNamePlural));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabName));
             
             #line default
             #line hidden
@@ -74,7 +74,7 @@ import { ");
             this.Write("/services/");
             
             #line 15 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabNamePlural));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.KebabName));
             
             #line default
             #line hidden

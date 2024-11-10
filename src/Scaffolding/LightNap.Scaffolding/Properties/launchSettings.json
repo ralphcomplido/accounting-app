@@ -2,7 +2,7 @@
   "profiles": {
     "LightNap.Scaffolding": {
       "commandName": "Project",
-      "commandLineArgs": "ClassDetails --src-path \"../../../../..\" --overwrite true"
+      "commandLineArgs": "TestEntity --src-path \"../../../../..\" --overwrite true"
     }
   }
 }

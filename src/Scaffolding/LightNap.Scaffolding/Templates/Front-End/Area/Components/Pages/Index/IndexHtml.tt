@@ -37,7 +37,7 @@
 <#      foreach (var property in Parameters.GetProperties) { 
             switch (property.BackEndType) {
 				case "DateTime": #>
-            <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #> | date}}</td>
+            <td>{{<#= Parameters.CamelName #>.<#= property.CamelName #> | date : 'long'}}</td>
 <#                  break;
 				case "int":
                 case "long":

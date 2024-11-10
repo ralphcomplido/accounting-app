@@ -17,6 +17,10 @@
             case "boolean": #>
           <p-checkbox label="<#= property.Name #>" formControlName="<#= property.CamelName #>" [binary]="true" class="w-full" />
 <#              break;
+            case "Date": #>
+              <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
+              <p-calendar id="<#= property.CamelName #>" formControlName="<#= property.CamelName #>" [showTime]="true" [showIcon]="true" />
+<#              break;            
             case "number": #>
           <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
 <#              switch(property.BackEndType) {

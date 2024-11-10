@@ -12,8 +12,8 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
 import { startWith, Subject, switchMap } from "rxjs";
-import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabNamePlural #>";
-import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabNamePlural #>.service";
+import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
 
 @Component({
   standalone: true,

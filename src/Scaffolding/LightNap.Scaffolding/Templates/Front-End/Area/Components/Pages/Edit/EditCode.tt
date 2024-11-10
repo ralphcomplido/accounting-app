@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ApiResponse, ApiResponseComponent, ConfirmPopupComponent, ErrorListComponent, ToastService } from "@core";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
 import { CardModule } from "primeng/card";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputNumberModule } from "primeng/inputnumber";
@@ -30,6 +31,7 @@ import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.Keba
     ApiResponseComponent,
     ConfirmPopupComponent,
     RouterLink,
+    CalendarModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,
@@ -52,17 +54,17 @@ export class EditComponent implements OnInit {
 <#  foreach (var property in Parameters.SetProperties) {
         switch (property.FrontEndType) {
             case "boolean": #>
-	<#= property.CamelName #>: this.#fb.control(false),
+	<#= property.CamelName #>: this.#fb.control(false, [Validators.required]),
 <#              break;
             case "number": #>
-	<#= property.CamelName #>: this.#fb.control(0),
+	<#= property.CamelName #>: this.#fb.control(0, [Validators.required]),
+<#              break;
+            case "Date": #>
+	<#= property.CamelName #>: this.#fb.control(new Date(), [Validators.required]),
 <#              break;
             default:
-                if (property.BackEndType == "DateTime") { #>
-	<#= property.CamelName #>: this.#fb.control("2024-11-08T20:11:21Z", [Validators.required]),
-<#              }
-                else if (property.BackEndType == "Guid") { #>
-	<#= property.CamelName #>: this.#fb.control("7bb47262-a295-457a-88f2-65700219e2bb", [Validators.required]),
+                if (property.BackEndType == "Guid") { #>
+	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-5417-f1acc1d171e5", [Validators.required]),
 <#              }
                 else { #>
 	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),

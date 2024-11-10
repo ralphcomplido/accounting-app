@@ -8,14 +8,15 @@ import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
-import { Create<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabName #>/models/request/create-<#= Parameters.KebabName #>-request";
-import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabName #>/services/<#= Parameters.KebabName #>.service";
 import { ErrorListComponent } from "@core";
-import { InputTextModule } from "primeng/inputtext";
-import { InputNumberModule } from "primeng/inputnumber";
+import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
+import { CardModule } from "primeng/card";
 import { CheckboxModule } from "primeng/checkbox";
+import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
+import { Create<#= Parameters.PascalName #>Request } from "src/app/<#= Parameters.KebabNamePlural #>/models/request/create-<#= Parameters.KebabName #>-request";
+import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
 
 @Component({
   standalone: true,
@@ -25,6 +26,7 @@ import { CheckboxModule } from "primeng/checkbox";
     CardModule,
     ReactiveFormsModule,
     RouterLink,
+    CalendarModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,
@@ -45,17 +47,17 @@ export class CreateComponent {
 <#  foreach (var property in Parameters.SetProperties) {
         switch (property.FrontEndType) {
             case "boolean": #>
-	<#= property.CamelName #>: this.#fb.control(false),
+	<#= property.CamelName #>: this.#fb.control(false, [Validators.required]),
 <#              break;
             case "number": #>
-	<#= property.CamelName #>: this.#fb.control(0),
+	<#= property.CamelName #>: this.#fb.control(0, [Validators.required]),
+<#              break;
+            case "Date": #>
+	<#= property.CamelName #>: this.#fb.control(new Date(), [Validators.required]),
 <#              break;
             default:
-                if (property.BackEndType == "DateTime") { #>
-	<#= property.CamelName #>: this.#fb.control("2024-11-08T20:11:21Z", [Validators.required]),
-<#              }
-                else if (property.BackEndType == "Guid") { #>
-	<#= property.CamelName #>: this.#fb.control("7bb47262-a295-457a-88f2-65700219e2bb", [Validators.required]),
+                if (property.BackEndType == "Guid") { #>
+	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-5417-f1acc1d171e5", [Validators.required]),
 <#              }
                 else { #>
 	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),
