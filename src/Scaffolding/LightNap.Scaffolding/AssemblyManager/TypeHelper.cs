@@ -6,6 +6,28 @@
     /// </summary>
     public static class TypeHelper
     {
+        private static readonly HashSet<Type> SupportedEfTypes = new HashSet<Type>
+            {
+                typeof(string),
+                typeof(DateTime),
+                typeof(DateTimeOffset),
+                typeof(TimeSpan),
+                typeof(Guid),
+                typeof(decimal),
+                typeof(int),
+                typeof(bool),
+                typeof(byte),
+                typeof(char),
+                typeof(double),
+                typeof(float),
+                typeof(long),
+                typeof(short),
+                typeof(uint),
+                typeof(ulong),
+                typeof(ushort),
+                typeof(sbyte)
+            };
+
         /// <summary>
         /// Gets the property details of a given type.
         /// </summary>
@@ -13,7 +35,7 @@
         /// <returns>A list of property details.</returns>
         public static List<TypePropertyDetails> GetPropertyDetails(Type type)
         {
-            List<TypePropertyDetails> propertiesDetails = [];
+            List<TypePropertyDetails> propertiesDetails = new List<TypePropertyDetails>();
 
             foreach (var property in type.GetProperties())
             {
@@ -21,19 +43,11 @@
                 {
                     // Check if the property type is a common Entity Framework type or an enum
                     if (property.PropertyType.IsPrimitive ||
-                        property.PropertyType == typeof(string) ||
-                        property.PropertyType == typeof(DateTime) ||
-                        property.PropertyType == typeof(DateTimeOffset) ||
-                        property.PropertyType == typeof(TimeSpan) ||
-                        property.PropertyType == typeof(Guid) ||
-                        property.PropertyType == typeof(decimal) ||
+                        SupportedEfTypes.Contains(property.PropertyType) ||
                         property.PropertyType.IsEnum ||
                         (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
-                            (Nullable.GetUnderlyingType(property.PropertyType) == typeof(int) ||
-                            Nullable.GetUnderlyingType(property.PropertyType) == typeof(DateTime) ||
-                            Nullable.GetUnderlyingType(property.PropertyType) == typeof(Guid) ||
-                            Nullable.GetUnderlyingType(property.PropertyType) == typeof(decimal) ||
-                            Nullable.GetUnderlyingType(property.PropertyType)!.IsEnum)))
+                            (Nullable.GetUnderlyingType(property.PropertyType)!.IsEnum ||
+                            SupportedEfTypes.Contains(Nullable.GetUnderlyingType(property.PropertyType)!))))
                     {
                         propertiesDetails.Add(new TypePropertyDetails(property.PropertyType, property.Name, property.GetMethod != null, property.SetMethod != null));
                     }

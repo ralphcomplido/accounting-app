@@ -47,23 +47,23 @@ export class CreateComponent {
 <#  foreach (var property in Parameters.SetProperties) {
         switch (property.FrontEndType) {
             case "boolean": #>
-	<#= property.CamelName #>: this.#fb.control(false, [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control(false, [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              break;
             case "number": #>
-	<#= property.CamelName #>: this.#fb.control(0, [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control(0, [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              break;
             case "Date": #>
-	<#= property.CamelName #>: this.#fb.control(new Date(), [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control(new Date(), [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              break;
             default:
                 if (property.BackEndType == "Guid") { #>
-	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-f00d-f1acc1d171e5", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-f00d-f1acc1d171e5", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
                 else if (property.BackEndType == "TimeSpan") { #>
-	<#= property.CamelName #>: this.#fb.control("01:00:00", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("01:00:00", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
                 else { #>
-	<#= property.CamelName #>: this.#fb.control("string", [Validators.required]),
+	<#= property.CamelName #>: this.#fb.control("string", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
             break;
         }

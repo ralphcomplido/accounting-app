@@ -34,6 +34,11 @@ namespace LightNap.Scaffolding.AssemblyManager
         public readonly string FrontEndType;
 
         /// <summary>
+        /// True if the type is nullable.
+        /// </summary>
+        public readonly bool IsNullable;
+
+        /// <summary>
         /// True if the property has a getter.
         /// </summary>
         public readonly bool CanGet;
@@ -60,6 +65,7 @@ namespace LightNap.Scaffolding.AssemblyManager
             this.CamelName = this.Name.Camelize();
             this.BackEndType = TypePropertyDetails.GetBackEndType(type);
             this.FrontEndType = TypePropertyDetails.GetFrontEndType(type);
+            this.IsNullable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         /// <summary>
@@ -69,6 +75,11 @@ namespace LightNap.Scaffolding.AssemblyManager
         /// <returns>The C# type string.</returns>
         public static string GetBackEndType(Type type)
         {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return TypePropertyDetails.GetBackEndType(Nullable.GetUnderlyingType(type)!);
+            }
+
             if (type == typeof(byte)) { return "byte"; }
             if (type == typeof(short)) { return "short"; }
             if (type == typeof(ushort)) { return "ushort"; }
@@ -96,6 +107,11 @@ namespace LightNap.Scaffolding.AssemblyManager
         /// <returns>The TypeScript type string.</returns>
         public static string GetFrontEndType(Type type)
         {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return TypePropertyDetails.GetFrontEndType(Nullable.GetUnderlyingType(type)!);
+            }
+
             if (type == typeof(int) ||
                 type == typeof(long) ||
                 type == typeof(double) ||
@@ -117,6 +133,7 @@ namespace LightNap.Scaffolding.AssemblyManager
             {
                 return "Date";
             }
+            // string, char, Guid, TimeSpan, enum, and anything I've overlooked.
             return "string";
         }
     }

@@ -167,7 +167,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(false, [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(false, [");
+            
+            #line 57 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 58 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
@@ -182,7 +189,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(0, [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(0, [");
+            
+            #line 60 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 61 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
@@ -197,7 +211,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(new Date(), [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(new Date(), [");
+            
+            #line 63 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               break;
@@ -213,8 +234,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"a0641a12-dead-beef-f00d-f1acc1d171e5\", [Validators.required])" +
-                    ",\r\n");
+            this.Write(": this.#fb.control(\"a0641a12-dead-beef-f00d-f1acc1d171e5\", [");
+            
+            #line 67 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 68 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }
@@ -229,7 +256,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"01:00:00\", [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(\"01:00:00\", [");
+            
+            #line 70 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 71 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }
@@ -244,7 +278,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"string\", [Validators.required]),\r\n");
+            this.Write(": this.#fb.control(\"string\", [");
+            
+            #line 73 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
             
             #line 74 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
               }

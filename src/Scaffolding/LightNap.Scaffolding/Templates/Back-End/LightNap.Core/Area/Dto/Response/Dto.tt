@@ -15,7 +15,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Res
         // TODO: Finalize which fields to include when returning this item.
 		public <#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.Name #> { get; set; }
 <# foreach (var property in Parameters.GetProperties) { #>
-        public <#= property.BackEndType #> <#= property.Name #> { get; set; }
+        public <#= property.BackEndType #><#= property.IsNullable ? "?" : "" #> <#= property.Name #> { get; set; }
 <# } #>
     }
 }

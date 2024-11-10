@@ -14,7 +14,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Req
     {
         // TODO: Update which fields to include when creating this item.
 <# foreach (var property in Parameters.SetProperties) { #>
-        public <#= property.BackEndType #> <#= property.Name #> { get; set; }
+        public <#= property.BackEndType #><#= property.IsNullable ? "?" : "" #> <#= property.Name #> { get; set; }
 <# } #>
     }
 }

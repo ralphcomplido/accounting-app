@@ -70,6 +70,12 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
+            
+            #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsNullable ? "?" : ""));
+            
+            #line default
+            #line hidden
             this.Write(": ");
             
             #line 11 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Models\Response\Response.tt"

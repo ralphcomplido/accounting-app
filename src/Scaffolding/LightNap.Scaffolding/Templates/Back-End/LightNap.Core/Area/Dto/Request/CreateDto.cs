@@ -85,6 +85,12 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
+            
+            #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsNullable ? "?" : ""));
+            
+            #line default
+            #line hidden
             this.Write(" ");
             
             #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
