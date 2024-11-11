@@ -13,9 +13,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Res
     public class <#= Parameters.PascalName #>Dto
     {
         // TODO: Finalize which fields to include when returning this item.
-		public <#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.Name #> { get; set; }
+		public <#= Parameters.IdProperty.IsRequired ? "required " : "" #><#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.Name #> { get; set; }
 <# foreach (var property in Parameters.GetProperties) { #>
-        public <#= property.BackEndType #><#= property.IsNullable ? "?" : "" #> <#= property.Name #> { get; set; }
+        public <#= property.IsRequired ? "required " : "" #><#= property.BackEndType #><#= property.IsNullable ? "?" : "" #> <#= property.Name #> { get; set; }
 <# } #>
     }
 }

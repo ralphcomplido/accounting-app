@@ -39,6 +39,11 @@ namespace LightNap.Scaffolding.AssemblyManager
         public readonly bool IsNullable;
 
         /// <summary>
+        /// True if the property is required.
+        /// </summary>
+        public readonly bool IsRequired;
+
+        /// <summary>
         /// True if the property has a getter.
         /// </summary>
         public readonly bool CanGet;
@@ -53,13 +58,15 @@ namespace LightNap.Scaffolding.AssemblyManager
         /// </summary>
         /// <param name="type">The type of the property.</param>
         /// <param name="name">The name of the property.</param>
+        /// <param name="isRequired">True if the property is required.</param>
         /// <param name="canGet">True if the property has a getter.</param>
         /// <param name="canSet">True if the property has a setter.</param>
         [SetsRequiredMembers]
-        public TypePropertyDetails(Type type, string name, bool canGet, bool canSet)
+        public TypePropertyDetails(Type type, string name, bool isRequired, bool canGet, bool canSet)
         {
             this.Type = type;
             this.Name = name;
+            this.IsRequired = isRequired;
             this.CanGet = canGet;
             this.CanSet = canSet;
             this.CamelName = this.Name.Camelize();

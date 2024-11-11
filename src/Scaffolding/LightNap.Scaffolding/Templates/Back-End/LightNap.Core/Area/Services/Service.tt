@@ -27,7 +27,16 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
         {
             var query = db.<#= Parameters.PascalNamePlural #>.AsQueryable();
 
-            // Add filters and sorting
+            // TODO: Update filters and sorting
+
+<# foreach (var property in Parameters.GetProperties) { #>
+            if (dto.<#= property.Name #> is not null)
+            {
+                query = query.Where(item => item.<#= property.Name #> == dto.<#= property.Name #>);
+            }
+
+<# } #>
+            query = query.OrderBy(item => item.<#= Parameters.IdProperty.Name #>);
 
             int totalCount = await query.CountAsync();
 
@@ -36,7 +45,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
                 query = query.Skip((dto.PageNumber - 1) * dto.PageSize);
             }
 
-            var items = await query.Take(dto.PageSize).Select(user => user.ToDto()).ToListAsync();
+            var items = await query.Take(dto.PageSize).Select(item => item.ToDto()).ToListAsync();
 
             return ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>.CreateSuccess(
                 new PagedResponse<<#= Parameters.PascalName #>Dto>(items, dto.PageNumber, dto.PageSize, totalCount));

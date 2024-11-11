@@ -11,6 +11,42 @@
 
   <api-response [apiResponse]="searchResults$" errorMessage="Error loading items" loadingMessage="Loading items...">
     <ng-template #success let-searchResults>
+      <p-panel header="Filters" [formGroup]="form" [toggleable]="true" [collapsed]="true" styleClass="mb-2">
+        <div class="flex flex-wrap gap-2">
+<# foreach (var property in Parameters.GetProperties) { #>
+          <div class="w-16rem">
+<#      switch (property.FrontEndType) {
+            case "boolean": #>
+              <p-checkbox label="<#= property.Name #>" formControlName="<#= property.CamelName #>" [binary]="true" class="w-15rem" />
+<#              break;
+            case "Date": #>
+              <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
+              <p-calendar id="<#= property.CamelName #>" formControlName="<#= property.CamelName #>" [showTime]="true" [showIcon]="true" />
+<#              break;            
+            case "number": #>
+              <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
+<#              switch(property.BackEndType) {
+				    case "double":
+				    case "float":
+				    case "decimal":
+#>
+              <p-inputNumber id="<#= property.CamelName #>" formControlName="<#= property.CamelName #>" styleClass="w-full" mode="decimal" [minFractionDigits]="2" />
+<#                      break;
+                    default: #>
+              <p-inputNumber id="<#= property.CamelName #>" formControlName="<#= property.CamelName #>" styleClass="w-full" />
+<#                  break;
+			    }
+                break;
+            default:#>
+              <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
+              <input pInputText id="<#= property.CamelName #>" formControlName="<#= property.CamelName #>" class="w-full" />
+<#          break;      
+        }#>
+          </div>
+<# } #>
+        </div>
+      </p-panel>
+
       <p-table
         [value]="searchResults.data"
         [paginator]="true"

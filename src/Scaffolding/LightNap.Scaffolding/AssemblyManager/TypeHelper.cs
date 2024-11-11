@@ -1,4 +1,7 @@
-﻿namespace LightNap.Scaffolding.AssemblyManager
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+
+namespace LightNap.Scaffolding.AssemblyManager
 {
 
     /// <summary>
@@ -6,8 +9,8 @@
     /// </summary>
     public static class TypeHelper
     {
-        private static readonly HashSet<Type> SupportedEfTypes = new HashSet<Type>
-            {
+        private static readonly HashSet<Type> _supportedEfTypes =
+        [
                 typeof(string),
                 typeof(DateTime),
                 typeof(DateTimeOffset),
@@ -26,7 +29,7 @@
                 typeof(ulong),
                 typeof(ushort),
                 typeof(sbyte)
-            };
+            ];
 
         /// <summary>
         /// Gets the property details of a given type.
@@ -35,7 +38,7 @@
         /// <returns>A list of property details.</returns>
         public static List<TypePropertyDetails> GetPropertyDetails(Type type)
         {
-            List<TypePropertyDetails> propertiesDetails = new List<TypePropertyDetails>();
+            List<TypePropertyDetails> propertiesDetails = [];
 
             foreach (var property in type.GetProperties())
             {
@@ -43,13 +46,14 @@
                 {
                     // Check if the property type is a common Entity Framework type or an enum
                     if (property.PropertyType.IsPrimitive ||
-                        SupportedEfTypes.Contains(property.PropertyType) ||
+                        _supportedEfTypes.Contains(property.PropertyType) ||
                         property.PropertyType.IsEnum ||
                         (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
                             (Nullable.GetUnderlyingType(property.PropertyType)!.IsEnum ||
-                            SupportedEfTypes.Contains(Nullable.GetUnderlyingType(property.PropertyType)!))))
+                            _supportedEfTypes.Contains(Nullable.GetUnderlyingType(property.PropertyType)!))))
                     {
-                        propertiesDetails.Add(new TypePropertyDetails(property.PropertyType, property.Name, property.GetMethod != null, property.SetMethod != null));
+                        propertiesDetails.Add(new TypePropertyDetails(property.PropertyType, property.Name,
+                            property.GetCustomAttribute<RequiredMemberAttribute>() != null, property.GetMethod != null, property.SetMethod != null));
                     }
                     else
                     {

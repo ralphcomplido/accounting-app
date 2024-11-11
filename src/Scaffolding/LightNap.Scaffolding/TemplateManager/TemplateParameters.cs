@@ -52,7 +52,7 @@ namespace LightNap.Scaffolding.TemplateManager
 
             // Take a guess that the shortest property ending with "id" is the id property. If there is none, then we'll nudge in the right direction.
             this.IdProperty = propertiesDetails.Where(p => p.Name.EndsWith("id", StringComparison.OrdinalIgnoreCase)).OrderBy(id => id.Name.Length).FirstOrDefault()
-                ?? new TypePropertyDetails(typeof(int), "Id", true, true);
+                ?? new TypePropertyDetails(typeof(int), "Id", false, true, true);
             this.GetProperties = propertiesDetails.Where(p => p != this.IdProperty && p.CanGet).ToList().AsReadOnly();
             this.SetProperties = propertiesDetails.Where(p => p != this.IdProperty && p.CanSet).ToList().AsReadOnly();
 
@@ -61,7 +61,6 @@ namespace LightNap.Scaffolding.TemplateManager
 
             this.AdditionalDtoNamespaces = propertiesDetails
                                             .Select(p => p.Type.Namespace)
-                                            .Where(ns => !string.IsNullOrWhiteSpace(ns) && ns != "System")
                                             .Cast<string>()
                                             .OrderBy(ns => ns)
                                             .Distinct()

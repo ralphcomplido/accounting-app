@@ -15,21 +15,25 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ext
         public static <#= Parameters.PascalName #> ToCreate(this Create<#= Parameters.PascalName #>Dto dto)
         {
             // TODO: Update these fields to match the DTO.
-            var item = new <#= Parameters.PascalName #>();
+            var item = new <#= Parameters.PascalName #>()
+            {
 <# foreach (var property in Parameters.SetProperties) { #>
-            item.<#= property.Name #> = dto.<#= property.Name #>;
+                <#= property.Name #> = dto.<#= property.Name #>,
 <# } #>
+            };  
             return item;
         }
 
         public static <#= Parameters.PascalName #>Dto ToDto(this <#= Parameters.PascalName #> item)
         {
             // TODO: Update these fields to match the DTO.
-            var dto = new <#= Parameters.PascalName #>Dto();
-            dto.<#= Parameters.IdProperty.Name #> = item.<#= Parameters.IdProperty.Name #>;
+            var dto = new <#= Parameters.PascalName #>Dto()
+            {
+                <#= Parameters.IdProperty.Name #> = item.<#= Parameters.IdProperty.Name #>,
 <# foreach (var property in Parameters.GetProperties) { #>
-            dto.<#= property.Name #> = item.<#= property.Name #>;
+                <#= property.Name #> = item.<#= property.Name #>,
 <# } #>
+            };
             return dto;
         }
 

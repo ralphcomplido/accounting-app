@@ -31,7 +31,7 @@ namespace LightNap.Scaffolding.Templates
             this.Write(@"
 <p-card header=""Create"">
   <div class=""flex gap-1 mb-1"">
-    <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""Up to all"" />
+    <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""See all"" />
   </div>
 
   <form [formGroup]=""form"" (ngSubmit)=""createClicked()"" autocomplete=""off"">

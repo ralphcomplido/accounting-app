@@ -74,6 +74,12 @@ namespace LightNap.Scaffolding.Templates
                     " item.\r\n\t\tpublic ");
             
             #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.IsRequired ? "required " : ""));
+            
+            #line default
+            #line hidden
+            
+            #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
@@ -93,6 +99,12 @@ namespace LightNap.Scaffolding.Templates
             #line default
             #line hidden
             this.Write("        public ");
+            
+            #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsRequired ? "required " : ""));
+            
+            #line default
+            #line hidden
             
             #line 18 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Response\Dto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.BackEndType));

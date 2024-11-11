@@ -46,11 +46,11 @@ namespace LightNap.Scaffolding.ServiceRunner
                 return;
             }
 
-            Console.WriteLine($"{"Name",-30}{"Back-End",-20}{"Front-End",-10}{"Nullable?",-10}{"Get?",-6}{"Set?",-6}");
+            Console.WriteLine($"{"Name",-30}{"Back-End",-20}{"Front-End",-10}{"Required?",-10}{"Nullable?",-10}{"Get?",-6}{"Set?",-6}");
             Console.ForegroundColor = ConsoleColor.Cyan;
             foreach (var property in propertiesDetails)
             {
-                Console.WriteLine($"{property.Name,-30}{property.BackEndType,-20}{property.FrontEndType,-10}{property.IsNullable,-10}{property.CanGet,-6}{property.CanSet,-6}");
+                Console.WriteLine($"{property.Name,-30}{property.BackEndType,-20}{property.FrontEndType,-10}{property.IsRequired,-10}{property.IsNullable,-10}{property.CanGet,-6}{property.CanSet,-6}");
             }
             Console.ResetColor();
 

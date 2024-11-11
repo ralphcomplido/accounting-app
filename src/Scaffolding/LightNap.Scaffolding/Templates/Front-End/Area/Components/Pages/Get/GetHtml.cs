@@ -45,7 +45,7 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write(@">
       <div class=""flex gap-1 mb-1"">
-        <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""Up to all"" />
+        <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""See all"" />
         <p-button [routerLink]=""['..', id(), 'edit']"" icon=""pi pi-pencil"" label=""Edit"" />
       </div>
       <div class=""w-30rem flex flex-column gap-4"">

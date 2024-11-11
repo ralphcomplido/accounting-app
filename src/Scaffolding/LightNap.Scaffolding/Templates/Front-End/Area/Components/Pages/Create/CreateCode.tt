@@ -63,7 +63,7 @@ export class CreateComponent {
 	<#= property.CamelName #>: this.#fb.control("01:00:00", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
                 else { #>
-	<#= property.CamelName #>: this.#fb.control("string", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
+	<#= property.CamelName #>: this.#fb.control("<#= property.Name #>", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
             break;
         }

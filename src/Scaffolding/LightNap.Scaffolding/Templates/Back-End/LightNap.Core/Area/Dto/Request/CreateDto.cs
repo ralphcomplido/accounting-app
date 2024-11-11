@@ -81,6 +81,12 @@ namespace LightNap.Scaffolding.Templates
             this.Write("        public ");
             
             #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsRequired ? "required " : ""));
+            
+            #line default
+            #line hidden
+            
+            #line 17 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Dto\Request\CreateDto.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.BackEndType));
             
             #line default

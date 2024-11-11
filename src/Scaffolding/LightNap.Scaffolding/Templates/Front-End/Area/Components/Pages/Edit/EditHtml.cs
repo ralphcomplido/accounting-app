@@ -45,7 +45,7 @@ namespace LightNap.Scaffolding.Templates
             #line hidden
             this.Write(@">
       <div class=""flex gap-1 mb-1"">
-        <p-button [routerLink]=""['../..']"" icon=""pi pi-arrow-up"" label=""Up to all"" />
+        <p-button [routerLink]=""['../..']"" icon=""pi pi-arrow-up"" label=""See all"" />
         <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-left"" label=""Back to item"" />
         <p-button (onClick)=""deleteClicked($event)"" severity=""danger"" icon=""pi pi-trash"" label=""Delete"" />
         <confirm-popup key=""delete"" confirmSeverity=""danger"" confirmIcon=""pi pi-trash"" />

@@ -14,9 +14,9 @@ namespace LightNap.Scaffolding.Tests
             string pascalName = "TestClass";
             var propertiesDetails = new List<TypePropertyDetails>
             {
-                new(typeof(int), "Id", true, true),
-                new(typeof(int), "TestInt", true, true),
-                new(typeof(string), "TestString", true, true)
+                new(typeof(int), "Id", false, true, true),
+                new(typeof(int), "TestInt", false, true, true),
+                new(typeof(string), "TestString", false, true, true)
             };
             var serviceParameters = new ServiceParameters("TestClass", "./", "LightNap.Core", "", "", false, false);
 
