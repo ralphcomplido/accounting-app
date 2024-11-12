@@ -1,7 +1,7 @@
 import { AdminUser, AdminUserWithRoles, Role, SearchAdminUsersRequest, UpdateAdminUserRequest } from "@admin/models";
-import { Injectable, inject } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { ApiResponse, SuccessApiResponse } from "@core";
-import { combineLatest, map, of, tap } from "rxjs";
+import { forkJoin, map, Observable, of, tap } from "rxjs";
 import { DataService } from "./data.service";
 
 /**
@@ -55,7 +55,7 @@ export class AdminService {
    * Gets the list of roles.
    * @returns {Observable<ApiResponse<Array<Role>>>} An observable containing the roles.
    */
-  getRoles() {
+  getRoles(): Observable<ApiResponse<Array<Role>>> {
     if (this.#rolesResponse) return of(this.#rolesResponse);
     return this.#dataService.getRoles().pipe(
       tap(response => {
@@ -86,7 +86,7 @@ export class AdminService {
    * @returns {Observable<ApiResponse<Array<Role>>>} An observable containing the roles.
    */
   getUserRoles(userId: string) {
-    return combineLatest([this.getRoles(), this.#dataService.getUserRoles(userId)]).pipe(
+    return forkJoin([this.getRoles(), this.#dataService.getUserRoles(userId)]).pipe(
       map(([rolesResponse, userRolesResponse]) => {
         if (!rolesResponse.result) return rolesResponse as any as ApiResponse<Array<Role>>;
         if (!userRolesResponse.result) return userRolesResponse as any as ApiResponse<Array<Role>>;
@@ -148,7 +148,7 @@ export class AdminService {
    * @returns {Observable<ApiResponse<AdminUserWithRoles>>} An observable containing the user and roles.
    */
   getUserWithRoles(userId: string) {
-    return combineLatest([this.getUser(userId), this.getUserRoles(userId)]).pipe(
+    return forkJoin([this.getUser(userId), this.getUserRoles(userId)]).pipe(
       map(([userResponse, rolesResponse]) => {
         if (!userResponse.result) return userResponse as any as ApiResponse<AdminUserWithRoles>;
         if (!rolesResponse.result) return rolesResponse as any as ApiResponse<AdminUserWithRoles>;

@@ -5,13 +5,13 @@ import { RouterLink } from "@angular/router";
 import { ApiResponse, ConfirmPopupComponent, SuccessApiResponse } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
+import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableModule } from "primeng/table";
-import { combineLatest, map, Observable } from "rxjs";
+import { forkJoin, map, Observable } from "rxjs";
 import { RoleViewModel } from "./role-view-model";
-import { RoutePipe } from "@routing";
 
 @Component({
   standalone: true,
@@ -45,7 +45,7 @@ export class RoleComponent implements OnInit {
   }
 
   #refreshRole() {
-    this.viewModel$ = combineLatest([this.#adminService.getRole(this.role), this.#adminService.getUsersInRole(this.role)]).pipe(
+    this.viewModel$ = forkJoin([this.#adminService.getRole(this.role), this.#adminService.getUsersInRole(this.role)]).pipe(
       map(([roleResponse, usersResponse]) => {
         if (!roleResponse.result) return roleResponse as any as ApiResponse<RoleViewModel>;
         if (!usersResponse.result) return usersResponse as any as ApiResponse<RoleViewModel>;
@@ -65,7 +65,7 @@ export class RoleComponent implements OnInit {
     this.errors = [];
 
     this.#confirmationService.confirm({
-        header: "Confirm Role Removal",
+      header: "Confirm Role Removal",
       message: `Are you sure that you want to remove this role membership?`,
       target: event.target,
       key: userId,
