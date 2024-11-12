@@ -1,6 +1,6 @@
 import { ExtraOptions } from "@angular/router";
-import { adminGuard } from "@core/guards/admin.guard";
-import { authGuard } from "@core/guards/auth.guard";
+import { adminGuard } from "@identity/guards/admin.guard";
+import { authGuard } from "@identity/guards/auth.guard";
 import { Routes as AdminRoutes } from "../admin/components/pages/routes";
 import { Routes as IdentityRoutes } from "../identity/components/pages/routes";
 import { AppLayoutComponent } from "../layout/components/layouts/app-layout/app-layout.component";
