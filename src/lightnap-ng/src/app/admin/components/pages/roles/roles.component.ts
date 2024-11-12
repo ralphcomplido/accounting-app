@@ -2,8 +2,8 @@ import { AdminService } from '@admin/services/admin.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { RoutePipe } from '@routing';
 import { ApiResponseComponent } from '@core/components/controls/api-response/api-response.component';
+import { RoutePipe } from '@routing';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 

@@ -2,7 +2,7 @@ import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
 import { Component, inject, Input, OnInit } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { ApiResponse, ConfirmPopupComponent, SuccessApiResponse } from "@core";
+import { ApiResponse, ConfirmPopupComponent, SuccessApiResponse, throwIfApiError } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { RoutePipe } from "@routing";
@@ -70,16 +70,13 @@ export class RoleComponent implements OnInit {
       target: event.target,
       key: userId,
       accept: () => {
-        this.#adminService.removeUserFromRole(userId, this.role).subscribe({
-          next: response => {
-            if (!response.result) {
-              this.errors = response.errorMessages;
-              return;
-            }
-
-            this.#refreshRole();
-          },
-        });
+        this.#adminService
+          .removeUserFromRole(userId, this.role)
+          .pipe(throwIfApiError())
+          .subscribe({
+            next: () => this.#refreshRole(),
+            error: response => (this.errors = response.errorMessages),
+          });
       },
     });
   }

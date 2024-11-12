@@ -5,6 +5,7 @@ import { ProfileService } from "@profile/services/profile.service";
 import { Subject } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 import { LayoutState } from "../models/layout-state";
+import { throwIfApiError } from "@core";
 
 @Injectable({
   providedIn: "root",
@@ -107,13 +108,12 @@ export class LayoutService {
     this.#configUpdate.next(this.config());
 
     if (this.#profileService.hasLoadedStyleSettings()) {
-      this.#profileService.updateStyleSettings(this.#styleSettings).subscribe({
-        next: response => {
-          if (!response.result) {
-            console.error("Unable to save settings", response.errorMessages);
-          }
-        },
-      });
+      this.#profileService
+        .updateStyleSettings(this.#styleSettings)
+        .pipe(throwIfApiError())
+        .subscribe({
+          error: response => console.error("Unable to save settings", response.errorMessages),
+        });
     }
   }
 

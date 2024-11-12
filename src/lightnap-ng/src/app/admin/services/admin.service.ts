@@ -1,6 +1,6 @@
 import { AdminUser, AdminUserWithRoles, Role, SearchAdminUsersRequest, UpdateAdminUserRequest } from "@admin/models";
 import { inject, Injectable } from "@angular/core";
-import { ApiResponse, SuccessApiResponse } from "@core";
+import { ApiResponse, catchApiError, SuccessApiResponse, throwIfApiError } from "@core";
 import { forkJoin, map, Observable, of, tap } from "rxjs";
 import { DataService } from "./data.service";
 
@@ -58,11 +58,9 @@ export class AdminService {
   getRoles(): Observable<ApiResponse<Array<Role>>> {
     if (this.#rolesResponse) return of(this.#rolesResponse);
     return this.#dataService.getRoles().pipe(
-      tap(response => {
-        if (response.result) {
-          this.#rolesResponse = response;
-        }
-      })
+      throwIfApiError(),
+      tap(response => (this.#rolesResponse = response)),
+      catchApiError()
     );
   }
 
@@ -73,10 +71,9 @@ export class AdminService {
    */
   getRole(roleName: string) {
     return this.getRoles().pipe(
-      map(response => {
-        if (!response.result) return response as any as ApiResponse<Role>;
-        return new SuccessApiResponse(response.result.find(role => role.name === roleName));
-      })
+      throwIfApiError(),
+      map(response => new SuccessApiResponse(response.result.find(role => role.name === roleName))),
+      catchApiError()
     );
   }
 

@@ -1,12 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { RoutePipe } from "@routing";
-import { IdentityService } from "src/app/identity/services/identity.service";
+import { ToastService } from "@core";
+import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { take } from "rxjs";
+import { IdentityService } from "src/app/identity/services/identity.service";
 import { LayoutService } from "src/app/layout/services/layout.service";
-import { RouteAliasService } from "@routing";
 
 @Component({
   standalone: true,
@@ -14,9 +14,10 @@ import { RouteAliasService } from "@routing";
   imports: [CommonModule, RouterLink, RoutePipe, ButtonModule],
 })
 export class AccessDeniedComponent {
-    layoutService = inject(LayoutService);
+  layoutService = inject(LayoutService);
   #identityService = inject(IdentityService);
   #routeAlias = inject(RouteAliasService);
+  #toast = inject(ToastService);
 
   loggedIn$ = this.#identityService.watchLoggedIn$();
 
@@ -32,11 +33,8 @@ export class AccessDeniedComponent {
 
   logOut() {
     this.#identityService.logOut().subscribe({
-      next: response => {
-        if (response.result) {
-          this.#routeAlias.navigate("login");
-        }
-      },
+      next: () => this.#routeAlias.navigate("login"),
+      error: response => response.errorMessages.forEach(error => this.#toast.error(error)),
     });
   }
 }

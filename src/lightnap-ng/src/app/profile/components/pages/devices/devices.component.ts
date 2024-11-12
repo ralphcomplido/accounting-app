@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { ConfirmDialogComponent } from "@core";
+import { ConfirmDialogComponent, throwIfApiError } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { ProfileService } from "@profile/services/profile.service";
@@ -24,23 +24,19 @@ export class DevicesComponent {
 
   revokeDevice(event: any, deviceId: string) {
     this.#confirmationService.confirm({
-        header: "Confirm Revoke",
-        message: `Are you sure that you want to revoke this device?`,
-        target: event.target,
-        key: deviceId,
-        accept: () => {
-            this.#profileService.revokeDevice(deviceId).subscribe({
-                next: response => {
-                  this.errors = response.errorMessages;
-
-                  if (!response.result) {
-                    return;
-                  }
-
-                  this.devices$ = this.#profileService.getDevices();
-                },
-              });
-        },
-      });
+      header: "Confirm Revoke",
+      message: `Are you sure that you want to revoke this device?`,
+      target: event.target,
+      key: deviceId,
+      accept: () => {
+        this.#profileService
+          .revokeDevice(deviceId)
+          .pipe(throwIfApiError())
+          .subscribe({
+            next: () => (this.devices$ = this.#profileService.getDevices()),
+            error: response => (this.errors = response.errorMessages),
+          });
+      },
+    });
   }
 }

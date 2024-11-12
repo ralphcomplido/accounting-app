@@ -1,11 +1,12 @@
 import { Component, Input, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { BlockUiService, ErrorListComponent } from "@core";
+import { BlockUiService, ErrorListComponent, throwIfApiError } from "@core";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
+import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 import { AppConfigComponent } from "src/app/layout/components/controls/app-config/app-config.component";
 import { FocusContentLayout } from "src/app/layout/components/layouts/focus-content-layout/focus-content-layout.component";
@@ -103,21 +104,13 @@ export class VerifyCodeComponent {
         deviceDetails: navigator.userAgent,
         rememberMe: value.rememberMe,
       })
+      .pipe(
+        throwIfApiError(),
+        finalize(() => this.#blockUi.hide())
+      )
       .subscribe({
-        next: response => {
-          if (!response?.result) {
-            if (response?.errorMessages?.length) {
-              this.errors = response.errorMessages;
-            } else {
-              this.errors = ["An unexpected error occurred."];
-            }
-            this.form.reset();
-            return;
-          }
-
-          this.#routeAlias.navigate("user-home");
-        },
-        complete: () => this.#blockUi.hide(),
+        next: () => this.#routeAlias.navigate("user-home"),
+        error: response => (this.errors = response.errorMessages),
       });
   }
 }

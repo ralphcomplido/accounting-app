@@ -5,7 +5,16 @@ import { Component, inject } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { ApiResponseComponent, ConfirmPopupComponent, EmptyPagedResponse, ErrorListComponent, ListItem, SuccessApiResponse, ToastService } from "@core";
+import {
+  ApiResponseComponent,
+  ConfirmPopupComponent,
+  EmptyPagedResponse,
+  ErrorListComponent,
+  ListItem,
+  SuccessApiResponse,
+  throwIfApiError,
+  ToastService,
+} from "@core";
 import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -32,7 +41,7 @@ import { debounceTime, startWith, Subject, switchMap } from "rxjs";
     ErrorListComponent,
     InputTextModule,
     ConfirmPopupComponent,
-    TagModule
+    TagModule,
   ],
 })
 export class UsersComponent {
@@ -91,15 +100,16 @@ export class UsersComponent {
       key: userId,
       target: event.target,
       accept: () => {
-        this.#adminService.deleteUser(userId).subscribe(response => {
-          if (!response.result) {
-            this.errors = response.errorMessages;
-            return;
-          }
-
-          this.#toast.success("User deleted successfully.");
-          this.#lazyLoadEventSubject.next({ first: 0 });
-        });
+        this.#adminService
+          .deleteUser(userId)
+          .pipe(throwIfApiError())
+          .subscribe({
+            next: () => {
+              this.#toast.success("User deleted successfully.");
+              this.#lazyLoadEventSubject.next({ first: 0 });
+            },
+            error: response => (this.errors = response.errorMessages),
+          });
       },
     });
   }

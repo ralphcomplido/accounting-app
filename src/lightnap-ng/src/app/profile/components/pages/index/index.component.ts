@@ -1,13 +1,13 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { BlockUiService, ErrorListComponent, ToastService } from "@core";
+import { BlockUiService, catchApiError, ErrorListComponent, throwIfApiError, ToastService } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ProfileService } from "@profile/services/profile.service";
 import { RouteAliasService } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { tap } from "rxjs";
+import { finalize, tap } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 
 @Component({
@@ -27,38 +27,38 @@ export class IndexComponent {
   errors = new Array<string>();
 
   profile$ = this.#profileService.getProfile().pipe(
+    throwIfApiError(),
     tap(response => {
-      if (!response.result) return;
       // Set form values.
-    })
+    }),
+    catchApiError()
   );
 
   updateProfile() {
     this.#blockUi.show({ message: "Updating profile..." });
-    this.#profileService.updateProfile({}).subscribe({
-      next: response => {
-        if (!response.result) {
-          this.errors = response.errorMessages;
-          return;
-        }
-
-        this.#toast.success("Profile updated successfully.");
-      },
-      complete: () => this.#blockUi.hide(),
-    });
+    this.#profileService
+      .updateProfile({})
+      .pipe(
+        throwIfApiError(),
+        finalize(() => this.#blockUi.hide())
+      )
+      .subscribe({
+        next: () => this.#toast.success("Profile updated successfully."),
+        error: response => (this.errors = response.errorMessages),
+      });
   }
 
   logOut() {
     this.#blockUi.show({ message: "Logging out..." });
-    this.#identityService.logOut().subscribe({
-      next: response => {
-        if (!response.result) {
-          this.errors = response.errorMessages;
-          return;
-        }
-        this.#routeAlias.navigate("landing");
-      },
-      complete: () => this.#blockUi.hide(),
-    });
+    this.#identityService
+      .logOut()
+      .pipe(
+        throwIfApiError(),
+        finalize(() => this.#blockUi.hide())
+      )
+      .subscribe({
+        next: () => this.#routeAlias.navigate("landing"),
+        error: response => (this.errors = response.errorMessages),
+      });
   }
 }

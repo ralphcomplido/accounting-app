@@ -6,6 +6,7 @@ import { DataService } from "./data.service";
 import { TimerService } from "../../core/services/timer.service";
 import { LoginRequest, RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest, LoginResult } from "@identity/models";
 import { InitializationService } from "@core/services/initialization.service";
+import { catchApiError, throwIfApiError } from "@core";
 
 /**
  * Service responsible for managing user identity, including authentication and token management.
@@ -78,8 +79,8 @@ export class IdentityService {
     this.#dataService.getAccessToken().subscribe({
       next: response => {
         this.#onTokenReceived(response.result);
+        this.#requestingRefreshToken = false;
       },
-      complete: () => (this.#requestingRefreshToken = false),
     });
   }
 
@@ -216,11 +217,9 @@ export class IdentityService {
    */
   logOut() {
     return this.#dataService.logOut().pipe(
-      tap(response => {
-        if (response.result) {
-          this.#onTokenReceived(undefined);
-        }
-      })
+      throwIfApiError(),
+      tap(() => this.#onTokenReceived(undefined)),
+      catchApiError()
     );
   }
 

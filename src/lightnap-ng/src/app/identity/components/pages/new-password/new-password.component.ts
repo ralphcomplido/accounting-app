@@ -1,13 +1,14 @@
 import { Component, Input, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { BlockUiService } from "@core";
+import { BlockUiService, throwIfApiError } from "@core";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { confirmPasswordValidator } from "@core/helpers/form-helpers";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { PasswordModule } from "primeng/password";
+import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 import { AppConfigComponent } from "src/app/layout/components/controls/app-config/app-config.component";
 import { FocusContentLayout } from "src/app/layout/components/layouts/focus-content-layout/focus-content-layout.component";
@@ -59,17 +60,13 @@ export class NewPasswordComponent {
         deviceDetails: navigator.userAgent,
         rememberMe: this.form.value.rememberMe,
       })
+      .pipe(
+        throwIfApiError(),
+        finalize(() => this.#blockUi.hide())
+      )
       .subscribe({
-        next: response => {
-          if (response?.result) {
-            this.#routeAlias.navigate("user-home");
-          } else if (response?.errorMessages?.length) {
-            this.errors = response?.errorMessages;
-          } else {
-            this.errors = ["An unexpected error occurred."];
-          }
-        },
-        complete: () => this.#blockUi.hide(),
+        next: () => this.#routeAlias.navigate("user-home"),
+        error: response => (this.errors = response.errorMessages),
       });
   }
 }
