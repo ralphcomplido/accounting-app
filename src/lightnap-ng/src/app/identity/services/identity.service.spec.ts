@@ -5,9 +5,11 @@ import { of } from 'rxjs';
 import { DataService } from './data.service';
 import { IdentityService } from './identity.service';
 import { RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest } from '@identity';
+import { InitializationService } from '@core/services/initialization.service';
 
 describe('IdentityService', () => {
     let service: IdentityService;
+    let initializationServiceSpy: jasmine.SpyObj<InitializationService>;
     let dataServiceSpy: jasmine.SpyObj<DataService>;
     let timerServiceSpy: jasmine.SpyObj<TimerService>;
     // Using a valid JWT token for testing purposes. IdentityService will try to parse it so it might as well work.
@@ -16,15 +18,20 @@ describe('IdentityService', () => {
     beforeEach(() => {
         const dataSpy = jasmine.createSpyObj('DataService', ['getAccessToken', 'logIn', 'register', 'logOut', 'verifyCode', 'resetPassword', 'newPassword']);
         const timerSpy = jasmine.createSpyObj('TimerService', ['watchTimer$']);
+        const initializationSpy = jasmine.createSpyObj('InitializationService', ['initialized$']);
 
         TestBed.configureTestingModule({
             providers: [
                 IdentityService,
+                { provide: InitializationService, useValue: initializationSpy },
                 { provide: DataService, useValue: dataSpy },
                 { provide: TimerService, useValue: timerSpy },
                 JwtHelperService
             ]
         });
+
+        initializationServiceSpy = TestBed.inject(InitializationService) as jasmine.SpyObj<InitializationService>;
+        Object.defineProperty(initializationServiceSpy, 'initialized$', { get: () => of(true) });
 
         timerServiceSpy = TestBed.inject(TimerService) as jasmine.SpyObj<TimerService>;
         timerServiceSpy.watchTimer$.and.returnValue(of(0));
