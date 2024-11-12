@@ -5,6 +5,7 @@ import { distinctUntilChanged, filter, map, ReplaySubject, take, tap } from "rxj
 import { DataService } from "./data.service";
 import { TimerService } from "../../core/services/timer.service";
 import { LoginRequest, RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest, LoginResult } from "@identity/models";
+import { InitializationService } from "@core/services/initialization.service";
 
 /**
  * Service responsible for managing user identity, including authentication and token management.
@@ -24,6 +25,7 @@ export class IdentityService {
   // How close to expiration we should try to refresh the token. (Refresh if it expires in less than 5 minutes.)
   static readonly TokenExpirationWindowMillis = 5 * 60 * 1000;
 
+  #initializationService = inject(InitializationService);
   #timer = inject(TimerService);
   #dataService = inject(DataService);
 
@@ -34,6 +36,16 @@ export class IdentityService {
   #loggedInRolesSubject$ = new ReplaySubject<Array<string>>(1);
   #roles?: Array<string>;
   #requestingRefreshToken = false;
+
+  #redirectUrl?: string;
+  get redirectUrl() {
+    const url = this.#redirectUrl;
+    this.#redirectUrl = undefined;
+    return url;
+  }
+  set redirectUrl(value: string | undefined) {
+    this.#redirectUrl = value;
+  }
 
   constructor() {
     this.#timer
@@ -48,15 +60,16 @@ export class IdentityService {
         next: () => this.#tryRefreshToken(),
       });
 
-    // BUG: We need to request an access token from the server as soon as we load. However, we can't do it while the constructor is loading or
-    // else we run into a circular DI issue with the DataService's HttpClient and its HttpInterceptors that reference this service. To work
-    // around this we sleep in the hopes everything will be loaded by the time we make the request. However, this doesn't seem guaranteed
-    // and it was observed during debugging that a race condition still exists. The only other solution is to set up an app initializer that
-    // loads and calls an explicit refreshToken() method we could expose from this service, but that needs to be evaluated when the time comes.
     this.#timer
       .watchTimer$(100)
       .pipe(take(1))
-      .subscribe(() => this.#tryRefreshToken());
+      .subscribe({
+        next: () => {
+          this.#initializationService.initialized$.pipe(take(1)).subscribe({
+            next: () => this.#tryRefreshToken(),
+          });
+        },
+      });
   }
 
   #tryRefreshToken() {
@@ -155,9 +168,7 @@ export class IdentityService {
    * @returns {Observable<boolean>} Emits true when the user is logged into any of the roles, otherwise false.
    */
   watchLoggedInToAnyRole$(allowedRoles: Array<string>) {
-    return this.#loggedInRolesSubject$.pipe(
-      map(roles => this.isUserInAnyRole(allowedRoles)),
-    );
+    return this.#loggedInRolesSubject$.pipe(map(roles => this.isUserInAnyRole(allowedRoles)));
   }
 
   /**

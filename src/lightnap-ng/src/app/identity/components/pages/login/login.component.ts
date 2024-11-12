@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { BlockUiService, ErrorListComponent } from "@core";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
@@ -29,6 +29,7 @@ import { LayoutService } from "src/app/layout/services/layout.service";
 export class LoginComponent {
   layoutService = inject(LayoutService);
   #identityService = inject(IdentityService);
+  #router = inject(Router);
   #blockUi = inject(BlockUiService);
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
@@ -62,7 +63,12 @@ export class LoginComponent {
           } else if (response.result.twoFactorRequired) {
             this.#routeAlias.navigate("verify-code", this.form.value.email);
           } else {
-            this.#routeAlias.navigate("user-home");
+            const redirectUrl = this.#identityService.redirectUrl;
+            if (redirectUrl) {
+              this.#router.navigateByUrl(redirectUrl);
+            } else {
+              this.#routeAlias.navigate("user-home");
+            }
           }
         },
         complete: () => this.#blockUi.hide(),
