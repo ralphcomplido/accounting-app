@@ -13,7 +13,7 @@ Scaffolding support is experimental. Please be sure to stash or commit changes b
 The scaffolder takes [an entity](./adding-entities) as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data to and from the database to the browser following the patterns used throughout the solution.
 
 - TOC
-{:toc}
+  {:toc}
 
 ## Set Up Your Entity
 
@@ -84,21 +84,22 @@ In the Angular project, everything is added in a new `app/test-entities` area fo
 
 | File                                             | Purpose                                             |
 | :----------------------------------------------- | :-------------------------------------------------- |
+| `components/pages/create/create.component.html`  | Markup for the create item page.                    |
+| `components/pages/create/create.component.ts`    | Code for the create item page.                      |
+| `components/pages/get/get.component.html`        | Markup for the get item page.                       |
+| `components/pages/get/get.component.ts`          | Code for the get item page.                         |
+| `components/pages/edit/edit.component.html`      | Markup for the edit item page.                      |
+| `components/pages/edit/edit.component.ts`        | Code for the edit item page.                        |
+| `components/pages/index/index.component.html`    | Markup for the area landing/search page.            |
+| `components/pages/index/index.component.ts`      | Code for the area landing/search page.              |
+| `components/pages/routes.ts`                     | Relative routes for the area pages.                 |
+| `helpers/test-entity.helper.ts`                  | Rehydrates dates from DTOs if needed.               |
 | `models/response/test-entity.ts`                 | Maps to the server's `TestEntityDto`.               |
 | `models/request/create-test-entity-request.ts`   | Maps to the server's `CreateTestEntityDto`.         |
 | `models/request/search-test-entities-request.ts` | Maps to the server's `SearchTestEntityDto`.         |
 | `models/request/update-test-entity-request.ts`   | Maps to the server's `UpdateTestEntityDto`.         |
 | `services/data.service.ts`                       | The private service for HTTP calls to the REST API. |
 | `services/test-entity.service.ts`                | The area service for app usage.                     |
-| `components/pages/index/index.component.html`    | Markup for the area landing/search page.            |
-| `components/pages/index/index.component.ts`      | Code for the area landing/search page.              |
-| `components/pages/get/get.component.html`        | Markup for the get item page.                       |
-| `components/pages/get/get.component.ts`          | Code for the get item page.                         |
-| `components/pages/create/create.component.html`  | Markup for the create item page.                    |
-| `components/pages/create/create.component.ts`    | Code for the create item page.                      |
-| `components/pages/edit/edit.component.html`      | Markup for the edit item page.                      |
-| `components/pages/edit/edit.component.ts`        | Code for the edit item page.                        |
-| `components/pages/routes.ts`                     | Relative routes for the area pages.                 |
 
 ## Final Configuration
 
