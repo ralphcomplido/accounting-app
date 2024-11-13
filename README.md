@@ -5,7 +5,7 @@ LightNap (**light**weight .**N**ET Core/**A**ngular/**P**rimeNG) is a full stack
 ## Features
 
 - **.NET Core Web API**: Backend services built with .NET Core.
-- **SQL Server**: A data provider implementation for SQL Server.
+- **SQL Server, SQLite, and In-Memory**: Data provider implementations for SQL Server, SQLite, and in-memory databases.
 - **ASP.NET Core Identity**: Out-of-the-box support for user authentication and authorization.
 - **JWT Token Management**: Secure token-based authentication.
 - **Identity Management**: Administrative features for managing user roles and permissions.
