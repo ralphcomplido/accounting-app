@@ -1,19 +1,19 @@
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from "@angular/common";
+import { LocationStrategy, PathLocationStrategy } from "@angular/common";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { provideAnimations } from "@angular/platform-browser/animations";
+import { RouterModule } from "@angular/router";
 import { API_URL_ROOT } from "@core";
 import { apiResponseInterceptor } from "@core/interceptors/api-response-interceptor";
 import { tokenInterceptor } from "@core/interceptors/token-interceptor";
+import { InitializationService } from "@core/services/initialization.service";
+import { RouteConfig, Routes } from "@routing/routes";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { BlockUIModule } from "primeng/blockui";
 import { ToastModule } from "primeng/toast";
 import { environment } from "src/environments/environment";
 import { AppComponent } from "./app.component";
-import { RouterModule } from "@angular/router";
-import { RouteConfig, Routes } from "@routing/routes";
-import { InitializationService } from "@core/services/initialization.service";
 
 export function initializeApp(initializationService: InitializationService) {
   return () => initializationService.initialize();
@@ -32,7 +32,7 @@ export function initializeApp(initializationService: InitializationService) {
     },
     provideAnimations(),
     { provide: API_URL_ROOT, useValue: environment.apiUrlRoot },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
     provideHttpClient(withInterceptors([tokenInterceptor, apiResponseInterceptor])),
     MessageService,
     ConfirmationService,

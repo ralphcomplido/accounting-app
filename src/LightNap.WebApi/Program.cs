@@ -61,6 +61,7 @@ app.UseAuthorization();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllers();
+app.MapFallbackToFile("/index.html");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
