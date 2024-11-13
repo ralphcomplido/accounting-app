@@ -1,4 +1,4 @@
-import { LocationStrategy, PathLocationStrategy } from "@angular/common";
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from "@angular/common";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -32,7 +32,7 @@ export function initializeApp(initializationService: InitializationService) {
     },
     provideAnimations(),
     { provide: API_URL_ROOT, useValue: environment.apiUrlRoot },
-    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideHttpClient(withInterceptors([tokenInterceptor, apiResponseInterceptor])),
     MessageService,
     ConfirmationService,
