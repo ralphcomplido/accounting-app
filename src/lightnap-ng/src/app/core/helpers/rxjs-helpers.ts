@@ -40,9 +40,9 @@ export function throwIfApiError<T>(): OperatorFunction<ApiResponse<T>, ApiRespon
 }
 
 /**
- * Restores an API error response that was suppressed by throwIfApiError(). This is useful for restoring the final error response
- * to the same type as the successful response. If you don't use this after throwIfApiError() then you should set up an error
- * handler in your subscription.
+ * Catches any error thrown earlier by throwIfApiError. This is useful for restoring the final error response to the same type as
+ * the successful response when you are not the one subscribing. If you don't use this after throwIfApiError() then you need to set
+ * set up an error handler in your subscription.
  *
  * @typeParam T - The T of the final ApiResponse<T> produced by the previous operator. This ensures the result is of the same type.
  * @returns An operator function that transforms the source observable.
