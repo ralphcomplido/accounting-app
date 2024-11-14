@@ -19,6 +19,7 @@ namespace LightNap.Core.Tests.Services
         private RoleManager<ApplicationRole> _roleManager;
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _dbContext;
+        private TestUserContext _userContext;
         private AdministratorService _administratorService;
 #pragma warning restore CS8618
 
@@ -36,7 +37,8 @@ namespace LightNap.Core.Tests.Services
             this._dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
             this._userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             this._roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            this._administratorService = new AdministratorService(this._userManager, this._dbContext, new TestUserContext());
+            this._userContext = new TestUserContext();
+            this._administratorService = new AdministratorService(this._userManager, this._dbContext, this._userContext);
         }
 
         [TestCleanup]
@@ -236,7 +238,8 @@ namespace LightNap.Core.Tests.Services
             var user = await TestHelper.CreateTestUserAsync(this._userManager, userId);
             await this._userManager.AddToRoleAsync(user, role);
             var roles = await this._userManager.GetRolesAsync(user);
-            Assert.AreEqual(0, roles.Count);
+            Assert.AreEqual(1, roles.Count);
+            this._userContext.UserId = user.Id;
 
             // Act
             await this._administratorService.RemoveUserFromRoleAsync(role, userId);

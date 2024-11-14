@@ -148,7 +148,7 @@ namespace LightNap.Core.Administrator.Services
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             var result = await userManager.AddToRoleAsync(user, role);
-            if (!result.Succeeded) { throw new UserFriendlyApiException("Failed to add user to role."); }
+            if (!result.Succeeded) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace LightNap.Core.Administrator.Services
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             var result = await userManager.RemoveFromRoleAsync(user, role);
-            if (!result.Succeeded) { throw new UserFriendlyApiException("Failed to remove user from role."); }
+            if (!result.Succeeded) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
         }
 
         /// <summary>
