@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LightNap.WebApi.Middleware
 {
@@ -35,6 +36,20 @@ namespace LightNap.WebApi.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 await context.Response.WriteAsync("Unauthorized");
             }
+            catch (UserFriendlyApiException ex)
+            {
+                if (ex.InnerException is not null)
+                {
+                    logger.LogError(ex, "User-friendly exception in Web API: {message}", ex.Message);
+                }
+
+                await ExceptionMiddleware.WriteErrorAsync(context,
+                    new ApiResponseDto<string>()
+                    {
+                        ErrorMessages = ex.Errors,
+                        Type = ApiResponseType.Error
+                    });
+            }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Unexpected error in Web API: {message}", ex.Message);
@@ -47,16 +62,29 @@ namespace LightNap.WebApi.Middleware
                 {
                     if (string.IsNullOrWhiteSpace(ex.StackTrace))
                     {
-                        error = ApiResponseDto<string>.CreateError(ex.Message);
+                        error = new ApiResponseDto<string>()
+                        {
+                            Type = ApiResponseType.UnexpectedError,
+                            ErrorMessages = [ex.Message]
+                        };
                     }
                     else
                     {
-                        error = ApiResponseDto<string>.CreateError(new[] { ex.Message, ex.StackTrace });
+                        error = new ApiResponseDto<string>()
+                        {
+                            Type = ApiResponseType.UnexpectedError,
+                            ErrorMessages = [ex.Message, ex.StackTrace]
+                        };
                     }
                 }
                 else
                 {
-                    error = ApiResponseDto<string>.CreateError("Internal Server Error");
+                    error = new ApiResponseDto<string>()
+                    {
+                        Type = ApiResponseType.UnexpectedError,
+                        ErrorMessages = ["Internal Server Error"]
+                    };
+
                 }
 
                 await ExceptionMiddleware.WriteErrorAsync(context, error);

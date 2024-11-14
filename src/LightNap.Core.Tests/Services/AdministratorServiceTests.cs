@@ -1,5 +1,6 @@
 using LightNap.Core.Administrator.Dto.Request;
 using LightNap.Core.Administrator.Services;
+using LightNap.Core.Api;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Extensions;
@@ -90,17 +91,15 @@ namespace LightNap.Core.Tests.Services
         }
 
         [TestMethod]
-        public async Task UpdateUserAsync_UserDoesNotExist_ReturnsError()
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task UpdateUserAsync_UserDoesNotExist_ThrowsError()
         {
             // Arrange
             var userId = "non-existent-user-id";
             var updateDto = new UpdateAdminUserDto();
 
             // Act
-            var result = await this._administratorService.UpdateUserAsync(userId, updateDto);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._administratorService.UpdateUserAsync(userId, updateDto);
         }
 
         [TestMethod]
@@ -118,16 +117,14 @@ namespace LightNap.Core.Tests.Services
         }
 
         [TestMethod]
-        public async Task DeleteUserAsync_UserDoesNotExist_ReturnsError()
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task DeleteUserAsync_UserDoesNotExist_ThrowsError()
         {
             // Arrange
             var userId = "non-existent-user-id";
 
             // Act
-            var result = await this._administratorService.DeleteUserAsync(userId);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._administratorService.DeleteUserAsync(userId);
         }
 
         [TestMethod]
@@ -147,17 +144,15 @@ namespace LightNap.Core.Tests.Services
         }
 
         [TestMethod]
-        public async Task AddUserToRoleAsync_UserDoesNotExist_ReturnsError()
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task AddUserToRoleAsync_UserDoesNotExist_ThrowsError()
         {
             // Arrange
             var userId = "non-existent-user-id";
             var role = "test-role";
 
             // Act
-            var result = await this._administratorService.AddUserToRoleAsync(role, userId);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._administratorService.AddUserToRoleAsync(role, userId);
         }
 
         [TestMethod]
@@ -276,16 +271,14 @@ namespace LightNap.Core.Tests.Services
         }
 
         [TestMethod]
-        public async Task LockUserAsync_UserDoesNotExist_ReturnsError()
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task LockUserAsync_UserDoesNotExist_ThrowsError()
         {
             // Arrange
             var userId = "non-existent-user-id";
 
             // Act
-            var result = await this._administratorService.LockUserAccountAsync(userId);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._administratorService.LockUserAccountAsync(userId);
         }
 
         [TestMethod]
@@ -305,16 +298,14 @@ namespace LightNap.Core.Tests.Services
         }
 
         [TestMethod]
-        public async Task UnlockUserAsync_UserDoesNotExist_ReturnsError()
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task UnlockUserAsync_UserDoesNotExist_ThrowsError()
         {
             // Arrange
             var userId = "non-existent-user-id";
 
             // Act
-            var result = await this._administratorService.UnlockUserAccountAsync(userId);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._administratorService.UnlockUserAccountAsync(userId);
         }
 
 

@@ -135,7 +135,15 @@ namespace LightNap.Core.Tests
             var emailServiceMock = new Mock<IEmailService>();
             var signInManager = this._serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
             var logger = this._serviceProvider.GetRequiredService<ILogger<IdentityService>>();
-            var applicationSettings = new Mock<IOptions<ApplicationSettings>>();
+            var applicationSettings = Options.Create(
+                new ApplicationSettings
+                {
+                    AutomaticallyApplyEfMigrations = false,
+                    LogOutInactiveDeviceDays = 30,
+                    RequireTwoFactorForNewUsers = false,
+                    SiteUrlRootForEmails = "https://example.com/",
+                    UseSameSiteStrictCookies = true
+                });
             var cookieManagerMock = new Mock<ICookieManager>();
 
             var identityService = new IdentityService(
@@ -144,7 +152,7 @@ namespace LightNap.Core.Tests
                 signInManager,
                 tokenServiceMock.Object,
                 emailServiceMock.Object,
-                applicationSettings.Object,
+                applicationSettings,
                 this._dbContext,
                 cookieManagerMock.Object,
                 this._userContext
@@ -158,10 +166,11 @@ namespace LightNap.Core.Tests
                 RememberMe = false
             });
 
-            TestHelper.AssertSuccess(result);
+            TestHelper.AssertSuccess(loginResult);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
         public async Task ChangePassword_ShouldFailWithWrongCurrentPassword()
         {
             // Arrange
@@ -177,13 +186,11 @@ namespace LightNap.Core.Tests
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
             // Act
-            var result = await this._profileService.ChangePasswordAsync(changePasswordDto);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._profileService.ChangePasswordAsync(changePasswordDto);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
         public async Task ChangePassword_ShouldFailWithWrongMistmatchedNewPassword()
         {
             // Arrange
@@ -199,10 +206,7 @@ namespace LightNap.Core.Tests
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
             // Act
-            var result = await this._profileService.ChangePasswordAsync(changePasswordDto);
-
-            // Assert
-            TestHelper.AssertError(result);
+            await this._profileService.ChangePasswordAsync(changePasswordDto);
         }
 
         [TestMethod]
@@ -309,6 +313,7 @@ namespace LightNap.Core.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
         public async Task RevokeDevice_ShouldNotAllowRevokingOtherUsersDevice()
         {
             // Arrange
@@ -329,14 +334,7 @@ namespace LightNap.Core.Tests
             await this._dbContext.SaveChangesAsync();
 
             // Act
-            var result = await this._profileService.RevokeDeviceAsync(deviceId);
-
-            // Assert
-            TestHelper.AssertError(result);
-
-            var revokedToken = await this._dbContext.RefreshTokens.FindAsync(deviceId);
-            Assert.IsNotNull(revokedToken);
-            Assert.IsFalse(revokedToken.IsRevoked);
+            await this._profileService.RevokeDeviceAsync(deviceId);
         }
 
     }

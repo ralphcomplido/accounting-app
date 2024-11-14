@@ -62,7 +62,7 @@ namespace LightNap.Core.Tests.Utilities
             Assert.AreEqual(ApiResponseType.Error, response.Type);
             Assert.AreEqual(default(T), response.Result);
             Assert.IsNotNull(response.ErrorMessages);
-            Assert.AreNotEqual(0, response.ErrorMessages.Count);
+            Assert.AreNotEqual(0, response.ErrorMessages.Count());
         }
     }
 }

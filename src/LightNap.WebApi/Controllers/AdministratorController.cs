@@ -142,7 +142,7 @@ namespace LightNap.WebApi.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<ApiResponseDto<bool>>> RemoveUserFromRole(string role, string userId)
         {
-            if ((userId == this.User.GetUserId()) && (role == ApplicationRoles.Administrator.Name)) { return ApiResponseDto<bool>.CreateError("You may not remove yourself from the Administrator role."); }
+            if ((userId == this.User.GetUserId()) && (role == ApplicationRoles.Administrator.Name)) { throw new UserFriendlyApiException("You may not remove yourself from the Administrator role."); }
 
             return await administratorService.RemoveUserFromRoleAsync(role, userId);
         }

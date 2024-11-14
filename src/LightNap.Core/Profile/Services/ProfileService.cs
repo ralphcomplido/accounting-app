@@ -23,19 +23,18 @@ namespace LightNap.Core.Profile.Services
         /// <returns>An <see cref="ApiResponseDto{T}"/> indicating the success or failure of the operation.</returns>
         public async Task<ApiResponseDto<bool>> ChangePasswordAsync(ChangePasswordRequestDto requestDto)
         {
-            if (requestDto.NewPassword != requestDto.ConfirmNewPassword) { return ApiResponseDto<bool>.CreateError("New password does not match confirmation password."); }
+            if (requestDto.NewPassword != requestDto.ConfirmNewPassword) { throw new UserFriendlyApiException("New password does not match confirmation password."); }
 
-            ApplicationUser? user = await userManager.FindByIdAsync(userContext.GetUserId());
-            if (user is null) { return ApiResponseDto<bool>.CreateError("Unable to change password."); }
+            ApplicationUser user = await userManager.FindByIdAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to change password.");
 
             var result = await userManager.ChangePasswordAsync(user, requestDto.CurrentPassword, requestDto.NewPassword);
             if (!result.Succeeded)
             {
-                if (result.Errors.Any()) { return ApiResponseDto<bool>.CreateError(result.Errors.Select(item => item.Description).ToArray()); }
-                return ApiResponseDto<bool>.CreateError("Unable to change password.");
+                if (result.Errors.Any()) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
+                throw new UserFriendlyApiException("Unable to change password.");
             }
 
-            return ApiResponseDto<bool>.CreateSuccess(true);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace LightNap.Core.Profile.Services
         public async Task<ApiResponseDto<ProfileDto>> GetProfileAsync()
         {
             var user = await db.Users.FindAsync(userContext.GetUserId());
-            return ApiResponseDto<ProfileDto>.CreateSuccess(user?.ToLoggedInUserDto());
+            return new ApiResponseDto<ProfileDto>(user?.ToLoggedInUserDto());
         }
 
         /// <summary>
@@ -55,14 +54,13 @@ namespace LightNap.Core.Profile.Services
         /// <returns>An <see cref="ApiResponseDto{T}"/> indicating the success or failure of the operation.</returns>
         public async Task<ApiResponseDto<ProfileDto>> UpdateProfileAsync(UpdateProfileDto requestDto)
         {
-            var user = await db.Users.FindAsync(userContext.GetUserId());
-            if (user is null) { return ApiResponseDto<ProfileDto>.CreateError("Unable to update profile."); }
+            var user = await db.Users.FindAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to update profile.");
 
             user.UpdateLoggedInUser(requestDto);
 
             await db.SaveChangesAsync();
 
-            return ApiResponseDto<ProfileDto>.CreateSuccess(user.ToLoggedInUserDto());
+            return new ApiResponseDto<ProfileDto>(user.ToLoggedInUserDto());
         }
 
         /// <summary>
@@ -71,9 +69,8 @@ namespace LightNap.Core.Profile.Services
         /// <returns>An <see cref="ApiResponseDto{T}"/> containing the user's settings.</returns>
         public async Task<ApiResponseDto<BrowserSettingsDto>> GetSettingsAsync()
         {
-            var user = await db.Users.FindAsync(userContext.GetUserId());
-            if (user is null) { return ApiResponseDto<BrowserSettingsDto>.CreateError("Unable to load settings"); }
-            return ApiResponseDto<BrowserSettingsDto>.CreateSuccess(user.BrowserSettings);
+            var user = await db.Users.FindAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to load settings");
+            return new ApiResponseDto<BrowserSettingsDto>(user.BrowserSettings);
         }
 
         /// <summary>
@@ -83,11 +80,10 @@ namespace LightNap.Core.Profile.Services
         /// <returns>An <see cref="ApiResponseDto{T}"/> indicating the success or failure of the operation.</returns>
         public async Task<ApiResponseDto<bool>> UpdateSettingsAsync(BrowserSettingsDto requestDto)
         {
-            var user = await db.Users.FindAsync(userContext.GetUserId());
-            if (user is null) { return ApiResponseDto<bool>.CreateError("Unable to update settings"); }
+            var user = await db.Users.FindAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to update settings");
             user.BrowserSettings = requestDto;
             await db.SaveChangesAsync();
-            return ApiResponseDto<bool>.CreateSuccess(true);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -102,7 +98,7 @@ namespace LightNap.Core.Profile.Services
                             .OrderByDescending(device => device.Expires)
                             .ToListAsync();
 
-            return ApiResponseDto<IList<DeviceDto>>.CreateSuccess(tokens.ToDtoList());
+            return new ApiResponseDto<IList<DeviceDto>>(tokens.ToDtoList());
         }
 
         /// <summary>
@@ -119,10 +115,10 @@ namespace LightNap.Core.Profile.Services
             {
                 token.IsRevoked = true;
                 await db.SaveChangesAsync();
-                return ApiResponseDto<bool>.CreateSuccess(true);
+                return new ApiResponseDto<bool>(true);
             }
 
-            return ApiResponseDto<bool>.CreateError("Device not found.");
+            throw new UserFriendlyApiException("Device not found.");
         }
     }
 }
