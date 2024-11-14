@@ -4,6 +4,7 @@ using LightNap.Core.Administrator.Interfaces;
 using LightNap.Core.Api;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Identity.Dto.Response;
+using LightNap.WebApi.Api;
 using LightNap.WebApi.Configuration;
 using LightNap.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -27,9 +28,9 @@ namespace LightNap.WebApi.Controllers
         /// <response code="200">Returns the user details.</response>
         [HttpGet("users/{userId}")]
         [ProducesResponseType(typeof(ApiResponseDto<AdminUserDto?>), 200)]
-        public async Task<ActionResult<ApiResponseDto<AdminUserDto?>>> GetUser(string userId)
+        public async Task<ApiResponseDto<AdminUserDto?>> GetUser(string userId)
         {
-            return await administratorService.GetUserAsync(userId);
+            return new ApiResponseDto<AdminUserDto?>(await administratorService.GetUserAsync(userId));
         }
 
         /// <summary>
@@ -41,9 +42,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("users/search")]
         [ProducesResponseType(typeof(ApiResponseDto<PagedResponse<AdminUserDto>>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<PagedResponse<AdminUserDto>>>> SearchUsers(SearchAdminUsersRequestDto requestDto)
+        public async Task<ApiResponseDto<PagedResponse<AdminUserDto>>> SearchUsers(SearchAdminUsersRequestDto requestDto)
         {
-            return await administratorService.SearchUsersAsync(requestDto);
+            return new ApiResponseDto<PagedResponse<AdminUserDto>>(await administratorService.SearchUsersAsync(requestDto));
         }
 
         /// <summary>
@@ -56,9 +57,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPut("users/{id}")]
         [ProducesResponseType(typeof(ApiResponseDto<AdminUserDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<AdminUserDto>>> UpdateUser(string id, UpdateAdminUserDto requestDto)
+        public async Task<ApiResponseDto<AdminUserDto>> UpdateUser(string id, UpdateAdminUserDto requestDto)
         {
-            return await administratorService.UpdateUserAsync(id, requestDto);
+            return new ApiResponseDto<AdminUserDto>(await administratorService.UpdateUserAsync(id, requestDto));
         }
 
         /// <summary>
@@ -70,9 +71,10 @@ namespace LightNap.WebApi.Controllers
         /// <response code="400">If the user is an administrator and cannot be deleted.</response>
         [HttpDelete("users/{id}")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> DeleteUser(string id)
+        public async Task<ApiResponseDto<bool>> DeleteUser(string id)
         {
-            return await administratorService.DeleteUserAsync(id);
+            await administratorService.DeleteUserAsync(id);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -82,9 +84,9 @@ namespace LightNap.WebApi.Controllers
         /// <response code="200">Returns the list of roles.</response>
         [HttpGet("roles")]
         [ProducesResponseType(typeof(ApiResponseDto<IList<RoleDto>>), 200)]
-        public ActionResult<ApiResponseDto<IList<RoleDto>>> GetRoles()
+        public ApiResponseDto<IList<RoleDto>> GetRoles()
         {
-            return administratorService.GetRoles();
+            return new ApiResponseDto<IList<RoleDto>>(administratorService.GetRoles());
         }
 
         /// <summary>
@@ -95,9 +97,9 @@ namespace LightNap.WebApi.Controllers
         /// <response code="200">Returns the list of roles.</response>
         [HttpGet("users/{id}/roles")]
         [ProducesResponseType(typeof(ApiResponseDto<IList<string>>), 200)]
-        public async Task<ActionResult<ApiResponseDto<IList<string>>>> GetRolesForUser(string id)
+        public async Task<ApiResponseDto<IList<string>>> GetRolesForUser(string id)
         {
-            return await administratorService.GetRolesForUserAsync(id);
+            return new ApiResponseDto<IList<string>>(await administratorService.GetRolesForUserAsync(id));
         }
 
         /// <summary>
@@ -108,9 +110,9 @@ namespace LightNap.WebApi.Controllers
         /// <response code="200">Returns the list of users.</response>
         [HttpGet("roles/{role}")]
         [ProducesResponseType(typeof(ApiResponseDto<IList<AdminUserDto>>), 200)]
-        public async Task<ActionResult<ApiResponseDto<IList<AdminUserDto>>>> GetUsersInRole(string role)
+        public async Task<ApiResponseDto<IList<AdminUserDto>>> GetUsersInRole(string role)
         {
-            return await administratorService.GetUsersInRoleAsync(role);
+            return new ApiResponseDto<IList<AdminUserDto>>(await administratorService.GetUsersInRoleAsync(role));
         }
 
         /// <summary>
@@ -124,9 +126,10 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("roles/{role}/{userId}")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> AddUserToRole(string role, string userId)
+        public async Task<ApiResponseDto<bool>> AddUserToRole(string role, string userId)
         {
-            return await administratorService.AddUserToRoleAsync(role, userId);
+            await administratorService.AddUserToRoleAsync(role, userId);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -140,11 +143,10 @@ namespace LightNap.WebApi.Controllers
         [HttpDelete("roles/{role}/{userId}")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> RemoveUserFromRole(string role, string userId)
+        public async Task<ApiResponseDto<bool>> RemoveUserFromRole(string role, string userId)
         {
-            if ((userId == this.User.GetUserId()) && (role == ApplicationRoles.Administrator.Name)) { throw new UserFriendlyApiException("You may not remove yourself from the Administrator role."); }
-
-            return await administratorService.RemoveUserFromRoleAsync(role, userId);
+            await administratorService.RemoveUserFromRoleAsync(role, userId);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -157,9 +159,10 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("users/{userId}/lock")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> LockUserAccount(string userId)
+        public async Task<ApiResponseDto<bool>> LockUserAccount(string userId)
         {
-            return await administratorService.LockUserAccountAsync(userId);
+            await administratorService.LockUserAccountAsync(userId);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -172,11 +175,10 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("users/{userId}/unlock")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> UnlockUserAccount(string userId)
+        public async Task<ApiResponseDto<bool>> UnlockUserAccount(string userId)
         {
-            return await administratorService.UnlockUserAccountAsync(userId);
+            await administratorService.UnlockUserAccountAsync(userId);
+            return new ApiResponseDto<bool>(true);
         }
-
-
     }
 }

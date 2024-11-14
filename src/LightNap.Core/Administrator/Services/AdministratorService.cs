@@ -7,6 +7,7 @@ using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Response;
+using LightNap.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,19 +16,17 @@ namespace LightNap.Core.Administrator.Services
     /// <summary>
     /// Service for managing administrator-related operations.
     /// </summary>
-    public class AdministratorService(UserManager<ApplicationUser> userManager, ApplicationDbContext db) : IAdministratorService
+    public class AdministratorService(UserManager<ApplicationUser> userManager, ApplicationDbContext db, IUserContext userContext) : IAdministratorService
     {
         /// <summary>
         /// Retrieves a user by ID.
         /// </summary>
         /// <param name="userId">The ID of the user to retrieve.</param>
-        /// <returns>The user details.</returns>
-        public async Task<ApiResponseDto<AdminUserDto?>> GetUserAsync(string userId)
+        /// <returns>The user details or null if not found.</returns>
+        public async Task<AdminUserDto?> GetUserAsync(string userId)
         {
             var user = await db.Users.FindAsync(userId);
-            // NOTE: The requested user not being found is a successful request if nothing fails. As a result, we return null as
-            // confirmation that the request succeeded but there is no user matching that ID. It makes client development easier.
-            return new ApiResponseDto<AdminUserDto?>(user?.ToAdminUserDto());
+            return user?.ToAdminUserDto();
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace LightNap.Core.Administrator.Services
         /// </summary>
         /// <param name="requestDto">The search criteria.</param>
         /// <returns>The list of users matching the criteria.</returns>
-        public async Task<ApiResponseDto<PagedResponse<AdminUserDto>>> SearchUsersAsync(SearchAdminUsersRequestDto requestDto)
+        public async Task<PagedResponse<AdminUserDto>> SearchUsersAsync(SearchAdminUsersRequestDto requestDto)
         {
             IQueryable<ApplicationUser> query = db.Users.AsQueryable();
 
@@ -66,8 +65,7 @@ namespace LightNap.Core.Administrator.Services
 
             var users = await query.Take(requestDto.PageSize).Select(user => user.ToAdminUserDto()).ToListAsync();
 
-            return new ApiResponseDto<PagedResponse<AdminUserDto>>(
-                new PagedResponse<AdminUserDto>(users, requestDto.PageNumber, requestDto.PageSize, totalCount));
+            return new PagedResponse<AdminUserDto>(users, requestDto.PageNumber, requestDto.PageSize, totalCount);
         }
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace LightNap.Core.Administrator.Services
         /// <param name="userId">The ID of the user to update.</param>
         /// <param name="requestDto">The updated user information.</param>
         /// <returns>The updated user details.</returns>
-        public async Task<ApiResponseDto<AdminUserDto>> UpdateUserAsync(string userId, UpdateAdminUserDto requestDto)
+        public async Task<AdminUserDto> UpdateUserAsync(string userId, UpdateAdminUserDto requestDto)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
@@ -85,15 +83,14 @@ namespace LightNap.Core.Administrator.Services
 
             await db.SaveChangesAsync();
 
-            return new ApiResponseDto<AdminUserDto>(user.ToAdminUserDto());
+            return user.ToAdminUserDto();
         }
 
         /// <summary>
         /// Deletes a user.
         /// </summary>
         /// <param name="userId">The ID of the user to delete.</param>
-        /// <returns>True if the user was successfully deleted.</returns>
-        public async Task<ApiResponseDto<bool>> DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
@@ -103,17 +100,15 @@ namespace LightNap.Core.Administrator.Services
             db.Users.Remove(user);
 
             await db.SaveChangesAsync();
-
-            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
         /// Retrieves all available roles.
         /// </summary>
         /// <returns>The list of roles.</returns>
-        public ApiResponseDto<IList<RoleDto>> GetRoles()
+        public IList<RoleDto> GetRoles()
         {
-            return new ApiResponseDto<IList<RoleDto>>(ApplicationRoles.All.ToDtoList());
+            return ApplicationRoles.All.ToDtoList();
         }
 
         /// <summary>
@@ -121,14 +116,14 @@ namespace LightNap.Core.Administrator.Services
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         /// <returns>The list of roles for the user.</returns>
-        public async Task<ApiResponseDto<IList<string>>> GetRolesForUserAsync(string userId)
+        public async Task<IList<string>> GetRolesForUserAsync(string userId)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             var roles = await userManager.GetRolesAsync(user);
 
-            return new ApiResponseDto<IList<string>>(roles);
+            return roles;
         }
 
         /// <summary>
@@ -136,10 +131,10 @@ namespace LightNap.Core.Administrator.Services
         /// </summary>
         /// <param name="role">The role to search for.</param>
         /// <returns>The list of users in the specified role.</returns>
-        public async Task<ApiResponseDto<IList<AdminUserDto>>> GetUsersInRoleAsync(string role)
+        public async Task<IList<AdminUserDto>> GetUsersInRoleAsync(string role)
         {
             var users = await userManager.GetUsersInRoleAsync(role);
-            return new ApiResponseDto<IList<AdminUserDto>>(users.ToAdminUserDtoList());
+            return users.ToAdminUserDtoList();
         }
 
         /// <summary>
@@ -147,19 +142,13 @@ namespace LightNap.Core.Administrator.Services
         /// </summary>
         /// <param name="role">The role to add the user to.</param>
         /// <param name="userId">The ID of the user to add to the role.</param>
-        /// <returns>True if the user was successfully added to the role.</returns>
-        public async Task<ApiResponseDto<bool>> AddUserToRoleAsync(string role, string userId)
+        public async Task AddUserToRoleAsync(string role, string userId)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             var result = await userManager.AddToRoleAsync(user, role);
-            if (!result.Succeeded)
-            {
-                throw new UserFriendlyApiException(result.Errors.Select(error => error.Description));
-            }
-
-            return new ApiResponseDto<bool>(true);
+            if (!result.Succeeded) { throw new UserFriendlyApiException("Failed to add user to role."); }
         }
 
         /// <summary>
@@ -167,63 +156,43 @@ namespace LightNap.Core.Administrator.Services
         /// </summary>
         /// <param name="role">The role to remove the user from.</param>
         /// <param name="userId">The ID of the user to remove from the role.</param>
-        /// <returns>True if the user was successfully removed from the role.</returns>
-        public async Task<ApiResponseDto<bool>> RemoveUserFromRoleAsync(string role, string userId)
+        public async Task RemoveUserFromRoleAsync(string role, string userId)
         {
+            if ((userId == userContext.GetUserId()) && (role == ApplicationRoles.Administrator.Name)) { throw new UserFriendlyApiException("You may not remove yourself from the Administrator role."); }
+
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             var result = await userManager.RemoveFromRoleAsync(user, role);
-            if (!result.Succeeded)
-            {
-                throw new UserFriendlyApiException(result.Errors.Select(error => error.Description));
-            }
-
-            return new ApiResponseDto<bool>(true);
+            if (!result.Succeeded) { throw new UserFriendlyApiException("Failed to remove user from role."); }
         }
 
         /// <summary>
         /// Locks a user account.
         /// </summary>
         /// <param name="userId">The ID of the user to lock.</param>
-        /// <returns>True if the user was successfully locked.</returns>
-        public async Task<ApiResponseDto<bool>> LockUserAccountAsync(string userId)
+        public async Task LockUserAccountAsync(string userId)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
-            if (await userManager.IsInRoleAsync(user, ApplicationRoles.Administrator.Name!)) { throw new UserFriendlyApiException("You may not lock an Administrator account."); }
-
             user.LockoutEnd = DateTimeOffset.MaxValue;
 
-            var result = await userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                throw new UserFriendlyApiException(result.Errors.Select(error => error.Description));
-            }
-
-            return new ApiResponseDto<bool>(true);
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
         /// Unlocks a user account.
         /// </summary>
         /// <param name="userId">The ID of the user to unlock.</param>
-        /// <returns>True if the user was successfully unlocked.</returns>
-        public async Task<ApiResponseDto<bool>> UnlockUserAccountAsync(string userId)
+        public async Task UnlockUserAccountAsync(string userId)
         {
             var user = await db.Users.FindAsync(userId);
             if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
 
             user.LockoutEnd = null;
 
-            var result = await userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                throw new UserFriendlyApiException(result.Errors.Select(error => error.Description));
-            }
-
-            return new ApiResponseDto<bool>(true);
+            await db.SaveChangesAsync();
         }
     }
 }

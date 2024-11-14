@@ -2,6 +2,7 @@ using LightNap.Core.Api;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 using LightNap.Core.Profile.Interfaces;
+using LightNap.WebApi.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,9 @@ namespace LightNap.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponseDto<ProfileDto>), 200)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<ApiResponseDto<ProfileDto>>> GetProfile()
+        public async Task<ApiResponseDto<ProfileDto>> GetProfile()
         {
-            return await profileService.GetProfileAsync();
+            return new ApiResponseDto<ProfileDto>(await profileService.GetProfileAsync());
         }
 
         /// <summary>
@@ -42,9 +43,9 @@ namespace LightNap.WebApi.Controllers
         [ProducesResponseType(typeof(ApiResponseDto<ProfileDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<ProfileDto>>> UpdateProfile(UpdateProfileDto requestDto)
+        public async Task<ApiResponseDto<ProfileDto>> UpdateProfile(UpdateProfileDto requestDto)
         {
-            return await profileService.UpdateProfileAsync(requestDto);
+            return new ApiResponseDto<ProfileDto>(await profileService.UpdateProfileAsync(requestDto));
         }
 
         /// <summary>
@@ -61,9 +62,10 @@ namespace LightNap.WebApi.Controllers
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> ChangePassword(ChangePasswordRequestDto requestDto)
+        public async Task<ApiResponseDto<bool>> ChangePassword(ChangePasswordRequestDto requestDto)
         {
-            return await profileService.ChangePasswordAsync(requestDto);
+            await profileService.ChangePasswordAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -77,9 +79,9 @@ namespace LightNap.WebApi.Controllers
         [HttpGet("settings")]
         [ProducesResponseType(typeof(ApiResponseDto<BrowserSettingsDto>), 200)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<ApiResponseDto<BrowserSettingsDto>>> GetSettings()
+        public async Task<ApiResponseDto<BrowserSettingsDto>> GetSettings()
         {
-            return await profileService.GetSettingsAsync();
+            return new ApiResponseDto<BrowserSettingsDto>(await profileService.GetSettingsAsync());
         }
 
         /// <summary>
@@ -96,9 +98,10 @@ namespace LightNap.WebApi.Controllers
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> UpdateSettings(BrowserSettingsDto requestDto)
+        public async Task<ApiResponseDto<bool>> UpdateSettings(BrowserSettingsDto requestDto)
         {
-            return await profileService.UpdateSettingsAsync(requestDto);
+            await profileService.UpdateSettingsAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -110,9 +113,9 @@ namespace LightNap.WebApi.Controllers
         [HttpGet("devices")]
         [ProducesResponseType(typeof(ApiResponseDto<IList<DeviceDto>>), 200)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<ApiResponseDto<IList<DeviceDto>>>> GetDevices()
+        public async Task<ApiResponseDto<IList<DeviceDto>>> GetDevices()
         {
-            return await profileService.GetDevicesAsync();
+            return new ApiResponseDto<IList<DeviceDto>>(await profileService.GetDevicesAsync());
         }
 
         /// <summary>
@@ -127,9 +130,10 @@ namespace LightNap.WebApi.Controllers
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> RevokeDevice(string deviceId)
+        public async Task<ApiResponseDto<bool>> RevokeDevice(string deviceId)
         {
-            return await profileService.RevokeDeviceAsync(deviceId);
+            await profileService.RevokeDeviceAsync(deviceId);
+            return new ApiResponseDto<bool>(true);
         }
     }
 }

@@ -81,13 +81,12 @@ namespace LightNap.Core.Tests
             };
 
             // Act
-            var result = await this._profileService.GetProfileAsync();
+            var profile = await this._profileService.GetProfileAsync();
 
             // Assert
-            TestHelper.AssertSuccess(result);
-            Assert.AreEqual(expectedProfile.Id, result.Result!.Id);
-            Assert.AreEqual(expectedProfile.Email, result.Result.Email);
-            Assert.AreEqual(expectedProfile.UserName, result.Result.UserName);
+            Assert.AreEqual(expectedProfile.Id, profile.Id);
+            Assert.AreEqual(expectedProfile.Email, profile.Email);
+            Assert.AreEqual(expectedProfile.UserName, profile.UserName);
         }
 
         [TestMethod]
@@ -100,10 +99,7 @@ namespace LightNap.Core.Tests
             };
 
             // Act
-            var result = await this._profileService.UpdateProfileAsync(updateProfileDto);
-
-            // Assert
-            TestHelper.AssertSuccess(result);
+            await this._profileService.UpdateProfileAsync(updateProfileDto);
         }
 
         [TestMethod]
@@ -122,12 +118,9 @@ namespace LightNap.Core.Tests
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
             // Act
-            var result = await this._profileService.ChangePasswordAsync(changePasswordDto);
+            await this._profileService.ChangePasswordAsync(changePasswordDto);
 
             // Assert
-            TestHelper.AssertSuccess(result);
-
-            // Also confirm user can log in with new password.
             var tokenServiceMock = new Mock<ITokenService>();
             tokenServiceMock.Setup(ts => ts.GenerateRefreshToken()).Returns("refresh-token");
             tokenServiceMock.Setup(ts => ts.GenerateAccessTokenAsync(It.IsAny<ApplicationUser>())).ReturnsAsync("access-token");
@@ -166,7 +159,7 @@ namespace LightNap.Core.Tests
                 RememberMe = false
             });
 
-            TestHelper.AssertSuccess(loginResult);
+            Assert.IsNotNull(loginResult.BearerToken);
         }
 
         [TestMethod]
@@ -216,11 +209,10 @@ namespace LightNap.Core.Tests
             BrowserSettingsDto browserSettings = new();
 
             // Act
-            var result = await this._profileService.GetSettingsAsync();
+            var settings = await this._profileService.GetSettingsAsync();
 
             // Assert
-            TestHelper.AssertSuccess(result);
-            Assert.AreEqual(browserSettings.Version, result.Result!.Version);
+            Assert.AreEqual(browserSettings.Version, settings.Version);
         }
 
         [TestMethod]
@@ -237,10 +229,7 @@ namespace LightNap.Core.Tests
             };
 
             // Act
-            var result = await this._profileService.UpdateSettingsAsync(updateSettingsDto);
-
-            // Assert
-            TestHelper.AssertSuccess(result);
+            await this._profileService.UpdateSettingsAsync(updateSettingsDto);
         }
 
         [TestMethod]
@@ -271,14 +260,13 @@ namespace LightNap.Core.Tests
             var result = await this._profileService.GetDevicesAsync();
 
             // Assert
-            TestHelper.AssertSuccess(result);
-            Assert.AreEqual(expectedDevices.Count, result.Result!.Count);
+            Assert.AreEqual(expectedDevices.Count, result.Count);
             expectedDevices.Reverse();
             for (int i = 0; i < expectedDevices.Count; i++)
             {
-                Assert.AreEqual(expectedDevices[i].Id, result.Result[i].Id);
-                Assert.AreEqual(expectedDevices[i].IpAddress, result.Result[i].IpAddress);
-                Assert.AreEqual(expectedDevices[i].Details, result.Result[i].Details);
+                Assert.AreEqual(expectedDevices[i].Id, result[i].Id);
+                Assert.AreEqual(expectedDevices[i].IpAddress, result[i].IpAddress);
+                Assert.AreEqual(expectedDevices[i].Details, result[i].Details);
             }
         }
 
@@ -302,11 +290,9 @@ namespace LightNap.Core.Tests
             await this._dbContext.SaveChangesAsync();
 
             // Act
-            var result = await this._profileService.RevokeDeviceAsync(deviceId);
+            await this._profileService.RevokeDeviceAsync(deviceId);
 
             // Assert
-            TestHelper.AssertSuccess(result);
-
             var revokedToken = await this._dbContext.RefreshTokens.FindAsync(deviceId);
             Assert.IsNotNull(revokedToken);
             Assert.IsTrue(revokedToken.IsRevoked);

@@ -40,29 +40,5 @@ namespace LightNap.Core.Tests.Utilities
             await roleManager.CreateAsync(role);
             return role;
         }
-
-        public static void AssertSuccess<T>(ApiResponseDto<T> response, bool expectDefault = false)
-        {
-            Assert.IsNotNull(response);
-            Assert.AreEqual(ApiResponseType.Success, response.Type);
-            if (expectDefault)
-            {
-                Assert.AreEqual(default(T), response.Result);
-            }
-            else
-            {
-                Assert.AreNotEqual(default(T), response.Result);
-            }
-            Assert.IsNull(response.ErrorMessages);
-        }
-
-        public static void AssertError<T>(ApiResponseDto<T> response)
-        {
-            Assert.IsNotNull(response);
-            Assert.AreEqual(ApiResponseType.Error, response.Type);
-            Assert.AreEqual(default(T), response.Result);
-            Assert.IsNotNull(response.ErrorMessages);
-            Assert.AreNotEqual(0, response.ErrorMessages.Count());
-        }
     }
 }

@@ -2,6 +2,7 @@ using LightNap.Core.Api;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
 using LightNap.Core.Identity.Interfaces;
+using LightNap.WebApi.Api;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LightNap.WebApi.Controllers
@@ -21,9 +22,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("login")]
         [ProducesResponseType(typeof(ApiResponseDto<LoginResultDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<LoginResultDto>>> LogIn(LoginRequestDto requestDto)
+        public async Task<ApiResponseDto<LoginResultDto>> LogIn(LoginRequestDto requestDto)
         {
-            return await identityService.LogInAsync(requestDto);
+            return new ApiResponseDto<LoginResultDto>(await identityService.LogInAsync(requestDto));
         }
 
         /// <summary>
@@ -34,9 +35,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("register")]
         [ProducesResponseType(typeof(ApiResponseDto<LoginResultDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<LoginResultDto>>> Register(RegisterRequestDto requestDto)
+        public async Task<ApiResponseDto<LoginResultDto>> Register(RegisterRequestDto requestDto)
         {
-            return await identityService.RegisterAsync(requestDto);
+            return new ApiResponseDto<LoginResultDto>(await identityService.RegisterAsync(requestDto));
         }
 
         /// <summary>
@@ -45,9 +46,10 @@ namespace LightNap.WebApi.Controllers
         /// <returns>The API response indicating the success of the operation.</returns>
         [HttpGet("logout")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> LogOut()
+        public async Task<ApiResponseDto<bool>> LogOut()
         {
-            return await identityService.LogOutAsync();
+            await identityService.LogOutAsync();
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -58,9 +60,10 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> ResetPassword(ResetPasswordRequestDto requestDto)
+        public async Task<ApiResponseDto<bool>> ResetPassword(ResetPasswordRequestDto requestDto)
         {
-            return await identityService.ResetPasswordAsync(requestDto);
+            await identityService.ResetPasswordAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
         }
 
         /// <summary>
@@ -71,9 +74,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("new-password")]
         [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<string>>> NewPassword(NewPasswordRequestDto requestDto)
+        public async Task<ApiResponseDto<string>> NewPassword(NewPasswordRequestDto requestDto)
         {
-            return await identityService.NewPasswordAsync(requestDto);
+            return new ApiResponseDto<string>(await identityService.NewPasswordAsync(requestDto));
         }
 
         /// <summary>
@@ -84,9 +87,9 @@ namespace LightNap.WebApi.Controllers
         [HttpPost("verify-code")]
         [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ApiResponseDto<string>>> VerifyCode(VerifyCodeRequestDto requestDto)
+        public async Task<ApiResponseDto<string>> VerifyCode(VerifyCodeRequestDto requestDto)
         {
-            return await identityService.VerifyCodeAsync(requestDto);
+            return new ApiResponseDto<string>(await identityService.VerifyCodeAsync(requestDto));
         }
 
         /// <summary>
@@ -95,9 +98,9 @@ namespace LightNap.WebApi.Controllers
         /// <returns>The API response containing the new access token.</returns>
         [HttpGet("access-token")]
         [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
-        public async Task<ActionResult<ApiResponseDto<string>>> RefreshToken()
+        public async Task<ApiResponseDto<string>> RefreshToken()
         {
-            return await identityService.GetAccessTokenAsync();
+            return new ApiResponseDto<string>(await identityService.GetAccessTokenAsync());
         }
     }
 }

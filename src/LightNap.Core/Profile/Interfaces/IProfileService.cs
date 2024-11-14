@@ -12,47 +12,47 @@ namespace LightNap.Core.Profile.Interfaces
         /// <summary>
         /// Retrieves the profile of the requesting user.
         /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{ProfileDto}"/> with the user's profile.</returns>
-        Task<ApiResponseDto<ProfileDto>> GetProfileAsync();
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="ProfileDto"/> with the user's profile.</returns>
+        Task<ProfileDto> GetProfileAsync();
 
         /// <summary>
         /// Updates the profile of the requesting user.
         /// </summary>
         /// <param name="requestDto">The data transfer object containing the profile update information.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{ProfileDto}"/> with the updated profile.</returns>
-        Task<ApiResponseDto<ProfileDto>> UpdateProfileAsync(UpdateProfileDto requestDto);
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="ProfileDto"/> with the updated profile.</returns>
+        Task<ProfileDto> UpdateProfileAsync(UpdateProfileDto requestDto);
 
         /// <summary>
         /// Changes the password of the requesting user.
         /// </summary>
         /// <param name="requestDto">The data transfer object containing the password change information.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{bool}"/> indicating whether the password change was successful.</returns>
-        Task<ApiResponseDto<bool>> ChangePasswordAsync(ChangePasswordRequestDto requestDto);
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task ChangePasswordAsync(ChangePasswordRequestDto requestDto);
 
         /// <summary>
         /// Retrieves the settings of the requesting user.
         /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{SettingsDto}"/> with the user's settings.</returns>
-        Task<ApiResponseDto<BrowserSettingsDto>> GetSettingsAsync();
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="BrowserSettingsDto"/> with the user's settings.</returns>
+        Task<BrowserSettingsDto> GetSettingsAsync();
 
         /// <summary>
         /// Updates the settings of the requesting user.
         /// </summary>
         /// <param name="requestDto">The data transfer object containing the settings update information.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{SettingsDto}"/> with the updated settings.</returns>
-        Task<ApiResponseDto<bool>> UpdateSettingsAsync(BrowserSettingsDto requestDto);
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task UpdateSettingsAsync(BrowserSettingsDto requestDto);
 
         /// <summary>  
-        /// Retrieves a list of devices for the specified user.  
+        /// Retrieves a list of devices for the requesting user.  
         /// </summary>  
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{T}"/> with a list of <see cref="DeviceDto"/>.</returns>  
-        Task<ApiResponseDto<IList<DeviceDto>>> GetDevicesAsync();
+        /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see cref="DeviceDto"/>.</returns>  
+        Task<IList<DeviceDto>> GetDevicesAsync();
 
         /// <summary>  
-        /// Revokes a device for the specified user.  
+        /// Revokes a device for the requesting user.  
         /// </summary>  
         /// <param name="deviceId">The ID of the device to be revoked.</param>  
-        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApiResponseDto{T}"/> with a boolean indicating success or failure.</returns>  
-        Task<ApiResponseDto<bool>> RevokeDeviceAsync(string deviceId);
+        /// <returns>A task that represents the asynchronous operation.</returns>  
+        Task RevokeDeviceAsync(string deviceId);
     }
 }
