@@ -12,10 +12,10 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Int
 {
     public interface I<#= Parameters.PascalName #>Service
     {
-        Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>);
-        Task<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto);
-        Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Create<#= Parameters.PascalName #>Async(Create<#= Parameters.PascalName #>Dto dto);
-        Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto);
-        Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>);
+        Task<<#= Parameters.PascalName #>Dto?> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>);
+        Task<PagedResponse<<#= Parameters.PascalName #>Dto>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto);
+        Task<<#= Parameters.PascalName #>Dto> Create<#= Parameters.PascalName #>Async(Create<#= Parameters.PascalName #>Dto dto);
+        Task<<#= Parameters.PascalName #>Dto> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto);
+        Task Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>);
     }
 }

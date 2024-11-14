@@ -53,7 +53,7 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("              <p-checkbox label=\"");
+            this.Write("              <p-triStateCheckbox label=\"");
             
             #line 20 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
@@ -67,7 +67,7 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("\" [binary]=\"true\" class=\"w-15rem\" />\r\n");
+            this.Write("\" class=\"w-full\" />\r\n");
             
             #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexHtml.tt"
               break;

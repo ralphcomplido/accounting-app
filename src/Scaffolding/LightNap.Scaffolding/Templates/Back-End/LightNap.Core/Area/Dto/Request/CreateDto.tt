@@ -13,8 +13,11 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Req
     public class Create<#= Parameters.PascalName #>Dto
     {
         // TODO: Update which fields to include when creating this item.
-<# foreach (var property in Parameters.SetProperties) { #>
+<#  if (Parameters.IdProperty.IsRequired) { #>
+		public required <#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.Name #> { get; set; }
+<#  } #>
+<#  foreach (var property in Parameters.SetProperties) { #>
         public <#= property.IsRequired ? "required " : "" #><#= property.BackEndType #><#= property.IsNullable ? "?" : "" #> <#= property.Name #> { get; set; }
-<# } #>
+<#  } #>
     }
 }

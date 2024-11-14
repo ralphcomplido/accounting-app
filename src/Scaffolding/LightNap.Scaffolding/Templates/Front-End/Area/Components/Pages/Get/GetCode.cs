@@ -94,8 +94,14 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  readonly id = input<number>(undef" +
-                    "ined);\r\n  ");
+            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  readonly id = input<");
+            
+            #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
+            
+            #line default
+            #line hidden
+            this.Write(">(undefined);\r\n  ");
             
             #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));

@@ -23,7 +23,7 @@ export class GetComponent implements OnInit {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
   errors = new Array<string>();
 
-  readonly id = input<number>(undefined);
+  readonly id = input<<#= Parameters.IdProperty.FrontEndType #>>(undefined);
   <#= Parameters.CamelName #>$?: Observable<<#= Parameters.PascalName #>>;
 
   ngOnInit() {

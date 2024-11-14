@@ -17,13 +17,13 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
 {
     public class <#= Parameters.PascalName #>Service(ApplicationDbContext db) : I<#= Parameters.PascalName #>Service
     {
-        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
+        public async Task<<#= Parameters.PascalName #>Dto?> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
             var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
-            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item?.ToDto());
+            return item?.ToDto();
         }
 
-        public async Task<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto)
+        public async Task<PagedResponse<<#= Parameters.PascalName #>Dto>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto)
         {
             var query = db.<#= Parameters.PascalNamePlural #>.AsQueryable();
 
@@ -47,32 +47,30 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
 
             var items = await query.Take(dto.PageSize).Select(item => item.ToDto()).ToListAsync();
 
-            return new ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>(
-                new PagedResponse<<#= Parameters.PascalName #>Dto>(items, dto.PageNumber, dto.PageSize, totalCount));
+            return new PagedResponse<<#= Parameters.PascalName #>Dto>(items, dto.PageNumber, dto.PageSize, totalCount);
         }
 
-        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Create<#= Parameters.PascalName #>Async(Create<#= Parameters.PascalName #>Dto dto)
+        public async Task<<#= Parameters.PascalName #>Dto> Create<#= Parameters.PascalName #>Async(Create<#= Parameters.PascalName #>Dto dto)
         {
             <#= Parameters.PascalName #> item = dto.ToCreate();
             db.<#= Parameters.PascalNamePlural #>.Add(item);
             await db.SaveChangesAsync();
-            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item.ToDto());
+            return item.ToDto();
         }
 
-        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto)
+        public async Task<<#= Parameters.PascalName #>Dto> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto)
         {
             var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>) ?? throw new UserFriendlyApiException("The specified <#= Parameters.PascalName #> was not found.");
             item.UpdateFromDto(dto);
             await db.SaveChangesAsync();
-            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item.ToDto());
+            return item.ToDto();
         }
 
-        public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
+        public async Task Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
             var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>) ?? throw new UserFriendlyApiException("The specified <#= Parameters.PascalName #> was not found.");
             db.<#= Parameters.PascalNamePlural #>.Remove(item);
             await db.SaveChangesAsync();
-            return new ApiResponseDto<bool>(true);
         }
     }
 }

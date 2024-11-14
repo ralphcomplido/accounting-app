@@ -11,6 +11,17 @@
 
   <form [formGroup]="form" (ngSubmit)="createClicked()" autocomplete="off">
     <div class="w-30rem flex flex-column gap-4">
+<# if (Parameters.IdProperty.IsRequired) { #>
+          <div class="w-16rem">
+<#      if (Parameters.IdProperty.FrontEndType == "number") { #>
+              <label for="<#= Parameters.IdProperty.CamelName #>" class="block text-900 font-medium mb-2"><#= Parameters.IdProperty.Name #></label>
+              <p-inputNumber id="<#= Parameters.IdProperty.CamelName #>" formControlName="<#= Parameters.IdProperty.CamelName #>" styleClass="w-full" />
+<#	    } else { #>
+              <label for="<#= Parameters.IdProperty.CamelName #>" class="block text-900 font-medium mb-2"><#= Parameters.IdProperty.Name #></label>
+              <input pInputText id="<#= Parameters.IdProperty.CamelName #>" formControlName="<#= Parameters.IdProperty.CamelName #>" class="w-full" />
+<# }#>
+          </div>
+<# } #>
 <# foreach (var property in Parameters.SetProperties) { #>
       <div>
 <#      switch (property.FrontEndType) {

@@ -17,6 +17,7 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { PanelModule } from "primeng/panel";
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
+import { TriStateCheckboxModule } from "primeng/tristatecheckbox";
 import { debounceTime, startWith, Subject, switchMap } from "rxjs";
 import { <#= Parameters.PascalName #> } from "src/app/<#= Parameters.KebabNamePlural #>/models/response/<#= Parameters.KebabName #>";
 import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.KebabNamePlural #>/services/<#= Parameters.KebabName #>.service";
@@ -31,6 +32,7 @@ import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.Keba
     InputTextModule,
     InputNumberModule,
     CalendarModule,
+    TriStateCheckboxModule,
     ApiResponseComponent,
     PanelModule,
     TableModule,

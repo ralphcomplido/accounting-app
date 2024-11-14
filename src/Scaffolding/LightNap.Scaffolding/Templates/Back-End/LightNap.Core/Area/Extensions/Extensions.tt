@@ -17,6 +17,9 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ext
             // TODO: Update these fields to match the DTO.
             var item = new <#= Parameters.PascalName #>()
             {
+<#  if (Parameters.IdProperty.IsRequired) { #>
+		        <#= Parameters.IdProperty.Name #> = dto.<#= Parameters.IdProperty.Name #>,
+<#  } #>
 <# foreach (var property in Parameters.SetProperties) { #>
                 <#= property.Name #> = dto.<#= property.Name #>,
 <# } #>

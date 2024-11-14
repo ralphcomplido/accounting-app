@@ -8,6 +8,7 @@ using <#= Parameters.CoreNamespace #>.Api;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using <#= Parameters.WebApiNamespace #>.Api;
 using Microsoft.AspNetCore.Mvc;
 
 namespace <#= Parameters.WebApiNamespace #>.Controllers
@@ -23,37 +24,38 @@ namespace <#= Parameters.WebApiNamespace #>.Controllers
     {
         [HttpGet("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
-        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>);
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(await <#= Parameters.CamelNamePlural #>Service.Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>));
         }
 
         [HttpPost("search")]
         [ProducesResponseType(typeof(ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>), 200)]
-        public async Task<ActionResult<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>>> Search<#= Parameters.PascalNamePlural #>([FromBody] Search<#= Parameters.PascalNamePlural #>Dto dto)
+        public async Task<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>> Search<#= Parameters.PascalNamePlural #>([FromBody] Search<#= Parameters.PascalNamePlural #>Dto dto)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Search<#= Parameters.PascalNamePlural #>Async(dto);
+            return new ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>(await <#= Parameters.CamelNamePlural #>Service.Search<#= Parameters.PascalNamePlural #>Async(dto));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 201)]
-        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Create<#= Parameters.PascalName #>([FromBody] Create<#= Parameters.PascalName #>Dto dto)
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Create<#= Parameters.PascalName #>([FromBody] Create<#= Parameters.PascalName #>Dto dto)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Create<#= Parameters.PascalName #>Async(dto);
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(await <#= Parameters.CamelNamePlural #>Service.Create<#= Parameters.PascalName #>Async(dto));
         }
 
         [HttpPut("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<<#= Parameters.PascalName #>Dto>), 200)]
-        public async Task<ActionResult<ApiResponseDto<<#= Parameters.PascalName #>Dto>>> Update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, [FromBody] Update<#= Parameters.PascalName #>Dto dto)
+        public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, [FromBody] Update<#= Parameters.PascalName #>Dto dto)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>, dto);
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(await <#= Parameters.CamelNamePlural #>Service.Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>, dto));
         }
 
         [HttpDelete("{<#= Parameters.IdProperty.CamelName #>}")]
         [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
-        public async Task<ActionResult<ApiResponseDto<bool>>> Delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
+        public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
-            return await <#= Parameters.CamelNamePlural #>Service.Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>);
+            await <#= Parameters.CamelNamePlural #>Service.Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.CamelName #>);
+            return new ApiResponseDto<bool>(true);
         }
     }
 }

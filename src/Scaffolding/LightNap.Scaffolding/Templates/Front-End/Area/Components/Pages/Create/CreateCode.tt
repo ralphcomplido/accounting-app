@@ -46,6 +46,15 @@ export class CreateComponent {
 
   form = this.#fb.group({
 	// TODO: Update these fields to match the right parameters.
+<#  if (Parameters.IdProperty.IsRequired) {
+        if (Parameters.IdProperty.FrontEndType == "number") { #>
+	<#= Parameters.IdProperty.CamelName #>: this.#fb.control(1, [Validators.required]),
+<#      } else if (Parameters.IdProperty.BackEndType == "Guid") { #>
+	<#= Parameters.IdProperty.CamelName #>: this.#fb.control("a0641a12-dead-beef-f00d-f1acc1d171e5", [Validators.required]),
+<#      } else { #>
+	<#= Parameters.IdProperty.CamelName #>: this.#fb.control("", [Validators.required]),
+<#      }
+    } #>
 <#  foreach (var property in Parameters.SetProperties) {
         switch (property.FrontEndType) {
             case "boolean": #>

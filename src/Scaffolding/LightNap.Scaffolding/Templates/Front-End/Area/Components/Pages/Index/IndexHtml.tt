@@ -17,7 +17,7 @@
           <div class="w-16rem">
 <#      switch (property.FrontEndType) {
             case "boolean": #>
-              <p-checkbox label="<#= property.Name #>" formControlName="<#= property.CamelName #>" [binary]="true" class="w-15rem" />
+              <p-triStateCheckbox label="<#= property.Name #>" formControlName="<#= property.CamelName #>" class="w-full" />
 <#              break;
             case "Date": #>
               <label for="<#= property.CamelName #>" class="block text-900 font-medium mb-2"><#= property.Name #></label>
