@@ -3,8 +3,8 @@ name: Deploy to Azure App Service
 on:
   workflow_run:
     workflows: "Build, Test, and Publish"
-    types:
-      - completed
+    - completed
+    - success
 
 permissions:
   contents: read
@@ -12,12 +12,11 @@ permissions:
 concurrency:
   group: "deploy-to-azure"
   cancel-in-progress: true
-  
+
 jobs:
   deploy:
-    if: vars.RUN_DEPLOY_TO_AZURE_APP_SERVICE == 'true'
+    if: vars.RUN_DEPLOY_TO_AZURE_APP_SERVICE == 'true' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 

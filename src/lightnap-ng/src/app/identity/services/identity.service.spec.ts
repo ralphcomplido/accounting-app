@@ -37,7 +37,7 @@ describe('IdentityService', () => {
         timerServiceSpy.watchTimer$.and.returnValue(of(0));
 
         dataServiceSpy = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
-        dataServiceSpy.getAccessToken.and.returnValue(of(new ErrorApiResponse(["Unauthorized by default"])));
+        dataServiceSpy.getAccessToken.and.returnValue(of(undefined));
 
         service = TestBed.inject(IdentityService);
     });
