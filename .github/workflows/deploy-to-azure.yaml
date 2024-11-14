@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: ${{ vars.RUN_DEPLOY_TO_AZURE_APP_SERVICE == 'true' && github.event.workflow_run.conclusion == 'success' }}
+    if: vars.RUN_DEPLOY_TO_AZURE_APP_SERVICE == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
