@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: "Build, Test, and Publish"
     - completed
-    - success
 
 permissions:
   contents: read
