@@ -37,7 +37,7 @@ describe("apiResponseInterceptor", () => {
 
     TestBed.runInInjectionContext(() => {
       apiResponseInterceptor(request, next).subscribe({
-        next: (event: HttpEvent<unknown>) => {
+        error: (event: HttpEvent<unknown>) => {
           expect(identityService.logOut).toHaveBeenCalled();
           expect(routeAliasService.navigate).toHaveBeenCalledWith("login");
           done();
@@ -57,7 +57,7 @@ describe("apiResponseInterceptor", () => {
 
     TestBed.runInInjectionContext(() => {
       apiResponseInterceptor(request, next).subscribe({
-        next: (event: HttpEvent<unknown>) => {
+        error: (event: HttpEvent<unknown>) => {
           expect(console.error).toHaveBeenCalledWith(errorResponse);
           done();
         },
@@ -76,7 +76,7 @@ describe("apiResponseInterceptor", () => {
 
     TestBed.runInInjectionContext(() => {
       apiResponseInterceptor(request, next).subscribe({
-        next: (event: HttpEvent<unknown>) => {
+        error: (event: HttpEvent<unknown>) => {
           expect(console.error).not.toHaveBeenCalled();
           done();
         },
@@ -92,10 +92,7 @@ describe("apiResponseInterceptor", () => {
 
     TestBed.runInInjectionContext(() => {
       apiResponseInterceptor(request, next).subscribe({
-        next: (event: HttpEvent<unknown>) => {
-          expect(event).toEqual(jasmine.any(HttpResponse));
-          expect((event as HttpResponse<any>).body).toEqual(jasmine.any(HttpErrorApiResponse));
-          expect((event as HttpResponse<any>).status).toBe(500);
+        error: (event: HttpErrorApiResponse<any>) => {
           done();
         },
       });

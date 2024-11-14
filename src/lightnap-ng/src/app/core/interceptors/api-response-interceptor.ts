@@ -31,6 +31,8 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
           return throwError(() => apiHttpResponse.body);
         case "Success":
           return of(apiHttpResponse.clone({ body: apiHttpResponse.body.result }));
+        default:
+          break;
       }
 
       return of(httpEvent);
@@ -39,6 +41,7 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
       if (error.status === 401) {
         identityService.logOut();
         routeAliasService.navigate("login");
+        return throwError(() => error);
       }
 
       switch (error?.type) {
