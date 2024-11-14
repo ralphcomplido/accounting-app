@@ -80,6 +80,7 @@ export class IdentityService {
         this.#onTokenReceived(token);
         this.#requestingRefreshToken = false;
       },
+      error: () => {}
     });
   }
 

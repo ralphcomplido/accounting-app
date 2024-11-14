@@ -41,7 +41,7 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
         routeAliasService.navigate("login");
       }
 
-      switch (error.type) {
+      switch (error?.type) {
         case "Error":
         case "UnexpectedError":
           return throwError(() => error);
@@ -51,7 +51,7 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
         console.error(error);
       }
 
-      return of(new HttpResponse({ body: new HttpErrorApiResponse(error as HttpErrorResponse), status: error.status }));
+      return throwError(() => of(new HttpResponse({ body: new HttpErrorApiResponse(error as HttpErrorResponse), status: error.status })));
     })
   );
 }
