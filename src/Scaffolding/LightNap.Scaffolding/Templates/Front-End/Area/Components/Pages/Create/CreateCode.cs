@@ -33,7 +33,7 @@ import { CommonModule } from ""@angular/common"";
 import { Component, inject } from ""@angular/core"";
 import { FormBuilder, ReactiveFormsModule, Validators } from ""@angular/forms"";
 import { ActivatedRoute, Router, RouterLink } from ""@angular/router"";
-import { BlockUiService, ErrorListComponent, throwIfApiError } from ""@core"";
+import { BlockUiService, ErrorListComponent } from ""@core"";
 import { ButtonModule } from ""primeng/button"";
 import { CalendarModule } from ""primeng/calendar"";
 import { CardModule } from ""primeng/card"";
@@ -300,17 +300,23 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(@"(request)
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
-      .subscribe({
-        next: response => this.#router.navigate([response.result.id], { relativeTo: this.#activeRoute.parent }),
-        error: response => (this.errors = response.errorMessages),
-      });
-  }
-}");
+            this.Write("(request)\r\n      .pipe(finalize(() => this.#blockUi.hide()))\r\n      .subscribe({\r" +
+                    "\n        next: ");
+            
+            #line 85 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(" => this.#router.navigate([");
+            
+            #line 85 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(".id], { relativeTo: this.#activeRoute.parent }),\r\n        error: response => (thi" +
+                    "s.errors = response.errorMessages),\r\n      });\r\n  }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

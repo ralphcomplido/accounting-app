@@ -8,7 +8,7 @@ import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { BlockUiService, ErrorListComponent, throwIfApiError } from "@core";
+import { BlockUiService, ErrorListComponent } from "@core";
 import { ButtonModule } from "primeng/button";
 import { CalendarModule } from "primeng/calendar";
 import { CardModule } from "primeng/card";
@@ -80,12 +80,9 @@ export class CreateComponent {
     this.#blockUi.show({message: "Creating..."});
     this.#<#= Parameters.CamelName #>Service
       .create<#= Parameters.PascalName #>(request)
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: response => this.#router.navigate([response.result.id], { relativeTo: this.#activeRoute.parent }),
+        next: <#= Parameters.CamelName #> => this.#router.navigate([<#= Parameters.CamelName #>.id], { relativeTo: this.#activeRoute.parent }),
         error: response => (this.errors = response.errorMessages),
       });
   }

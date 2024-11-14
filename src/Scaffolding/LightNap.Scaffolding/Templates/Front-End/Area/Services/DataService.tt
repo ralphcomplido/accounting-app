@@ -6,7 +6,7 @@
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { API_URL_ROOT, ApiResponse, PagedResponse } from "@core";
+import { API_URL_ROOT, PagedResponse } from "@core";
 import { tap } from "rxjs";
 import {<#= Parameters.PascalName #>Helper } from "../helpers/<#= Parameters.KebabName #>.helper";
 import { Create<#= Parameters.PascalName #>Request } from "../models/request/create-<#= Parameters.KebabName #>-request";
@@ -22,34 +22,26 @@ export class DataService {
   #apiUrlRoot = `${inject(API_URL_ROOT)}<#= Parameters.PascalNamePlural #>/`;
 
   get<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
-    return this.#http.get<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`).pipe(
-      tap(response => {
-        if (response.result) {
-          <#= Parameters.PascalName #>Helper.rehydrate(response.result);
-        }
-      })
-    );
+    return this.#http.get<<#= Parameters.PascalName #>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`).pipe(
+      tap(<#= Parameters.CamelName #> => <#= Parameters.PascalName #>Helper.rehydrate(<#= Parameters.CamelName #>))
+      );
   }
 
   search<#= Parameters.PascalNamePlural #>(request: Search<#= Parameters.PascalNamePlural #>Request) {
-    return this.#http.post<ApiResponse<PagedResponse<<#= Parameters.PascalName #>>>>(`${this.#apiUrlRoot}search`, request).pipe(
-      tap(response => {
-        if (response.result) {
-          response.result.data.forEach(<#= Parameters.PascalName #>Helper.rehydrate);
-        }
-      })
+    return this.#http.post<PagedResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}search`, request).pipe(
+      tap(results => results.data.forEach(<#= Parameters.PascalName #>Helper.rehydrate))
     );
   }
 
   create<#= Parameters.PascalName #>(request: Create<#= Parameters.PascalName #>Request) {
-    return this.#http.post<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}`, request);
+    return this.#http.post<<#= Parameters.PascalName #>>(`${this.#apiUrlRoot}`, request);
   }
 
   update<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>, request: Update<#= Parameters.PascalName #>Request) {
-    return this.#http.put<ApiResponse<<#= Parameters.PascalName #>>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`, request);
+    return this.#http.put<<#= Parameters.PascalName #>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`, request);
   }
 
   delete<#= Parameters.PascalName #>(<#= Parameters.IdProperty.CamelName #>: <#= Parameters.IdProperty.FrontEndType #>) {
-    return this.#http.delete<ApiResponse<boolean>>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`);
+    return this.#http.delete<boolean>(`${this.#apiUrlRoot}${<#= Parameters.IdProperty.CamelName #>}`);
   }
 }

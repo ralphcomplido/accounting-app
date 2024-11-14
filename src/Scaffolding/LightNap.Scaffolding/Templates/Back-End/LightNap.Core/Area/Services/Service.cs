@@ -175,15 +175,15 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(");\r\n            return ApiResponseDto<");
+            this.Write(");\r\n            return new ApiResponseDto<");
             
             #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("Dto>.CreateSuccess(item?.ToDto());\r\n        }\r\n\r\n        public async Task<ApiRes" +
-                    "ponseDto<PagedResponse<");
+            this.Write("Dto>(item?.ToDto());\r\n        }\r\n\r\n        public async Task<ApiResponseDto<Paged" +
+                    "Response<");
             
             #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -264,14 +264,14 @@ namespace LightNap.Scaffolding.Templates
 
             var items = await query.Take(dto.PageSize).Select(item => item.ToDto()).ToListAsync();
 
-            return ApiResponseDto<PagedResponse<");
+            return new ApiResponseDto<PagedResponse<");
             
             #line 50 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("Dto>>.CreateSuccess(\r\n                new PagedResponse<");
+            this.Write("Dto>>(\r\n                new PagedResponse<");
             
             #line 51 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -314,16 +314,15 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(".Add(item);\r\n            await db.SaveChangesAsync();\r\n            return ApiResp" +
-                    "onseDto<");
+            this.Write(".Add(item);\r\n            await db.SaveChangesAsync();\r\n            return new Api" +
+                    "ResponseDto<");
             
             #line 59 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("Dto>.CreateSuccess(item.ToDto());\r\n        }\r\n\r\n        public async Task<ApiResp" +
-                    "onseDto<");
+            this.Write("Dto>(item.ToDto());\r\n        }\r\n\r\n        public async Task<ApiResponseDto<");
             
             #line 62 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
@@ -372,81 +371,73 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write(");\r\n            if (item is null) { return ApiResponseDto<");
+            this.Write(") ?? throw new UserFriendlyApiException(\"The specified ");
             
-            #line 65 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 64 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write("Dto>.CreateError(\"The specified ");
+            this.Write(" was not found.\");\r\n            item.UpdateFromDto(dto);\r\n            await db.Sa" +
+                    "veChangesAsync();\r\n            return new ApiResponseDto<");
             
-            #line 65 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 67 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write(" was not found.\"); }\r\n            item.UpdateFromDto(dto);\r\n            await db." +
-                    "SaveChangesAsync();\r\n            return ApiResponseDto<");
+            this.Write("Dto>(item.ToDto());\r\n        }\r\n\r\n        public async Task<ApiResponseDto<bool>>" +
+                    " Delete");
             
-            #line 68 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
-            
-            #line default
-            #line hidden
-            this.Write("Dto>.CreateSuccess(item.ToDto());\r\n        }\r\n\r\n        public async Task<ApiResp" +
-                    "onseDto<bool>> Delete");
-            
-            #line 71 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 70 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 71 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 70 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.BackEndType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 71 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 70 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n            var item = await db.");
             
-            #line 73 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 72 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalNamePlural));
             
             #line default
             #line hidden
             this.Write(".FindAsync(");
             
-            #line 73 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 72 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.CamelName));
             
             #line default
             #line hidden
-            this.Write(");\r\n            if (item is null) { return ApiResponseDto<bool>.CreateError(\"The " +
-                    "specified ");
+            this.Write(") ?? throw new UserFriendlyApiException(\"The specified ");
             
-            #line 74 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 72 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write(" was not found.\"); }\r\n            db.");
+            this.Write(" was not found.\");\r\n            db.");
             
-            #line 75 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
+            #line 73 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Back-End\LightNap.Core\Area\Services\Service.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalNamePlural));
             
             #line default
             #line hidden
-            this.Write(".Remove(item);\r\n            await db.SaveChangesAsync();\r\n            return ApiR" +
-                    "esponseDto<bool>.CreateSuccess(true);\r\n        }\r\n    }\r\n}");
+            this.Write(".Remove(item);\r\n            await db.SaveChangesAsync();\r\n            return new " +
+                    "ApiResponseDto<bool>(true);\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

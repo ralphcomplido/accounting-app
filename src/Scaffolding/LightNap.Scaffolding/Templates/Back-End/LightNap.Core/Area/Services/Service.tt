@@ -20,7 +20,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
         public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Get<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
             var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
-            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item?.ToDto());
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item?.ToDto());
         }
 
         public async Task<ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>> Search<#= Parameters.PascalNamePlural #>Async(Search<#= Parameters.PascalNamePlural #>Dto dto)
@@ -47,7 +47,7 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
 
             var items = await query.Take(dto.PageSize).Select(item => item.ToDto()).ToListAsync();
 
-            return ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>.CreateSuccess(
+            return new ApiResponseDto<PagedResponse<<#= Parameters.PascalName #>Dto>>(
                 new PagedResponse<<#= Parameters.PascalName #>Dto>(items, dto.PageNumber, dto.PageSize, totalCount));
         }
 
@@ -56,25 +56,23 @@ namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Ser
             <#= Parameters.PascalName #> item = dto.ToCreate();
             db.<#= Parameters.PascalNamePlural #>.Add(item);
             await db.SaveChangesAsync();
-            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item.ToDto());
         }
 
         public async Task<ApiResponseDto<<#= Parameters.PascalName #>Dto>> Update<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>, Update<#= Parameters.PascalName #>Dto dto)
         {
-            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
-            if (item is null) { return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>) ?? throw new UserFriendlyApiException("The specified <#= Parameters.PascalName #> was not found.");
             item.UpdateFromDto(dto);
             await db.SaveChangesAsync();
-            return ApiResponseDto<<#= Parameters.PascalName #>Dto>.CreateSuccess(item.ToDto());
+            return new ApiResponseDto<<#= Parameters.PascalName #>Dto>(item.ToDto());
         }
 
         public async Task<ApiResponseDto<bool>> Delete<#= Parameters.PascalName #>Async(<#= Parameters.IdProperty.BackEndType #> <#= Parameters.IdProperty.CamelName #>)
         {
-            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>);
-            if (item is null) { return ApiResponseDto<bool>.CreateError("The specified <#= Parameters.PascalName #> was not found."); }
+            var item = await db.<#= Parameters.PascalNamePlural #>.FindAsync(<#= Parameters.IdProperty.CamelName #>) ?? throw new UserFriendlyApiException("The specified <#= Parameters.PascalName #> was not found.");
             db.<#= Parameters.PascalNamePlural #>.Remove(item);
             await db.SaveChangesAsync();
-            return ApiResponseDto<bool>.CreateSuccess(true);
+            return new ApiResponseDto<bool>(true);
         }
     }
 }

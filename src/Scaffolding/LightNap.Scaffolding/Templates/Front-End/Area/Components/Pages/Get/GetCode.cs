@@ -32,7 +32,7 @@ namespace LightNap.Scaffolding.Templates
 import { CommonModule } from ""@angular/common"";
 import { Component, inject, input, OnInit } from ""@angular/core"";
 import { RouterLink } from ""@angular/router"";
-import { ApiResponse, ApiResponseComponent } from ""@core"";
+import { ApiResponseComponent } from ""@core"";
 import { ButtonModule } from ""primeng/button"";
 import { CardModule } from ""primeng/card"";
 import { Observable } from ""rxjs"";
@@ -102,14 +102,14 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("$?: Observable<ApiResponse<");
+            this.Write("$?: Observable<");
             
             #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write(">>;\r\n\r\n  ngOnInit() {\r\n    this.");
+            this.Write(">;\r\n\r\n  ngOnInit() {\r\n    this.");
             
             #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));

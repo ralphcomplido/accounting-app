@@ -34,7 +34,7 @@ import { Component, inject } from ""@angular/core"";
 import { takeUntilDestroyed } from ""@angular/core/rxjs-interop"";
 import { FormBuilder, ReactiveFormsModule } from ""@angular/forms"";
 import { RouterModule } from ""@angular/router"";
-import { ApiResponseComponent, EmptyPagedResponse, SuccessApiResponse } from ""@core"";
+import { ApiResponseComponent, EmptyPagedResponse } from ""@core"";
 import { ButtonModule } from ""primeng/button"";
 import { CalendarModule } from ""primeng/calendar"";
 import { CardModule } from ""primeng/card"";
@@ -171,14 +171,14 @@ export class IndexComponent {
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to
     // fake an empty response so we can avoid a redundant call to the API.
-    startWith(new SuccessApiResponse(new EmptyPagedResponse<");
+    startWith(new EmptyPagedResponse<");
             
             #line 63 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write(@">()))
+            this.Write(@">())
   );
 
   constructor() {

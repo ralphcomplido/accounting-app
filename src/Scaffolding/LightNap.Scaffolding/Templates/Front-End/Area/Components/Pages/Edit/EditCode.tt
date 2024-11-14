@@ -8,7 +8,7 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, input, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ApiResponse, ApiResponseComponent, BlockUiService, ConfirmPopupComponent, ErrorListComponent, throwIfApiError, ToastService } from "@core";
+import { ApiResponseComponent, BlockUiService, ConfirmPopupComponent, ErrorListComponent, ToastService } from "@core";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CalendarModule } from "primeng/calendar";
@@ -79,15 +79,11 @@ export class EditComponent implements OnInit {
   });
 
   readonly id = input<number>(undefined);
-  <#= Parameters.CamelName #>$ = new Observable<ApiResponse<<#= Parameters.PascalName #>>>();
+  <#= Parameters.CamelName #>$ = new Observable<<#= Parameters.PascalName #>>();
 
   ngOnInit() {
     this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>()).pipe(
-      tap(response => {
-        if (response.result) {
-          this.form.patchValue(response.result);
-        }
-      })
+      tap(<#= Parameters.CamelName #> => this.form.patchValue(<#= Parameters.CamelName #>))
     );
   }
 
@@ -99,10 +95,7 @@ export class EditComponent implements OnInit {
     this.#blockUi.show({ message: "Saving..." });
     this.#<#= Parameters.CamelName #>Service
       .updateTestEntity(this.id(), request)
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#toast.success("Updated successfully"),
         error: response => (this.errors = response.errorMessages),
@@ -120,18 +113,13 @@ export class EditComponent implements OnInit {
       accept: () => {
         this.#blockUi.show({ message: "Deleting..." });
         this.#<#= Parameters.CamelName #>Service.delete<#= Parameters.PascalName #>(this.<#= Parameters.IdProperty.CamelName #>())
-          .pipe(
-            throwIfApiError(),
-            finalize(() => this.#blockUi.hide())
-          )
-          .subscribe(response => {
-            if (!response.result) {
-              this.errors = response.errorMessages;
-              return;
-            }
-
-            this.#toast.success("Deleted successfully");
-            this.#router.navigate(["."], { relativeTo: this.#activeRoute.parent });
+          .pipe(finalize(() => this.#blockUi.hide()))
+          .subscribe({
+            next: () => {
+              this.#toast.success("Deleted successfully");
+              this.#router.navigate(["."], { relativeTo: this.#activeRoute.parent });
+            },
+            error: response => this.errors = response.errorMessages
           });
       },
     });
