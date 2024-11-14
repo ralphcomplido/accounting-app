@@ -103,9 +103,37 @@ To protect a route, add the guard to its `canActivate` collection. A reference e
 {: .important }
 Front-end work to restrict access to functionality is superficial. While it provides a nicer user experience to show or hide components, the key security considerations must be taken care of on the back-end. Never rely on front-end security for anything meaningful because insecure back-end APIs can be easily exploited.
 
+#### Role Directives
+
+Route directives make it easy to show or hide elements based on the logged-in user's role membership.
+
+The `showByRoles` directive only shows the element if the user is logged in and belongs to at least one of the roles listed.
+
+``` html
+<p-button showByRoles roles="Administrator" ...
+```
+
+or
+
+``` html
+<p-button showByRoles [roles]="['Administrator', 'Moderator']" ...
+```
+
+Similarly, the `hideByRoles` directive only hides the element if the user is logged in and belongs to at least one of the roles listed.
+
+``` html
+<p-button hideByRoles roles="Administrator" ...
+```
+
+or
+
+``` html
+<p-button hideByRoles [roles]="['Administrator', 'Moderator']" ...
+```
+
 #### Menus
 
-You can also [change the sidebar menu](./sidebar-menu.md) based on the roles of the logged-in user.
+You can also [change the sidebar menu](./sidebar-menu) based on the roles of the logged-in user.
 
 ### Managing User Roles
 

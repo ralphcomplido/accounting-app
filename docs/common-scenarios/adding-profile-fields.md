@@ -166,7 +166,7 @@ In this scenario we will assume that the user also needs to provide these fields
 4. Update the `RegisterAsync` method to set the fields on a new `ApplicationUser`.
 
     ```csharp
-    public async Task<ApiResponseDto<LoginResultDto>> RegisterAsync(RegisterRequestDto requestDto)
+    public async Task<LoginResultDto> RegisterAsync(RegisterRequestDto requestDto)
     {
       ...
       ApplicationUser user = new(requestDto.UserName, requestDto.Email, applicationSettings.Value.RequireTwoFactorForNewUsers);
@@ -192,7 +192,7 @@ In this scenario we will assume that the user also needs to provide these fields
 4. Update the `SearchUsersAsync` method to apply the name parameters for exact matches, if provided.
 
     ``` csharp
-    public async Task<ApiResponseDto<PagedResponse<AdminUserDto>>> SearchUsersAsync(SearchUsersRequestDto requestDto)
+    public async Task<PagedResponse<AdminUserDto>> SearchUsersAsync(SearchUsersRequestDto requestDto)
     {
         IQueryable<ApplicationUser> query = db.Users.AsQueryable();
 
@@ -349,9 +349,21 @@ The front-end is also divided into areas that map directly to the back-end areas
     <form [formGroup]="form" (ngSubmit)="updateProfile()" autocomplete="off">
     <div class="flex flex-column w-20rem">
       <label for="firstName" class="font-semibold mb-2">First Name</label>
-      <input id="firstName" type="text" pInputText formControlName="firstName" class="w-full mb-2" style="padding: 1rem" />
+      <input
+        id="firstName"
+        type="text"
+        pInputText
+        formControlName="firstName"
+        class="w-full mb-2"
+        style="padding: 1rem" />
+
       <label for="lastName" class="font-semibold mb-2">Last Name</label>
-      <input id="lastName" type="text" pInputText formControlName="lastName" class="w-full mb-2" style="padding: 1rem" />
+      <input id="lastName"
+        type="text"
+        pInputText
+        formControlName="lastName"
+        class="w-full mb-2"
+        style="padding: 1rem" />
     ...
     ```
 
