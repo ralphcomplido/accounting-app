@@ -54,7 +54,7 @@ describe('IdentityService', () => {
 
     it('should log in and set token', () => {
         const loginRequest = {} as any;
-        dataServiceSpy.logIn.and.returnValue(of(new SuccessApiResponse({ bearerToken: token, twoFactorRequired: false })));
+        dataServiceSpy.logIn.and.returnValue(of({ bearerToken: token, twoFactorRequired: false }));
         service.logIn(loginRequest).subscribe(() => {
             expect(service.getBearerToken()).toBe(`Bearer ${token}`);
         });
@@ -62,7 +62,7 @@ describe('IdentityService', () => {
     });
 
     it('should log out and clear token', () => {
-        dataServiceSpy.logOut.and.returnValue(of(new SuccessApiResponse(true)));
+        dataServiceSpy.logOut.and.returnValue(of(true));
         service.logOut().subscribe(() => {
             expect(service.getBearerToken()).toBeUndefined();
         });
@@ -71,7 +71,7 @@ describe('IdentityService', () => {
 
     it('should register and set token', () => {
         const registerRequest: RegisterRequest = {} as any;
-        dataServiceSpy.register.and.returnValue(of(new SuccessApiResponse({ bearerToken: token, twoFactorRequired: false })));
+        dataServiceSpy.register.and.returnValue(of({ bearerToken: token, twoFactorRequired: false }));
         service.register(registerRequest).subscribe(() => {
             expect(service.getBearerToken()).toBe(`Bearer ${token}`);
         });
@@ -80,7 +80,7 @@ describe('IdentityService', () => {
 
     it('should verify code and set token', () => {
         const verifyCodeRequest: VerifyCodeRequest = {} as any;
-        dataServiceSpy.verifyCode.and.returnValue(of(new SuccessApiResponse(token)));
+        dataServiceSpy.verifyCode.and.returnValue(of(token));
         service.verifyCode(verifyCodeRequest).subscribe(() => {
             expect(service.getBearerToken()).toBe(`Bearer ${token}`);
         });
@@ -96,7 +96,7 @@ describe('IdentityService', () => {
 
     it('should set new password and set token', () => {
         const newPasswordRequest: NewPasswordRequest = {} as any;
-        dataServiceSpy.newPassword.and.returnValue(of(new SuccessApiResponse(token)));
+        dataServiceSpy.newPassword.and.returnValue(of(token));
         service.newPassword(newPasswordRequest).subscribe(() => {
             expect(service.getBearerToken()).toBe(`Bearer ${token}`);
         });

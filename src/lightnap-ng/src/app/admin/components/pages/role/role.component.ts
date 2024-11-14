@@ -2,7 +2,7 @@ import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
 import { Component, inject, Input, OnInit } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { ApiResponse, ConfirmPopupComponent, SuccessApiResponse, throwIfApiError } from "@core";
+import { ConfirmPopupComponent } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { RoutePipe } from "@routing";
@@ -38,7 +38,7 @@ export class RoleComponent implements OnInit {
   subHeader = "";
   errors: string[] = [];
 
-  viewModel$ = new Observable<ApiResponse<RoleViewModel>>();
+  viewModel$ = new Observable<RoleViewModel>();
 
   ngOnInit() {
     this.#refreshRole();
@@ -46,17 +46,14 @@ export class RoleComponent implements OnInit {
 
   #refreshRole() {
     this.viewModel$ = forkJoin([this.#adminService.getRole(this.role), this.#adminService.getUsersInRole(this.role)]).pipe(
-      map(([roleResponse, usersResponse]) => {
-        if (!roleResponse.result) return roleResponse as any as ApiResponse<RoleViewModel>;
-        if (!usersResponse.result) return usersResponse as any as ApiResponse<RoleViewModel>;
+      map(([role, users]) => {
+        this.header = `Manage Users In Role: ${role.displayName}`;
+        this.subHeader = role.description;
 
-        this.header = `Manage Users In Role: ${roleResponse.result.displayName}`;
-        this.subHeader = roleResponse.result.description;
-
-        return new SuccessApiResponse<RoleViewModel>({
-          role: roleResponse.result,
-          users: usersResponse.result,
-        });
+        return <RoleViewModel>{
+          role,
+          users,
+        };
       })
     );
   }
@@ -70,13 +67,10 @@ export class RoleComponent implements OnInit {
       target: event.target,
       key: userId,
       accept: () => {
-        this.#adminService
-          .removeUserFromRole(userId, this.role)
-          .pipe(throwIfApiError())
-          .subscribe({
-            next: () => this.#refreshRole(),
-            error: response => (this.errors = response.errorMessages),
-          });
+        this.#adminService.removeUserFromRole(userId, this.role).subscribe({
+          next: () => this.#refreshRole(),
+          error: response => (this.errors = response.errorMessages),
+        });
       },
     });
   }

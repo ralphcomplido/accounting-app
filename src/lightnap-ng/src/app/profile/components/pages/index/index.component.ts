@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { BlockUiService, catchApiError, ErrorListComponent, throwIfApiError, ToastService } from "@core";
+import { BlockUiService, ErrorListComponent, ToastService } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ProfileService } from "@profile/services/profile.service";
 import { RouteAliasService } from "@routing";
@@ -27,21 +27,16 @@ export class IndexComponent {
   errors = new Array<string>();
 
   profile$ = this.#profileService.getProfile().pipe(
-    throwIfApiError(),
-    tap(response => {
+    tap(profile => {
       // Set form values.
-    }),
-    catchApiError()
+    })
   );
 
   updateProfile() {
     this.#blockUi.show({ message: "Updating profile..." });
     this.#profileService
       .updateProfile({})
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#toast.success("Profile updated successfully."),
         error: response => (this.errors = response.errorMessages),
@@ -52,10 +47,7 @@ export class IndexComponent {
     this.#blockUi.show({ message: "Logging out..." });
     this.#identityService
       .logOut()
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#routeAlias.navigate("landing"),
         error: response => (this.errors = response.errorMessages),

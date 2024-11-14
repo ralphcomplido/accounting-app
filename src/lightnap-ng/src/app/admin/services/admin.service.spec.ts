@@ -92,8 +92,8 @@ describe("AdminService", () => {
   it("should get user roles", () => {
     const role = "Administrator";
     const userId = "user-id";
-    const rolesResponse = new SuccessApiResponse<Role[]>([{ name: role } as Role]);
-    const userRolesResponse = new SuccessApiResponse<string[]>([role]);
+    const rolesResponse = new Array<Role>({ name: role } as Role);
+    const userRolesResponse = new Array<string>(role);
     dataServiceSpy.getRoles.and.returnValue(of(rolesResponse));
     dataServiceSpy.getUserRoles.and.returnValue(of(userRolesResponse));
 
@@ -152,18 +152,18 @@ describe("AdminService", () => {
 
   it("should get user with roles", () => {
     const userId = "user-id";
-    const userResponse = new SuccessApiResponse<AdminUser>({ id: userId, userName: "testUser" } as AdminUser);
-    const rolesResponse = new SuccessApiResponse<Role[]>([{ name: "admin" } as Role]);
-    const userRolesResponse = new SuccessApiResponse<string[]>(["admin"]);
+    const userResponse = { id: userId, userName: "testUser" } as AdminUser;
+    const rolesResponse = [{ name: "admin" } as Role];
+    const userRolesResponse = ["admin"];
 
     dataServiceSpy.getUser.and.returnValue(of(userResponse));
     dataServiceSpy.getUserRoles.and.returnValue(of(userRolesResponse));
     dataServiceSpy.getRoles.and.returnValue(of(rolesResponse));
 
-    service.getUserWithRoles(userId).subscribe(response => {
-      expect(response.result).toBeDefined();
-      expect(response.result.user).toEqual(userResponse.result);
-      expect(response.result.roles).toEqual(rolesResponse.result);
+    service.getUserWithRoles(userId).subscribe(userWithRoles => {
+      expect(userWithRoles).toBeDefined();
+      expect(userWithRoles.user).toEqual(userResponse);
+      expect(userWithRoles.roles).toEqual(rolesResponse);
     });
 
     expect(dataServiceSpy.getUser).toHaveBeenCalledWith(userId);

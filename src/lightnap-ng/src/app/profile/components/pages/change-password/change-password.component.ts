@@ -1,18 +1,14 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { BlockUiService, throwIfApiError } from "@core";
+import { BlockUiService } from "@core";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { confirmPasswordValidator } from "@core/helpers/form-helpers";
 import { ToastService } from "@core/services/toast.service";
 import { ProfileService } from "@profile/services/profile.service";
-import { RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { MessagesModule } from "primeng/messages";
 import { PasswordModule } from "primeng/password";
-import { TableModule } from "primeng/table";
 import { finalize } from "rxjs";
 
 @Component({
@@ -20,14 +16,10 @@ import { finalize } from "rxjs";
   templateUrl: "./change-password.component.html",
   imports: [
     CommonModule,
-    TableModule,
     ButtonModule,
     ErrorListComponent,
     PasswordModule,
     ReactiveFormsModule,
-    RouterModule,
-    RoutePipe,
-    MessagesModule,
     CardModule,
   ],
 })
@@ -56,10 +48,7 @@ export class ChangePasswordComponent {
         currentPassword: this.form.value.currentPassword,
         newPassword: this.form.value.newPassword,
       })
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => {
           this.#toast.success("Password changed successfully.");

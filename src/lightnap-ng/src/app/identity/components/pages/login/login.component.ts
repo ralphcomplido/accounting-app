@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
-import { BlockUiService, ErrorListComponent, throwIfApiError } from "@core";
+import { BlockUiService, ErrorListComponent } from "@core";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
@@ -54,12 +54,11 @@ export class LoginComponent {
         deviceDetails: navigator.userAgent,
       })
       .pipe(
-        throwIfApiError(),
         finalize(() => this.#blockUi.hide())
       )
       .subscribe({
-        next: response => {
-          if (response.result.twoFactorRequired) {
+        next: result => {
+          if (result.twoFactorRequired) {
             this.#routeAlias.navigate("verify-code", this.form.value.email);
           } else {
             const redirectUrl = this.#identityService.redirectUrl;

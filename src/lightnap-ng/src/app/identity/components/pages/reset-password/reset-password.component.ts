@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { BlockUiService, ErrorListComponent, throwIfApiError } from "@core";
+import { BlockUiService, ErrorListComponent } from "@core";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
@@ -33,10 +33,7 @@ export class ResetPasswordComponent {
     this.#blockUi.show({ message: "Resetting password..." });
     this.#identityService
       .resetPassword({ email: this.form.value.email })
-      .pipe(
-        throwIfApiError(),
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#routeAlias.getRoute("reset-instructions-sent"),
         error: response => (this.errors = response.errorMessages),

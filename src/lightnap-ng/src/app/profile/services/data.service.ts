@@ -11,30 +11,30 @@ export class DataService {
   #apiUrlRoot = `${inject(API_URL_ROOT)}profile/`;
 
   changePassword(changePasswordRequest: ChangePasswordRequest) {
-    return this.#http.post<ApiResponse<boolean>>(`${this.#apiUrlRoot}change-password`, changePasswordRequest);
+    return this.#http.post<boolean>(`${this.#apiUrlRoot}change-password`, changePasswordRequest);
   }
 
   getProfile() {
-    return this.#http.get<ApiResponse<Profile>>(`${this.#apiUrlRoot}`);
+    return this.#http.get<Profile>(`${this.#apiUrlRoot}`);
   }
 
   updateProfile(updateProfile: UpdateProfileRequest) {
-    return this.#http.put<ApiResponse<Profile>>(`${this.#apiUrlRoot}`, updateProfile);
+    return this.#http.put<Profile>(`${this.#apiUrlRoot}`, updateProfile);
   }
 
   getDevices() {
-    return this.#http.get<ApiResponse<Device>>(`${this.#apiUrlRoot}devices`);
+    return this.#http.get<Device>(`${this.#apiUrlRoot}devices`);
   }
 
   revokeDevice(deviceId: string) {
-    return this.#http.delete<ApiResponse<boolean>>(`${this.#apiUrlRoot}devices/${deviceId}`);
+    return this.#http.delete<boolean>(`${this.#apiUrlRoot}devices/${deviceId}`);
   }
 
   getSettings() {
-    return this.#http.get<ApiResponse<ApplicationSettings>>(`${this.#apiUrlRoot}settings`);
+    return this.#http.get<ApplicationSettings>(`${this.#apiUrlRoot}settings`);
   }
 
   updateSettings(browserSettings: ApplicationSettings) {
-    return this.#http.put<ApiResponse<boolean>>(`${this.#apiUrlRoot}settings`, browserSettings);
+    return this.#http.put<boolean>(`${this.#apiUrlRoot}settings`, browserSettings);
   }
 }

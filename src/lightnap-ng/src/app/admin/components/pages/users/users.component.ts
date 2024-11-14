@@ -6,14 +6,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import {
-  ApiResponseComponent,
-  ConfirmPopupComponent,
-  EmptyPagedResponse,
-  ErrorListComponent,
-  ListItem,
-  SuccessApiResponse,
-  throwIfApiError,
-  ToastService,
+    ApiResponseComponent,
+    ConfirmPopupComponent,
+    EmptyPagedResponse,
+    ErrorListComponent,
+    ListItem,
+    ToastService
 } from "@core";
 import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
@@ -73,7 +71,7 @@ export class UsersComponent {
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to fake an empty response
     // so we can avoid a redundant call to the API.
-    startWith(new SuccessApiResponse(new EmptyPagedResponse<AdminUser>()))
+    startWith(new EmptyPagedResponse<AdminUser>())
   );
 
   sortBys = [
@@ -102,7 +100,6 @@ export class UsersComponent {
       accept: () => {
         this.#adminService
           .deleteUser(userId)
-          .pipe(throwIfApiError())
           .subscribe({
             next: () => {
               this.#toast.success("User deleted successfully.");

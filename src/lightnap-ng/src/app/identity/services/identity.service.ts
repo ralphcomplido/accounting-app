@@ -1,12 +1,11 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { distinctUntilChanged, filter, map, ReplaySubject, take, tap } from "rxjs";
-import { DataService } from "./data.service";
-import { TimerService } from "../../core/services/timer.service";
-import { LoginRequest, RegisterRequest, VerifyCodeRequest, ResetPasswordRequest, NewPasswordRequest, LoginResult } from "@identity/models";
 import { InitializationService } from "@core/services/initialization.service";
-import { catchApiError, throwIfApiError } from "@core";
+import { LoginRequest, LoginResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity/models";
+import { distinctUntilChanged, filter, map, ReplaySubject, take, tap } from "rxjs";
+import { TimerService } from "../../core/services/timer.service";
+import { DataService } from "./data.service";
 
 /**
  * Service responsible for managing user identity, including authentication and token management.
@@ -77,8 +76,8 @@ export class IdentityService {
     if (this.#requestingRefreshToken) return;
     this.#requestingRefreshToken = true;
     this.#dataService.getAccessToken().subscribe({
-      next: response => {
-        this.#onTokenReceived(response.result);
+      next: token => {
+        this.#onTokenReceived(token);
         this.#requestingRefreshToken = false;
       },
     });
@@ -189,11 +188,7 @@ export class IdentityService {
    * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
    */
   logIn(loginRequest: LoginRequest) {
-    return this.#dataService.logIn(loginRequest).pipe(
-      tap(response => {
-        this.#onTokenReceived(response.result?.bearerToken);
-      })
-    );
+    return this.#dataService.logIn(loginRequest).pipe(tap(result => this.#onTokenReceived(result.bearerToken)));
   }
 
   /**
@@ -203,11 +198,7 @@ export class IdentityService {
    * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
    */
   register(registerRequest: RegisterRequest) {
-    return this.#dataService.register(registerRequest).pipe(
-      tap(response => {
-        this.#onTokenReceived(response.result?.bearerToken);
-      })
-    );
+    return this.#dataService.register(registerRequest).pipe(tap(result => this.#onTokenReceived(result?.bearerToken)));
   }
 
   /**
@@ -216,11 +207,7 @@ export class IdentityService {
    * @returns {Observable<ApiResponse<boolean>>} An observable containing the result of the operation.
    */
   logOut() {
-    return this.#dataService.logOut().pipe(
-      throwIfApiError(),
-      tap(() => this.#onTokenReceived(undefined)),
-      catchApiError()
-    );
+    return this.#dataService.logOut().pipe(tap(() => this.#onTokenReceived(undefined)));
   }
 
   /**
@@ -230,11 +217,7 @@ export class IdentityService {
    * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
    */
   verifyCode(verifyCodeRequest: VerifyCodeRequest) {
-    return this.#dataService.verifyCode(verifyCodeRequest).pipe(
-      tap(response => {
-        this.#onTokenReceived(response.result);
-      })
-    );
+    return this.#dataService.verifyCode(verifyCodeRequest).pipe(tap(token => this.#onTokenReceived(token)));
   }
 
   /**
@@ -254,10 +237,6 @@ export class IdentityService {
    * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
    */
   newPassword(newPasswordRequest: NewPasswordRequest) {
-    return this.#dataService.newPassword(newPasswordRequest).pipe(
-      tap(response => {
-        this.#onTokenReceived(response.result);
-      })
-    );
+    return this.#dataService.newPassword(newPasswordRequest).pipe(tap(token => this.#onTokenReceived(token)));
   }
 }

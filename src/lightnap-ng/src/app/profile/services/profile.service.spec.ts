@@ -105,7 +105,7 @@ describe('ProfileService', () => {
     it('should update style settings', () => {
         const styleSettings: StyleSettings = {} as any;
         const expectedSettings: ApplicationSettings = {} as any;
-        dataServiceSpy.getSettings.and.returnValue(of(new SuccessApiResponse(expectedSettings)));
+        dataServiceSpy.getSettings.and.returnValue(of(expectedSettings));
         dataServiceSpy.updateSettings.and.returnValue(of({} as any));
 
         service.updateStyleSettings(styleSettings).subscribe();
