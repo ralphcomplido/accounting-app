@@ -15,12 +15,6 @@ export class ErrorApiResponse<T> implements ApiResponse<T> {
     type: ApiResponseType = "Error";
 
     /**
-     * Indicates whether the response requires reauthorization.
-     * Defaults to `false`.
-     */
-    requiresReauthorization = false;
-
-    /**
      * The result of the API call.
      * Always set to `undefined` for error responses.
      */

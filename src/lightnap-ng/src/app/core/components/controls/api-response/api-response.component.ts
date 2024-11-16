@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, ContentChild, Input, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
 import { ApiResponse, ErrorApiResponse, SuccessApiResponse } from "@core";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { catchError, map, Observable, of } from "rxjs";
 import { ErrorListComponent } from "../error-list/error-list.component";
 
@@ -8,7 +9,7 @@ import { ErrorListComponent } from "../error-list/error-list.component";
   selector: "api-response",
   standalone: true,
   templateUrl: "./api-response.component.html",
-  imports: [CommonModule, ErrorListComponent],
+  imports: [CommonModule, ErrorListComponent, ProgressSpinnerModule],
 })
 export class ApiResponseComponent implements OnChanges {
   @Input({ required: true }) apiResponse: Observable<any>;
@@ -25,7 +26,18 @@ export class ApiResponseComponent implements OnChanges {
     if (changes["apiResponse"].currentValue) {
       this.internalApiResponse$ = this.apiResponse.pipe(
         map(result => new SuccessApiResponse(result)),
-        catchError(error => of(error as ApiResponse<string>))
+        catchError((error: ApiResponse<any>) => {
+          if (!error.type) {
+            console.error(`ApiResponseComponent expects an ApiResponse object to have been thrown in throwError, but received:`, error);
+            throw Error("ApiResponseComponent expects an ApiResponse object to have been thrown in throwError");
+          }
+
+          if (error.errorMessages?.length > 0) {
+            return of(error as ApiResponse<string>);
+          }
+
+          return of(new ErrorApiResponse<any>(["No error message provided"]));
+        })
       );
     }
   }
