@@ -3,8 +3,8 @@ using LightNap.Core.Extensions;
 using LightNap.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -21,28 +21,26 @@ namespace LightNap.Core.Services
         private readonly string _issuer;
         private readonly string _audience;
         private readonly int _expirationMinutes;
-        private readonly JwtSecurityTokenHandler _tokenHandler;
+        private readonly JsonWebTokenHandler _tokenHandler;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenService"/> class.
         /// </summary>
         /// <param name="configuration">The configuration settings.</param>
         /// <param name="userManager">The user manager.</param>
         public TokenService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this._userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
-            var tokenKey = _configuration.GetRequiredSetting("Jwt:Key");
+            var tokenKey = this._configuration.GetRequiredSetting("Jwt:Key");
             if (tokenKey.Length < 32) { throw new ArgumentException("The provided setting 'Jwt:Key' must be at least 32 characters long"); }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
-            _signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            this._signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            _issuer = _configuration.GetRequiredSetting("Jwt:Issuer");
-            _audience = _configuration.GetRequiredSetting("Jwt:Audience");
-            _expirationMinutes = int.Parse(_configuration.GetRequiredSetting("Jwt:ExpirationMinutes"));
-            _tokenHandler = new JwtSecurityTokenHandler();
+            this._issuer = this._configuration.GetRequiredSetting("Jwt:Issuer");
+            this._audience = this._configuration.GetRequiredSetting("Jwt:Audience");
+            this._expirationMinutes = int.Parse(this._configuration.GetRequiredSetting("Jwt:ExpirationMinutes"));
+            this._tokenHandler = new JsonWebTokenHandler();
         }
 
         /// <summary>
@@ -55,28 +53,29 @@ namespace LightNap.Core.Services
         {
             ArgumentNullException.ThrowIfNull(user);
 
-            var claims = new List<Claim>
-                {
-                    new(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                    new(JwtRegisteredClaimNames.Sub, user.UserName!),
-                    new(JwtRegisteredClaimNames.Email, user.Email!),
-                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+            var claims = new Dictionary<string, object>
+            {
+                [ClaimTypes.NameIdentifier] = user.Id,
+                [ClaimTypes.Email] = user.Email!,
+                [ClaimTypes.Name] = user.UserName!,
+            };
 
-            IList<string>? roles = await _userManager.GetRolesAsync(user);
+            IList<string>? roles = await this._userManager.GetRolesAsync(user);
             if (roles != null && roles.Any())
             {
-                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+                claims.Add(ClaimTypes.Role, roles);
             }
 
-            var token = new JwtSecurityToken(
-                issuer: _issuer,
-                audience: _audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_expirationMinutes),
-                signingCredentials: _signingCredentials);
+            var token = new SecurityTokenDescriptor()
+            {
+                Issuer = this._issuer,
+                Audience = this._audience,
+                Claims = claims,
+                Expires = DateTime.UtcNow.AddMinutes(this._expirationMinutes),
+                SigningCredentials = this._signingCredentials
+            };
 
-            return _tokenHandler.WriteToken(token);
+            return this._tokenHandler.CreateToken(token);
         }
 
         /// <summary>
