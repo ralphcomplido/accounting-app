@@ -12,9 +12,7 @@ import { DataService } from "./data.service";
  *
  * @remarks
  * This service handles the acquisition, storage, and refreshing of authentication tokens. It also provides
- * methods for logging in, registering, logging out, verifying codes, and resetting passwords. The service
- * uses a timer to periodically check if the token needs to be refreshed and attempts to refresh it if it is
- * close to expiration.
+ * methods for logging in, registering, logging out, verifying codes, and resetting passwords.
  */
 @Injectable({
   providedIn: "root",
@@ -29,20 +27,91 @@ export class IdentityService {
   #timer = inject(TimerService);
   #dataService = inject(DataService);
 
-  #token?: string;
-  #expires = 0;
-
   #loggedInSubject$ = new ReplaySubject<boolean>(1);
   #loggedInRolesSubject$ = new ReplaySubject<Array<string>>(1);
-  #roles?: Array<string>;
-  #requestingRefreshToken = false;
 
+  #token?: string;
+  #expires = 0;
+  #requestingRefreshToken = false;
+  #userId?: string;
+  #userName?: string;
+  #email?: string;
+  #roles?: Array<string>;
   #redirectUrl?: string;
+
+  /**
+   * @property loggedIn
+   * @description Returns whether the user is currently logged in.
+   * @returns {boolean} True if the user is logged in, false otherwise.
+   * @readonly
+   * @remarks This property should only be used when the user is known to be logged in.
+   * Prefer using watchLoggedIn$() to observe changes in the login status.
+   */
+  get loggedIn() {
+    return !!this.#token;
+  }
+
+  /**
+   * @property userId
+   * @description Gets the user ID from the decoded token.
+   * @returns {string | undefined} The user ID if available, otherwise undefined.
+   * @readonly
+   * @remarks This property should only be used when the user is known to be logged in.
+   */
+  get userId() {
+    return this.#userId;
+  }
+
+  /**
+   * @property userName
+   * @description Gets the user name from the decoded token.
+   * @returns {string | undefined} The user name if available, otherwise undefined.
+   * @readonly
+   * @remarks This property should only be used when the user is known to be logged in.
+   */
+  get userName() {
+    return this.#userName;
+  }
+
+  /**
+   * @property email
+   * @description Gets the email address from the decoded token.
+   * @returns {string | undefined} The email address if available, otherwise undefined.
+   * @readonly
+   * @remarks This property should only be used when the user is known to be logged in.
+   */
+  get email() {
+    return this.#email;
+  }
+
+  /**
+   * @property roles
+   * @description Gets the roles from the decoded token.
+   * @returns {Array<string> | undefined} The roles if available, otherwise undefined.
+   * @readonly
+   * @remarks This property should only be used when the user is known to be logged in.
+   * Prefer using watchLoggedInToAnyRole$() to observe changes in the login status and roles.
+   */
+  get roles() {
+    return this.#roles;
+  }
+
+  /**
+   * @property redirectUrl
+   * @description Gets URL the user should be redirected to after a successful login.
+   * @returns {string | undefined} The redirect URL if available, otherwise undefined.
+   */
   get redirectUrl() {
     const url = this.#redirectUrl;
     this.#redirectUrl = undefined;
     return url;
   }
+
+  /**
+   * @property redirectUrl
+   * @description Sets the redirect URL to navigate to after a successful login.
+   * @param {string | undefined} value - The originally requested URL.
+   */
   set redirectUrl(value: string | undefined) {
     this.#redirectUrl = value;
   }
@@ -80,7 +149,7 @@ export class IdentityService {
         this.#onTokenReceived(token);
         this.#requestingRefreshToken = false;
       },
-      error: () => {}
+      error: () => {},
     });
   }
 
@@ -92,13 +161,12 @@ export class IdentityService {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(this.#token);
       this.#expires = decodedToken.exp * 1000;
-      const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      if (!roles) {
-        this.#roles = [];
-      } else if (Array.isArray(roles)) {
-        this.#roles = roles;
-      } else {
-        this.#roles = [roles];
+      this.#userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      this.#userName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      this.#email = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+      this.#roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? [];
+      if (!Array.isArray(this.#roles)) {
+        this.#roles = [this.#roles];
       }
     } else {
       this.#expires = 0;
@@ -106,17 +174,6 @@ export class IdentityService {
     }
 
     this.#loggedInRolesSubject$.next(this.#roles);
-  }
-
-  /**
-   * @property loggedIn
-   * @description Returns whether the user is currently logged in.
-   * @returns {boolean} True if the user is logged in, false otherwise.
-   * @readonly
-   * @remarks Prefer using watchLoggedIn$() to observe changes in the login status.
-   */
-  get loggedIn() {
-    return !!this.#token;
   }
 
   /**
