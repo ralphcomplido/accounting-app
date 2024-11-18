@@ -103,6 +103,8 @@ namespace LightNap.Scaffolding.AssemblyManager
             if (type == typeof(Guid)) { return "Guid"; }
             if (type == typeof(DateTime)) { return "DateTime"; }
             if (type == typeof(DateTimeOffset)) { return "DateTimeOffset"; }
+            if (type == typeof(DateOnly)) { return "DateOnly"; }
+            if (type == typeof(TimeOnly)) { return "TimeOnly"; }
             if (type == typeof(TimeSpan)) { return "TimeSpan"; }
             return type.Name;
         }

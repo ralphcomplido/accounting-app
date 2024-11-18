@@ -11,25 +11,27 @@ namespace LightNap.Scaffolding.AssemblyManager
     {
         private static readonly HashSet<Type> _supportedEfTypes =
         [
-                typeof(string),
-                typeof(DateTime),
-                typeof(DateTimeOffset),
-                typeof(TimeSpan),
-                typeof(Guid),
-                typeof(decimal),
-                typeof(int),
-                typeof(bool),
-                typeof(byte),
-                typeof(char),
-                typeof(double),
-                typeof(float),
-                typeof(long),
-                typeof(short),
-                typeof(uint),
-                typeof(ulong),
-                typeof(ushort),
-                typeof(sbyte)
-            ];
+            typeof(string),
+            typeof(DateTime),
+            typeof(DateTimeOffset),
+            typeof(DateOnly),
+            typeof(TimeOnly),
+            typeof(TimeSpan),
+            typeof(Guid),
+            typeof(decimal),
+            typeof(int),
+            typeof(bool),
+            typeof(byte),
+            typeof(char),
+            typeof(double),
+            typeof(float),
+            typeof(long),
+            typeof(short),
+            typeof(uint),
+            typeof(ulong),
+            typeof(ushort),
+            typeof(sbyte),
+        ];
 
         /// <summary>
         /// Gets the property details of a given type.

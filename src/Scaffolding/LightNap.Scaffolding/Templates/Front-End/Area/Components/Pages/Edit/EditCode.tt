@@ -67,6 +67,12 @@ export class EditComponent implements OnInit {
                 if (property.BackEndType == "Guid") { #>
 	<#= property.CamelName #>: this.#fb.control("a0641a12-dead-beef-f00d-f1acc1d171e5", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }
+                else if (property.BackEndType == "DateOnly") { #>
+	<#= property.CamelName #>: this.#fb.control("2024-11-17", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
+<#              }
+                else if (property.BackEndType == "TimeOnly") { #>
+	<#= property.CamelName #>: this.#fb.control("11:23:45", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
+<#              }
                 else if (property.BackEndType == "TimeSpan") { #>
 	<#= property.CamelName #>: this.#fb.control("01:00:00", [<#= !property.IsNullable ? "Validators.required" : "" #>]),
 <#              }

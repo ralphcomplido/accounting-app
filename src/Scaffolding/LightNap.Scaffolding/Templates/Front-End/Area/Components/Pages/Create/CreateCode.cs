@@ -271,7 +271,7 @@ export class CreateComponent {
             
             #line 72 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
-                else if (property.BackEndType == "TimeSpan") { 
+                else if (property.BackEndType == "DateOnly") { 
             
             #line default
             #line hidden
@@ -282,7 +282,7 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"01:00:00\", [");
+            this.Write(": this.#fb.control(\"2024-11-17\", [");
             
             #line 74 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
@@ -293,7 +293,7 @@ export class CreateComponent {
             
             #line 75 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
-                else { 
+                else if (property.BackEndType == "TimeOnly") { 
             
             #line default
             #line hidden
@@ -304,14 +304,7 @@ export class CreateComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control(\"");
-            
-            #line 77 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
-            
-            #line default
-            #line hidden
-            this.Write("\", [");
+            this.Write(": this.#fb.control(\"11:23:45\", [");
             
             #line 77 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
@@ -322,6 +315,57 @@ export class CreateComponent {
             
             #line 78 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
               }
+                else if (property.BackEndType == "TimeSpan") { 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 80 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": this.#fb.control(\"01:00:00\", [");
+            
+            #line 80 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
+            
+            #line 81 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+              }
+                else { 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 83 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.CamelName));
+            
+            #line default
+            #line hidden
+            this.Write(": this.#fb.control(\"");
+            
+            #line 83 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\", [");
+            
+            #line 83 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(!property.IsNullable ? "Validators.required" : ""));
+            
+            #line default
+            #line hidden
+            this.Write("]),\r\n");
+            
+            #line 84 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+              }
             break;
         }
     }
@@ -331,7 +375,7 @@ export class CreateComponent {
             this.Write("  });\r\n\r\n  createClicked() {\r\n    this.errors = [];\r\n\r\n    const request = <Creat" +
                     "e");
             
-            #line 87 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 93 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
@@ -339,14 +383,14 @@ export class CreateComponent {
             this.Write("Request>this.form.value;\r\n\r\n    this.#blockUi.show({message: \"Creating...\"});\r\n  " +
                     "  this.#");
             
-            #line 90 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 96 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write("Service\r\n      .create");
             
-            #line 91 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 97 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
@@ -354,14 +398,14 @@ export class CreateComponent {
             this.Write("(request)\r\n      .pipe(finalize(() => this.#blockUi.hide()))\r\n      .subscribe({\r" +
                     "\n        next: ");
             
-            #line 94 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 100 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
             this.Write(" => this.#router.navigate([");
             
-            #line 94 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
+            #line 100 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Create\CreateCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
