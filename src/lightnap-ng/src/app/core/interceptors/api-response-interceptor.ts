@@ -54,7 +54,7 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
         console.error(error);
       }
 
-      return throwError(() => of(new HttpResponse({ body: new HttpErrorApiResponse(error as HttpErrorResponse), status: error.status })));
+      return throwError(() => new HttpErrorApiResponse(error as HttpErrorResponse));
     })
   );
 }
