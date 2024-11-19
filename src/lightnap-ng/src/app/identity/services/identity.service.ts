@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
 import { LoginRequest, LoginResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity/models";
-import { distinctUntilChanged, filter, map, ReplaySubject, take, tap } from "rxjs";
+import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
 
@@ -144,13 +144,13 @@ export class IdentityService {
   #tryRefreshToken() {
     if (this.#requestingRefreshToken) return;
     this.#requestingRefreshToken = true;
-    this.#dataService.getAccessToken().subscribe({
-      next: token => {
-        this.#onTokenReceived(token);
-        this.#requestingRefreshToken = false;
-      },
-      error: () => {},
-    });
+    this.#dataService
+      .getAccessToken()
+      .pipe(finalize(() => (this.#requestingRefreshToken = false)))
+      .subscribe({
+        next: token => this.#onTokenReceived(token),
+        error: () => this.#onTokenReceived(undefined),
+      });
   }
 
   #onTokenReceived(token?: string) {
