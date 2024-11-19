@@ -52,7 +52,7 @@ At this time, the scaffolder is provided in source form in the `src/Scaffolding`
 ```bash
   cd src
   dotnet build ./Scaffolding
-  .\Scaffolding\LightNap.Scaffolding\bin\Debug\net8.0\LightNap.Scaffolding.exe TestEntity
+  .\Scaffolding\LightNap.Scaffolding\bin\Debug\net9.0\LightNap.Scaffolding.exe TestEntity
 ```
 
 {: .note }

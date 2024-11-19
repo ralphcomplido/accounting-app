@@ -7,7 +7,7 @@ nav_order: 400
 
 # {{ page.title }}
 
-Use the Entity Framework Core tools to create and apply migrations.
+Use the Entity Framework tools to create and apply migrations.
 
 {: .note}
 

@@ -37,7 +37,7 @@ The process for changing the EF model by adding, updating, or removing is straig
     ```
 
 3. **Configure Relationships**: Define relationships and constraints using Fluent API or data annotations in your entity classes.
-4. **Migrations**: Use [EF Core migrations](../getting-started/database-providers/ef-migrations) to update the database schema.
+4. **Migrations**: Use [EF migrations](../getting-started/database-providers/ef-migrations) to update the database schema.
 
     {: .note }
     It's recommended to use the [in-memory](../getting-started/database-providers/in-memory-provider) database provider while working out the exact details of the entity. Once the model is finalized a single migration can be generated to keep the process cleaner.

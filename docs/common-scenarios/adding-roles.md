@@ -7,7 +7,7 @@ nav_order: 300
 
 # {{ page.title }}
 
-LightNap uses ASP.NET Core Roles to manage application authorization. By default there is only one role, `Administrator`. However, you can extend the application to introduce new roles to support a variety of authorization needs.
+LightNap uses ASP.NET Roles to manage application authorization. By default there is only one role, `Administrator`. However, you can extend the application to introduce new roles to support a variety of authorization needs.
 
 ## Adding a Role
 

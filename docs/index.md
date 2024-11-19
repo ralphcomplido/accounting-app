@@ -8,13 +8,13 @@ nav_order: 100
 
 # LightNap
 
-LightNap (**light**weight .**N**ET Core/**A**ngular/**P**rimeNG) is a full stack starter kit designed to provide a boost to Single Page Applications (SPA). It includes built-in support for ASP.NET Core Identity, JWT token management, and administrative features for managing identity, offering a solid foundation to be extended for any application scenario.
+LightNap (**light**weight .**N**ET/**A**ngular/**P**rimeNG) is a full stack starter kit designed to provide a boost to Single Page Applications (SPA). It includes built-in support for ASP.NET Identity, JWT token management, and administrative features for managing identity, offering a solid foundation to be extended for any application scenario.
 
 ## Features
 
-- **.NET Core Web API**: Backend services built with .NET Core.
+- **.NET Web API**: Backend services built with .NET.
 - **SQL Server, SQLite, and In-Memory**: Data provider implementations for SQL Server, SQLite, and in-memory databases.
-- **ASP.NET Core Identity**: Out-of-the-box support for user authentication and authorization.
+- **ASP.NET Identity**: Out-of-the-box support for user authentication and authorization.
 - **JWT Token Management**: Secure token-based authentication.
 - **Identity Management**: Administrative features for managing user roles and permissions.
 - **Angular**: Frontend framework for building dynamic user interfaces.

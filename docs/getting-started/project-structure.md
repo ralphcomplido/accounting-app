@@ -13,8 +13,8 @@ nav_order: 900
 - `LightNap.Core.Tests`: Test library for `LightNap.Core`.
 - `LightNap.DataProviders.Sqlite`: SQLite data provider implementation including migrations and utilities.
 - `LightNap.DataProviders.SqlServer`: SQL Server data provider implementation including migrations and utilities.
-- `LightNap.MaintenanceService`: .NET Core console project to run maintenance tasks.
-- `LightNap.WebApi`: .NET Core Web API project.
+- `LightNap.MaintenanceService`: .NET console project to run maintenance tasks.
+- `LightNap.WebApi`: .NET Web API project.
 
 ## Front-End Project
 

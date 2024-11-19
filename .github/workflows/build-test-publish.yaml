@@ -1,7 +1,7 @@
 name: Build, Test, and Publish
 
 env:
-  DOTNET_VERSION: '8'
+  DOTNET_VERSION: '9'
   NODE_VERSION: '22'
   WEBAPI_PROJECT_NAME: 'LightNap.WebApi'
   ANGULAR_PROJECT_NAME: 'lightnap-ng'
@@ -65,4 +65,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: src/${{ env.WEBAPI_PROJECT_NAME }}/bin/Release/net8.0/publish
+          path: src/${{ env.WEBAPI_PROJECT_NAME }}/bin/Release/net${{DOTNET_VERSION}}.0/publish

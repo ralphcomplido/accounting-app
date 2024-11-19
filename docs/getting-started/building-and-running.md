@@ -9,7 +9,7 @@ nav_order: 100
 
 ## Prerequisites
 
-- .NET Core SDK
+- .NET 9 SDK
 - Node.js and npm
 - Angular CLI
 
@@ -30,7 +30,7 @@ nav_order: 100
      cd src
      ```
 
-   - Restore .NET Core dependencies:
+   - Restore .NET dependencies:
 
      ```bash
      dotnet restore

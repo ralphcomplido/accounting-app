@@ -7,7 +7,7 @@ nav_order: 1000
 
 # {{ page.title }}
 
-LightNap relies on a REST API model for communication between the Angular front-end and the .NET Core back-end. Both implementations use the standard models provided by their respective platforms, but with slight adjustments to make it easier for developers to elegantly implement new features.
+LightNap relies on a REST API model for communication between the Angular front-end and the .NET back-end. Both implementations use the standard models provided by their respective platforms, but with slight adjustments to make it easier for developers to elegantly implement new features.
 
 ## The API Response Object
 
@@ -33,7 +33,7 @@ The back-end uses the `ApiResponseDto` object to represent responses while the f
 
 ## HTTP Codes
 
-LightNap tries to return `200 OK` codes for all responses handled by the .NET Core pipeline. This makes it easier for API consumers, like the Angular front-end, to process responses without having to focus on the various ways errors can be returned and interpreted. In other words, API consumers can expect `200 OK` responses back from all API requests unless there is an error that results in the pipeline not being invoked.
+LightNap tries to return `200 OK` codes for all responses handled by the .NET pipeline. This makes it easier for API consumers, like the Angular front-end, to process responses without having to focus on the various ways errors can be returned and interpreted. In other words, API consumers can expect `200 OK` responses back from all API requests unless there is an error that results in the pipeline not being invoked.
 
 The main exceptions are:
 
