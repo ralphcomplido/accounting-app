@@ -20,7 +20,7 @@ permissions:
 concurrency:
   group: "build-test-publish"
   cancel-in-progress: true
-  
+
 jobs:
   build:
     if: vars.RUN_BUILD_TEST_PUBLISH == 'true'
@@ -65,4 +65,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: src/${{ env.WEBAPI_PROJECT_NAME }}/bin/Release/net${{DOTNET_VERSION}}.0/publish
+          path: src/${{ env.WEBAPI_PROJECT_NAME }}/bin/Release/net${{ env.DOTNET_VERSION }}.0/publish
