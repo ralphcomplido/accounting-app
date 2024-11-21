@@ -2,6 +2,7 @@
 using LightNap.Scaffolding.ProjectManager;
 using LightNap.Scaffolding.TemplateManager;
 using LightNap.Scaffolding.Templates;
+using System.Runtime.CompilerServices;
 
 namespace LightNap.Scaffolding.ServiceRunner
 {
@@ -21,17 +22,25 @@ namespace LightNap.Scaffolding.ServiceRunner
                 return;
             }
 
+            if (!projectManager.CanBuild)
+            {
+                // Detecting the major version is a bit hacky, so just need to remember to notch this up when the major version changes.
+                int majorVersion = 9;
+                ServiceRunner.PrintError($"The .NET {majorVersion} SDK must be installed to run the scaffolder. It has to be the version the scaffolder was built to target (in project settings) or else it can't build LightNap.Core.");
+                return;
+            }
+
             var projectBuildResult = projectManager.BuildProject(parameters.CoreProjectFilePath);
             if (!projectBuildResult.Success)
             {
-                Console.WriteLine($"{parameters.CoreProjectName} build failed. Please fix the errors and try again.");
+                ServiceRunner.PrintError($"{parameters.CoreProjectName} build failed. Please fix the errors and try again.");
                 return;
             }
 
             var type = assemblyManager.LoadType(projectBuildResult.OutputAssemblyPath!, parameters.ClassName);
             if (type == null)
             {
-                Console.WriteLine($"Type '{parameters.ClassName}' not found or could not be loaded from assembly.");
+                ServiceRunner.PrintError($"Type '{parameters.ClassName}' not found or could not be loaded from assembly.");
                 return;
             }
 
@@ -40,9 +49,7 @@ namespace LightNap.Scaffolding.ServiceRunner
             List<TypePropertyDetails> propertiesDetails = TypeHelper.GetPropertyDetails(type);
             if (!propertiesDetails.Any())
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"No usable properties found in type '{type.Name}'");
-                Console.ResetColor();
+                ServiceRunner.PrintError($"No usable properties found in type '{type.Name}'");
                 return;
             }
 
@@ -103,8 +110,7 @@ namespace LightNap.Scaffolding.ServiceRunner
                 {
                     if (File.Exists(Path.Combine(parameters.SourcePath, template.OutputFile)))
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Bailing out: File '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}' already exists!");
+                        ServiceRunner.PrintError($"Bailing out: File '{Path.GetRelativePath(parameters.SourcePath, template.OutputFile)}' already exists!");
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"Use the '--overwrite true' switch to overwrite files that already exist");
                         Console.ResetColor();
@@ -194,11 +200,18 @@ Please see TODO comments in generated code to complete integration.
 
             if (!Directory.Exists(parameters.FrontEndAppPath))
             {
-                Console.WriteLine($"Angular project not found at: {parameters.FrontEndAppPath}");
+                ServiceRunner.PrintError($"Angular project not found at: {parameters.FrontEndAppPath}");
                 return false;
             }
 
             return true;
+        }
+
+        private static void PrintError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }

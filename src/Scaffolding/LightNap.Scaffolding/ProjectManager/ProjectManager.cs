@@ -10,13 +10,23 @@ namespace LightNap.Scaffolding.ProjectManager
     public class ProjectManager : IProjectManager
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectManager"/> class.
-        /// Registers the default MSBuild instance.
+        /// Registers the default MSBuild instance if a matching SDK is installed. It specifically requires the same .NET SDK version that the scaffolder was
+        /// built to target. For example, if you have .NET 9 installed and the scaffolder was built to target .NET 8, this won't work because you can't load
+        /// the builder for a different major version of the project. This could potentially be worked around by building via separate process, but that would 
+        /// open up a bunch of potential issues.
         /// </summary>
-        public ProjectManager()
+        static ProjectManager()
         {
-            MSBuildLocator.RegisterDefaults();
+            if (MSBuildLocator.QueryVisualStudioInstances().Any())
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
         }
+
+        /// <summary>
+        /// Indicates whether the project manager can build projects. See <see cref="ProjectManager()"/>. 
+        /// </summary>
+        public bool CanBuild => MSBuildLocator.QueryVisualStudioInstances().Any();
 
         /// <summary>
         /// Builds the project at the specified path.
@@ -29,9 +39,7 @@ namespace LightNap.Scaffolding.ProjectManager
 
             var projectCollection = new ProjectCollection();
             var project = projectCollection.LoadProject(projectPath);
-
             var buildParameters = new BuildParameters(projectCollection);
-
             var buildRequest = new BuildRequestData(project.CreateProjectInstance(), ["Build"]);
             var buildResult = BuildManager.DefaultBuildManager.Build(buildParameters, buildRequest);
 
