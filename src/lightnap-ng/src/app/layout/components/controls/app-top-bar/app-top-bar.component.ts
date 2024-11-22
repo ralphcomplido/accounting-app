@@ -8,7 +8,7 @@ import { RoutePipe } from '@routing';
 import { LayoutService } from 'src/app/layout/services/layout.service';
 
 @Component({
-    selector: 'app-topbar',
+    selector: 'app-top-bar',
     standalone: true,
     templateUrl: './app-top-bar.component.html',
     imports: [CommonModule, RouterModule, ButtonModule, RippleModule, RoutePipe]

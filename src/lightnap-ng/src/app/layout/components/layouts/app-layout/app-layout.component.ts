@@ -9,7 +9,6 @@ import { AppSidebarComponent } from '../../controls/app-sidebar/app-sidebar.comp
 import { AppTopBarComponent } from '../../controls/app-top-bar/app-top-bar.component';
 
 @Component({
-    selector: 'app-layout',
     standalone: true,
     templateUrl: './app-layout.component.html',
     imports: [CommonModule, AppSidebarComponent, AppFooterComponent, AppConfigComponent, AppTopBarComponent, RouterOutlet]
