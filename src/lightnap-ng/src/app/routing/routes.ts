@@ -8,9 +8,10 @@ import { Routes as ProfileRoutes } from "../profile/components/pages/routes";
 import { Routes as PublicRoutes } from "../public/components/pages/routes";
 import { Routes as UserRoutes } from "../user/components/pages/routes";
 import { AppRoute } from "./models/app-route";
+import { PublicLayoutComponent } from "@layout/components/layouts/public-layout/public-layout.component";
 
 export const Routes: AppRoute[] = [
-  { path: "", children: PublicRoutes },
+  { path: "", component: PublicLayoutComponent, children: PublicRoutes },
   {
     path: "",
     component: AppLayoutComponent,

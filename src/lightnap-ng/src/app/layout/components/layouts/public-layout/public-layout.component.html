@@ -1,0 +1,25 @@
+<div class="surface-ground min-h-screen">
+  <div class="surface-card p-2 mb-5 flex align-items-center justify-content-between mb-3 shadow-2 h-5rem">
+    <a class="flex align-items-center ml-4" href="#">
+      <img
+        src="assets/layout/images/{{ layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white' }}.png"
+        alt="LightNap Logo"
+        style="height: 2.5rem"
+      /><span class="text-900 font-medium text-2xl line-height-3 ml-2">LightNap</span>
+    </a>
+    <div class="flex align-items-center justify-content-between gap-2">
+      @if (loggedIn$ | async) {
+      <p-button pRipple label="App" [routerLink]="'user-home' | route" [rounded]="true" severity="primary" />
+      <!-- Could not get (onClick) to work here. Revisit at some point. -->
+      <p-button pRipple label="Logout" (click)="logOutClicked()" [rounded]="true" [text]="true" />
+      } @else {
+      <p-button pRipple label="Login" [routerLink]="'login' | route" [rounded]="true" [text]="true" />
+      <p-button pRipple label="Register" [routerLink]="'register' | route" [rounded]="true" severity="primary" />
+      }
+    </div>
+  </div>
+
+  <div class="px-5">
+    <router-outlet />
+  </div>
+</div>
