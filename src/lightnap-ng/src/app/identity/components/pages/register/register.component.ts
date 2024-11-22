@@ -11,7 +11,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { FocusContentLayout } from "src/app/layout/components/layouts/focus-content-layout/focus-content-layout.component";
+import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
@@ -26,7 +26,7 @@ import { LayoutService } from "src/app/layout/services/layout.service";
     CheckboxModule,
     RoutePipe,
     ErrorListComponent,
-    FocusContentLayout,
+    IdentityCardComponent,
   ],
 })
 export class RegisterComponent {

@@ -3,11 +3,11 @@ import { Component, inject } from '@angular/core';
 import { LayoutService } from 'src/app/layout/services/layout.service';
 
 @Component({
-    selector: 'focus-content-layout',
+    selector: 'identity-card',
     standalone: true,
-    templateUrl: './focus-content-layout.component.html',
+    templateUrl: './identity-card.component.html',
     imports: [CommonModule]
 })
-export class FocusContentLayout {
+export class IdentityCardComponent {
     layoutService = inject(LayoutService);
 }
