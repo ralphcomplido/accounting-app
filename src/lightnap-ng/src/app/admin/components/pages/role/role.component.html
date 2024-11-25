@@ -1,7 +1,7 @@
 <p-card [header]="header" [subheader]="subHeader">
-  <api-response [apiResponse]="viewModel$" errorMessage="Error loading role" loadingMessage="Loading role...">
-    <ng-template #success let-viewModel>
-      <p-table [value]="viewModel.users">
+  <api-response [apiResponse]="roleWithUsers$" errorMessage="Error loading role" loadingMessage="Loading role...">
+    <ng-template #success let-roleWithUsers>
+      <p-table [value]="roleWithUsers.users">
         <ng-template pTemplate="header">
           <tr>
             <th><i class="pi pi-trash"></i></th>

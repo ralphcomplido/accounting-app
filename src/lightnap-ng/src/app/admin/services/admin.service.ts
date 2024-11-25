@@ -1,7 +1,7 @@
-import { AdminUser, AdminUserWithRoles, Role, SearchAdminUsersRequest, UpdateAdminUserRequest } from "@admin/models";
+import { AdminUser, AdminUserWithRoles, Role, RoleWithAdminUsers, SearchAdminUsersRequest, UpdateAdminUserRequest } from "@admin/models";
 import { inject, Injectable } from "@angular/core";
 import { SuccessApiResponse } from "@core";
-import { forkJoin, map, Observable, of, tap } from "rxjs";
+import { forkJoin, map, Observable, of, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
 
 /**
@@ -87,6 +87,15 @@ export class AdminService {
    */
   getUsersInRole(role: string) {
     return this.#dataService.getUsersInRole(role);
+  }
+
+  /**
+   * Gets a role with its users.
+   * @param {string} role - The role.
+   * @returns {Observable<RoleWithAdminUsers>} An observable containing the role and users.
+   */
+  getRoleWithUsers(role: string) {
+    return this.getRole(role).pipe(switchMap(role => this.getUsersInRole(role.name).pipe(map(users => <RoleWithAdminUsers>{ role, users }))));
   }
 
   /**

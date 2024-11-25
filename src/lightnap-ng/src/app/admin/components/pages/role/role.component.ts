@@ -1,6 +1,6 @@
 import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { Component, inject, input, OnInit } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { ConfirmPopupComponent } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
@@ -10,7 +10,7 @@ import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableModule } from "primeng/table";
-import { forkJoin, map, Observable } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { RoleViewModel } from "./role-view-model";
 
 @Component({
@@ -32,28 +32,23 @@ export class RoleComponent implements OnInit {
   #adminService = inject(AdminService);
   #confirmationService = inject(ConfirmationService);
 
-  @Input() role!: string;
+  role = input.required<string>();
 
   header = "Loading role...";
   subHeader = "";
   errors: string[] = [];
 
-  viewModel$ = new Observable<RoleViewModel>();
+  roleWithUsers$ = new Observable<RoleViewModel>();
 
   ngOnInit() {
     this.#refreshRole();
   }
 
   #refreshRole() {
-    this.viewModel$ = forkJoin([this.#adminService.getRole(this.role), this.#adminService.getUsersInRole(this.role)]).pipe(
-      map(([role, users]) => {
-        this.header = `Manage Users In Role: ${role.displayName}`;
-        this.subHeader = role.description;
-
-        return <RoleViewModel>{
-          role,
-          users,
-        };
+    this.roleWithUsers$ = this.#adminService.getRoleWithUsers(this.role()).pipe(
+      tap(roleWithAdminUsers => {
+        this.header = `Manage Users In Role: ${roleWithAdminUsers.role.displayName}`;
+        this.subHeader = roleWithAdminUsers.role.description;
       })
     );
   }
@@ -67,7 +62,7 @@ export class RoleComponent implements OnInit {
       target: event.target,
       key: userId,
       accept: () => {
-        this.#adminService.removeUserFromRole(userId, this.role).subscribe({
+        this.#adminService.removeUserFromRole(userId, this.role()).subscribe({
           next: () => this.#refreshRole(),
           error: response => (this.errors = response.errorMessages),
         });
