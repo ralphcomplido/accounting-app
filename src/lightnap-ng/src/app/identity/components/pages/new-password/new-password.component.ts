@@ -1,31 +1,22 @@
-import { Component, Input, inject } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { BlockUiService } from "@core";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { confirmPasswordValidator } from "@core/helpers/form-helpers";
+import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
   templateUrl: "./new-password.component.html",
-  imports: [
-    ReactiveFormsModule,
-    RouterModule,
-    ButtonModule,
-    PasswordModule,
-    CheckboxModule,
-    RoutePipe,
-    ErrorListComponent,
-    IdentityCardComponent,
-  ],
+  imports: [ReactiveFormsModule, RouterModule, ButtonModule, PasswordModule, CheckboxModule, RoutePipe, ErrorListComponent, IdentityCardComponent],
 })
 export class NewPasswordComponent {
   #identityService = inject(IdentityService);
@@ -34,8 +25,8 @@ export class NewPasswordComponent {
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
 
-  @Input() email = "";
-  @Input() token = "";
+  readonly email = input("");
+  readonly token = input("");
 
   errors: Array<string> = [];
 
@@ -52,15 +43,13 @@ export class NewPasswordComponent {
     this.#blockUi.show({ message: "Setting new password..." });
     this.#identityService
       .newPassword({
-        email: this.email,
+        email: this.email(),
         password: this.form.value.password,
-        token: this.token,
+        token: this.token(),
         deviceDetails: navigator.userAgent,
         rememberMe: this.form.value.rememberMe,
       })
-      .pipe(
-        finalize(() => this.#blockUi.hide())
-      )
+      .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#routeAlias.navigate("user-home"),
         error: response => (this.errors = response.errorMessages),

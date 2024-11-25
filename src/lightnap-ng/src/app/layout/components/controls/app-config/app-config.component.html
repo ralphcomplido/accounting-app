@@ -28,7 +28,7 @@
     ></button>
   </div>
 
-  @if(!minimal) {
+  @if(!minimal()) {
   <h5>Menu Type</h5>
   <div class="field-radiobutton">
     <p-radioButton name="menuMode" value="static" [(ngModel)]="menuMode" inputId="mode1" />

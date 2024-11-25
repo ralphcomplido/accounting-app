@@ -15,8 +15,8 @@ import { TableModule } from "primeng/table";
   imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent, ConfirmDialogComponent],
 })
 export class DevicesComponent {
-  #profileService = inject(ProfileService);
-  #confirmationService = inject(ConfirmationService);
+  readonly #profileService = inject(ProfileService);
+  readonly #confirmationService = inject(ConfirmationService);
 
   devices$ = this.#profileService.getDevices();
 
@@ -29,12 +29,10 @@ export class DevicesComponent {
       target: event.target,
       key: deviceId,
       accept: () => {
-        this.#profileService
-          .revokeDevice(deviceId)
-          .subscribe({
-            next: () => (this.devices$ = this.#profileService.getDevices()),
-            error: response => (this.errors = response.errorMessages),
-          });
+        this.#profileService.revokeDevice(deviceId).subscribe({
+          next: () => (this.devices$ = this.#profileService.getDevices()),
+          error: response => (this.errors = response.errorMessages),
+        });
       },
     });
   }

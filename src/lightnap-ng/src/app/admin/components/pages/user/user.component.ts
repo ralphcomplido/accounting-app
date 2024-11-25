@@ -1,7 +1,7 @@
 import { AdminUserWithRoles } from "@admin/models";
 import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { Component, inject, input, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { ConfirmPopupComponent, ToastService } from "@core";
@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
   #routeAlias = inject(RouteAliasService);
   #fb = inject(FormBuilder);
 
-  @Input() userId!: string;
+  userId = input.required<string>();
 
   errors: string[] = [];
 
@@ -58,7 +58,7 @@ export class UserComponent implements OnInit {
   }
 
   #refreshUser() {
-    this.userWithRoles$ = this.#adminService.getUserWithRoles(this.userId);
+    this.userWithRoles$ = this.#adminService.getUserWithRoles(this.userId());
   }
 
   removeUserFromRole(event: any, role: string) {
@@ -71,7 +71,7 @@ export class UserComponent implements OnInit {
       key: role,
       accept: () => {
         this.#adminService
-          .removeUserFromRole(this.userId, role)
+          .removeUserFromRole(this.userId(), role)
           .subscribe({
             next: () => this.#refreshUser(),
             error: response => (this.errors = response.errorMessages),
@@ -84,7 +84,7 @@ export class UserComponent implements OnInit {
     this.errors = [];
 
     this.#adminService
-      .addUserToRole(this.userId, this.addUserToRoleForm.value.role)
+      .addUserToRole(this.userId(), this.addUserToRoleForm.value.role)
       .subscribe({
         next: () => this.#refreshUser(),
         error: response => (this.errors = response.errorMessages),
@@ -101,7 +101,7 @@ export class UserComponent implements OnInit {
       key: "lock",
       accept: () => {
         this.#adminService
-          .lockUserAccount(this.userId)
+          .lockUserAccount(this.userId())
           .subscribe({
             next: () => this.#refreshUser(),
             error: response => (this.errors = response.errorMessages),
@@ -119,7 +119,7 @@ export class UserComponent implements OnInit {
       target: event.target,
       key: "unlock",
       accept: () => {
-        this.#adminService.unlockUserAccount(this.userId).subscribe({
+        this.#adminService.unlockUserAccount(this.userId()).subscribe({
           next: () => this.#refreshUser(),
           error: response => (this.errors = response.errorMessages),
         });
@@ -136,7 +136,7 @@ export class UserComponent implements OnInit {
       target: event.target,
       key: "delete",
       accept: () => {
-        this.#adminService.deleteUser(this.userId).subscribe({
+        this.#adminService.deleteUser(this.userId()).subscribe({
           next: () => {
             this.#toast.success("User deleted successfully.");
             this.#routeAlias.navigate("admin-users");

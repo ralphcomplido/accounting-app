@@ -29,10 +29,10 @@ import { RoleViewModel } from "./role-view-model";
   ],
 })
 export class RoleComponent implements OnInit {
-  #adminService = inject(AdminService);
-  #confirmationService = inject(ConfirmationService);
+  readonly #adminService = inject(AdminService);
+  readonly #confirmationService = inject(ConfirmationService);
 
-  role = input.required<string>();
+  readonly role = input.required<string>();
 
   header = "Loading role...";
   subHeader = "";

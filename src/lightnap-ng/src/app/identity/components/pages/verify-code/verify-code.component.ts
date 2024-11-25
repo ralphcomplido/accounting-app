@@ -1,29 +1,20 @@
-import { Component, Input, inject } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { BlockUiService, ErrorListComponent } from "@core";
+import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
   templateUrl: "./verify-code.component.html",
-  imports: [
-    ReactiveFormsModule,
-    RouterModule,
-    ButtonModule,
-    InputTextModule,
-    CheckboxModule,
-    RoutePipe,
-    IdentityCardComponent,
-    ErrorListComponent,
-  ],
+  imports: [ReactiveFormsModule, RouterModule, ButtonModule, InputTextModule, CheckboxModule, RoutePipe, IdentityCardComponent, ErrorListComponent],
 })
 export class VerifyCodeComponent {
   #identityService = inject(IdentityService);
@@ -32,7 +23,7 @@ export class VerifyCodeComponent {
   #routeAlias = inject(RouteAliasService);
   layoutService = inject(LayoutService);
 
-  @Input() email = "";
+  readonly email = input("");
 
   form = this.#fb.group({
     code1: this.#fb.control("", [Validators.required]),
@@ -98,7 +89,7 @@ export class VerifyCodeComponent {
     this.#identityService
       .verifyCode({
         code,
-        email: this.email,
+        email: this.email(),
         deviceDetails: navigator.userAgent,
         rememberMe: value.rememberMe,
       })

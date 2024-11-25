@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, TemplateRef } from "@angular/core";
+import { Component, ElementRef, TemplateRef, input } from "@angular/core";
 import { ButtonSeverity } from "@core/models";
 import { PrimeIcons } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -11,12 +11,12 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
   imports: [ConfirmDialogModule, ButtonModule],
 })
 export class ConfirmDialogComponent {
-    @Input() confirmText = "Confirm";
-    @Input() confirmSeverity: ButtonSeverity = "danger";
-    @Input() confirmIcon = PrimeIcons.TRASH;
-    @Input() rejectText = "Cancel";
-    @Input() rejectSeverity: ButtonSeverity = "secondary";
-    @Input() rejectIcon = PrimeIcons.UNDO;
-    @Input() key = "";
-    @Input() appendTo?: HTMLElement | ElementRef | TemplateRef<any> | string | null | undefined | any;
+    readonly confirmText = input("Confirm");
+    readonly confirmSeverity = input<ButtonSeverity>("danger");
+    readonly confirmIcon = input(PrimeIcons.TRASH);
+    readonly rejectText = input("Cancel");
+    readonly rejectSeverity = input<ButtonSeverity>("secondary");
+    readonly rejectIcon = input(PrimeIcons.UNDO);
+    readonly key = input("");
+    readonly appendTo = input<HTMLElement | ElementRef | TemplateRef<any> | string | null | undefined | any>(undefined);
 }

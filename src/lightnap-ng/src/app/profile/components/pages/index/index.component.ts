@@ -16,17 +16,17 @@ import { IdentityService } from "src/app/identity/services/identity.service";
   imports: [CommonModule, ErrorListComponent, ReactiveFormsModule, ButtonModule, CardModule, ApiResponseComponent],
 })
 export class IndexComponent {
-  #identityService = inject(IdentityService);
-  #profileService = inject(ProfileService);
-  #routeAlias = inject(RouteAliasService);
-  #blockUi = inject(BlockUiService);
-  #toast = inject(ToastService);
-  #fb = inject(FormBuilder);
+  readonly #identityService = inject(IdentityService);
+  readonly #profileService = inject(ProfileService);
+  readonly #routeAlias = inject(RouteAliasService);
+  readonly #blockUi = inject(BlockUiService);
+  readonly #toast = inject(ToastService);
+  readonly #fb = inject(FormBuilder);
 
   form = this.#fb.group({});
   errors = new Array<string>();
 
-  profile$ = this.#profileService.getProfile().pipe(
+  readonly profile$ = this.#profileService.getProfile().pipe(
     tap(profile => {
       // Set form values.
     })

@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { CommonModule } from "@angular/common";
-import { ChangeDetectorRef, Component, HostBinding, inject, Input, OnInit } from "@angular/core";
+import { Component, HostBinding, inject, Input, input, OnInit } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { RippleModule } from "primeng/ripple";
@@ -33,15 +33,14 @@ import { MenuService } from "src/app/layout/services/menu.service";
   imports: [CommonModule, RouterLink, RippleModule, RouterLinkActive],
 })
 export class AppMenuItemComponent implements OnInit {
-  #cd = inject(ChangeDetectorRef);
-  #menuService = inject(MenuService);
-  layoutService = inject(LayoutService);
-  router = inject(Router);
+  readonly #menuService = inject(MenuService);
+  readonly layoutService = inject(LayoutService);
+  readonly router = inject(Router);
 
-  @Input() item: any;
-  @Input() index!: number;
+  readonly item = input.required<any>();
+  readonly index = input.required<number>();
   @Input() @HostBinding("class.layout-root-menuitem") root!: boolean;
-  @Input() parentKey!: string;
+  readonly parentKey = input<string>();
 
   active = false;
   key: string = "";
@@ -60,22 +59,23 @@ export class AppMenuItemComponent implements OnInit {
     });
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(params => {
-      if (this.item.routerLink) {
+      if (this.item().routerLink) {
         this.updateActiveStateFromRoute();
       }
     });
   }
 
   ngOnInit() {
-    this.key = this.parentKey ? this.parentKey + "-" + this.index : String(this.index);
+    const parentKey = this.parentKey();
+    this.key = parentKey ? parentKey + "-" + this.index() : String(this.index());
 
-    if (this.item.routerLink) {
+    if (this.item().routerLink) {
       this.updateActiveStateFromRoute();
     }
   }
 
   updateActiveStateFromRoute() {
-    let activeRoute = this.router.isActive(this.item.routerLink[0], {
+    let activeRoute = this.router.isActive(this.item().routerLink[0], {
       paths: "exact",
       queryParams: "ignored",
       matrixParams: "ignored",
@@ -89,18 +89,18 @@ export class AppMenuItemComponent implements OnInit {
 
   itemClick(event: Event) {
     // avoid processing disabled items
-    if (this.item.disabled) {
+    if (this.item().disabled) {
       event.preventDefault();
       return;
     }
 
     // execute command
-    if (this.item.command) {
-      this.item.command({ originalEvent: event, item: this.item });
+    if (this.item().command) {
+      this.item().command({ originalEvent: event, item: this.item });
     }
 
     // toggle active state
-    if (this.item.items) {
+    if (this.item().items) {
       this.active = !this.active;
     }
 

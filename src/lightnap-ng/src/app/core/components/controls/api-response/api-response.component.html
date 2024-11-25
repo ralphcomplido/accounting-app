@@ -1,17 +1,17 @@
 @if(internalApiResponse$ | async; as response) { @if (response.result; as result) {
-<ng-container *ngTemplateOutlet="successTemplateRef; context: { $implicit: result }" />
+<ng-container *ngTemplateOutlet="successTemplateRef(); context: { $implicit: result }" />
 } @else {
-<ng-container *ngTemplateOutlet="errorTemplateRef || defaultErrorTemplate; context: { $implicit: response }" />
+<ng-container *ngTemplateOutlet="errorTemplateRef() || defaultErrorTemplate; context: { $implicit: response }" />
 } } @else {
-<ng-container *ngTemplateOutlet="loadingTemplateRef || defaultLoadingTemplate"> </ng-container>
+<ng-container *ngTemplateOutlet="loadingTemplateRef() || defaultLoadingTemplate"> </ng-container>
 }
 
 <ng-template #defaultErrorTemplate let-response>
-  <p>{{ errorMessage }}</p>
+  <p>{{ errorMessage() }}</p>
   <error-list [apiResponse]="response" />
 </ng-template>
 
 <ng-template #defaultLoadingTemplate>
   <p-progressSpinner ariaLabel="loading" />
-  <p>{{ loadingMessage }}</p>
+  <p>{{ loadingMessage() }}</p>
 </ng-template>

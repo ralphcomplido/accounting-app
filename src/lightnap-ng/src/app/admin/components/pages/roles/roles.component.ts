@@ -13,7 +13,7 @@ import { TableModule } from "primeng/table";
   imports: [CommonModule, CardModule, RouterLink, RoutePipe, ApiResponseComponent, TableModule],
 })
 export class RolesComponent {
-  #adminService = inject(AdminService);
+  readonly #adminService = inject(AdminService);
 
-  roles$ = this.#adminService.getRoles();
+  readonly roles$ = this.#adminService.getRoles();
 }

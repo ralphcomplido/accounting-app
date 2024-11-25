@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ContentChild, Input, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
+import { Component, contentChild, input, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
 import { ApiResponse, ErrorApiResponse, SuccessApiResponse } from "@core";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { catchError, map, Observable, of } from "rxjs";
@@ -12,19 +12,19 @@ import { ErrorListComponent } from "../error-list/error-list.component";
   imports: [CommonModule, ErrorListComponent, ProgressSpinnerModule],
 })
 export class ApiResponseComponent implements OnChanges {
-  @Input({ required: true }) apiResponse: Observable<any>;
-  @Input() errorMessage = "An error occurred";
-  @Input() loadingMessage = "Loading...";
+  readonly apiResponse = input.required<Observable<any>>();
+  readonly errorMessage = input<string>("An error occurred");
+  readonly loadingMessage = input<string>("Loading...");
 
-  @ContentChild("success") successTemplateRef: TemplateRef<any>;
-  @ContentChild("error") errorTemplateRef: TemplateRef<any>;
-  @ContentChild("loading") loadingTemplateRef: TemplateRef<any>;
+  readonly successTemplateRef = contentChild<TemplateRef<any>>("success");
+  readonly errorTemplateRef = contentChild<TemplateRef<any>>("error");
+  readonly loadingTemplateRef = contentChild<TemplateRef<any>>("loading");
 
   internalApiResponse$?: Observable<ApiResponse<any>>;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["apiResponse"].currentValue) {
-      this.internalApiResponse$ = this.apiResponse.pipe(
+      this.internalApiResponse$ = this.apiResponse().pipe(
         map(result => new SuccessApiResponse(result)),
         catchError((error: ApiResponse<any>) => {
           if (!error.type) {

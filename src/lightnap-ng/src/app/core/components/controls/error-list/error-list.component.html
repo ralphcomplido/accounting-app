@@ -1,6 +1,6 @@
-@if (errorList.length) {
+@if (errorList().length) {
 <ul>
-  @for (error of errorList; track $index) {
+  @for (error of errorList(); track error) {
   <li class="text-900 font-bold text-red-500">{{ error }}</li>
   }
 </ul>

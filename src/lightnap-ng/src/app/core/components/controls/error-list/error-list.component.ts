@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, OnChanges, SimpleChanges, input, signal } from "@angular/core";
 import { ApiResponse } from "@core";
 
 @Component({
@@ -9,21 +9,24 @@ import { ApiResponse } from "@core";
   imports: [CommonModule],
 })
 export class ErrorListComponent implements OnChanges {
-  @Input() error?: string;
-  @Input() errors?: Array<string>;
-  @Input() apiResponse?: ApiResponse<any>;
+  readonly error = input<string>(undefined);
+  readonly errors = input<Array<string>>(undefined);
+  readonly apiResponse = input<ApiResponse<any>>(undefined);
 
-  errorList = new Array<string>();
+  errorList = signal<Array<string>>([]);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.error) {
-      this.errorList = [this.error];
-    } else if (this.errors?.length) {
-      this.errorList = [...this.errors];
-    } else if (this.apiResponse?.errorMessages?.length) {
-      this.errorList = [...this.apiResponse.errorMessages];
+    const error = this.error();
+    const errors = this.errors();
+    const apiResponse = this.apiResponse();
+    if (error) {
+      this.errorList.set([error]);
+    } else if (errors?.length) {
+      this.errorList.set([...errors]);
+    } else if (apiResponse?.errorMessages?.length) {
+      this.errorList.set([...apiResponse.errorMessages]);
     } else {
-      this.errorList = [];
+      this.errorList.set([]);
     }
   }
 }

@@ -14,20 +14,13 @@ import { finalize } from "rxjs";
 @Component({
   standalone: true,
   templateUrl: "./change-password.component.html",
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ErrorListComponent,
-    PasswordModule,
-    ReactiveFormsModule,
-    CardModule,
-  ],
+  imports: [CommonModule, ButtonModule, ErrorListComponent, PasswordModule, ReactiveFormsModule, CardModule],
 })
 export class ChangePasswordComponent {
-  #profileService = inject(ProfileService);
-  #blockUi = inject(BlockUiService);
-  #toast = inject(ToastService);
-  #fb = inject(FormBuilder);
+  readonly #profileService = inject(ProfileService);
+  readonly #blockUi = inject(BlockUiService);
+  readonly #toast = inject(ToastService);
+  readonly #fb = inject(FormBuilder);
 
   errors = new Array<string>();
 

@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 import { BlockUiService } from "@core";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
 import { confirmPasswordValidator } from "@core/helpers/form-helpers";
+import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
@@ -11,7 +12,6 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
 import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({

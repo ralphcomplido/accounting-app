@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { RoutePipe } from "@routing";
 import { IdentityCardComponent } from "@identity/components/controls/identity-card/identity-card.component";
+import { RoutePipe } from "@routing";
 
 @Component({
   standalone: true,

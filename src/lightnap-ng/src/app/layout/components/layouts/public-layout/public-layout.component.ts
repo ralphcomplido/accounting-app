@@ -16,11 +16,11 @@ import { LayoutService } from "src/app/layout/services/layout.service";
   imports: [CommonModule, SharedModule, StyleClassModule, RouterOutlet, RouterLink, ButtonModule, RippleModule, RoutePipe],
 })
 export class PublicLayoutComponent {
-  layoutService = inject(LayoutService);
-  router = inject(Router);
-  identityService = inject(IdentityService);
+  readonly layoutService = inject(LayoutService);
+  readonly router = inject(Router);
+  readonly identityService = inject(IdentityService);
 
-  loggedIn$ = this.identityService.watchLoggedIn$().pipe(takeUntilDestroyed());
+  readonly loggedIn$ = this.identityService.watchLoggedIn$().pipe(takeUntilDestroyed());
 
   logOutClicked() {
     this.identityService.logOut().subscribe();
