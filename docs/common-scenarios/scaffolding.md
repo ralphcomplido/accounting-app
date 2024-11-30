@@ -13,11 +13,11 @@ Scaffolding support is experimental. Please be sure to stash or commit changes b
 The scaffolder takes [an entity](./adding-entities) as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data to and from the database to the browser following the patterns used throughout the solution.
 
 - TOC
-  {:toc}
+{:toc}
 
-## Set Up Your Entity
+## Setting Up Your Entity
 
-The scaffolder assumes you're scaffolding an entity model intended for typical CRUD operations in a database. It's not required that the target object be an EF entity, but there is some code in the generated service that expects it.
+The scaffolder assumes you're scaffolding [an entity model](./adding-entities) intended for typical CRUD operations in a database. It's not required that the target object be an EF entity, but there is some code in the generated service that expects it.
 
 It's recommended that entities are stored in the `Data\Entities` folder of the `LightNap.Core` project. We'll use `TestEntity` as the example for this tutorial.
 
