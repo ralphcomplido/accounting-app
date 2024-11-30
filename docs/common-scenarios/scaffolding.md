@@ -10,7 +10,7 @@ nav_order: 200
 {: .important }
 Scaffolding support is experimental. Please be sure to stash or commit changes before running the scaffolder in case it doesn't quite work the way you expect it to.
 
-The scaffolder takes [an entity](./adding-entities) as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data to and from the database to the browser following the patterns used throughout the solution.
+The scaffolder takes [an entity](./adding-entities) as an input and generates a ton of boilerplate code to make it easier to build and deploy features. This includes all the objects, services, and pages that get data from the database to the browser and back following the patterns used throughout the solution.
 
 - TOC
 {:toc}
