@@ -30,12 +30,6 @@ nav_order: 100
      cd src
      ```
 
-   - Restore .NET dependencies:
-
-     ```bash
-     dotnet restore
-     ```
-
    - Run the application:
 
      ```bash
