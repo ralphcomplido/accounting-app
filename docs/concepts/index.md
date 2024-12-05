@@ -1,7 +1,7 @@
 ---
-title: Common Scenarios
+title: Concepts
 layout: home
-nav_order: 400
+nav_order: 300
 ---
 
 # {{ page.title }}

@@ -1,8 +1,8 @@
 ---
-title: Understanding the API Response Model
+title: API Response Model
 layout: home
-parent: Getting Started
-nav_order: 1000
+parent: Concepts
+nav_order: 300
 ---
 
 # {{ page.title }}

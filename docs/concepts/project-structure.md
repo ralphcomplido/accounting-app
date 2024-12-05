@@ -1,13 +1,17 @@
 ---
-title: Understanding the Project Structure
+title: Solution & Project Structure
 layout: home
-parent: Getting Started
-nav_order: 900
+parent: Concepts
+nav_order: 100
 ---
 
 # {{ page.title }}
 
+LightNap is structured as a .NET back-end and an Angular front-end. While they are designed to work together, they are abstracted by a REST API layer. As a result, they should be thought of as two distinct solutions that are developed, built, and run separately.
+
 ## Back-End Projects
+
+The back-end is developed on .NET using C#.
 
 - `LightNap.Core`: .NET shared library for common server-side components.
 - `LightNap.Core.Tests`: Test library for `LightNap.Core`.
@@ -18,7 +22,13 @@ nav_order: 900
 
 ## Front-End Project
 
+The back-end is developed on Angular using Typescript.
+
 - `lightnap-ng`: Angular project with PrimeNG components based on the [sakai-ng](https://github.com/primefaces/sakai-ng) template.
+
+## Scaffolder
+
+There is also a `Scaffolding` folder that contains the source to [the scaffolder tool](../common-scenarios/scaffolding). It is not necessary to build or run this as part of the LightNap solution. It won't be discussed here.
 
 ## Areas
 
