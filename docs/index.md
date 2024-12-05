@@ -23,4 +23,6 @@ LightNap (**light**weight .**N**ET/**A**ngular/**P**rimeNG) is a full stack star
 
 Check out [the docs](https://lightnap.sharplogic.com).
 
+Check out [the YouTube channel](https://www.youtube.com/@LightNap).
+
 Check out [the baseline demo site](https://lightnap.azurewebsites.net).
