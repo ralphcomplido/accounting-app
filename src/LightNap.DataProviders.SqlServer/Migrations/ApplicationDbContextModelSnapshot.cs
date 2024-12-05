@@ -17,12 +17,12 @@ namespace LightNap.DataProviders.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationRole", b =>
+            modelBuilder.Entity("LightNap.Core.Identity.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -57,7 +57,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("LightNap.Core.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -132,7 +132,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("LightNap.Core.Data.Entities.RefreshToken", b =>
+            modelBuilder.Entity("LightNap.Core.Identity.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -166,7 +166,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -275,9 +275,9 @@ namespace LightNap.DataProviders.SqlServer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LightNap.Core.Data.Entities.RefreshToken", b =>
+            modelBuilder.Entity("LightNap.Core.Identity.RefreshToken", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("LightNap.Core.Identity.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -288,7 +288,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationRole", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -297,7 +297,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -306,7 +306,7 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,13 +315,13 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationRole", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,14 +330,14 @@ namespace LightNap.DataProviders.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", null)
+                    b.HasOne("LightNap.Core.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("LightNap.Core.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });

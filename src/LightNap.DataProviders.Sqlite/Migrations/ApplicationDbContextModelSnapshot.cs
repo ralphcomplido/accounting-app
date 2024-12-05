@@ -15,7 +15,7 @@ namespace LightNap.DataProviders.Sqlite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationRole", b =>
                 {
