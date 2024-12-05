@@ -11,7 +11,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableModule } from "primeng/table";
 import { Observable, tap } from "rxjs";
-import { RoleViewModel } from "./role-view-model";
+import { RoleWithAdminUsers } from "@admin/models";
 
 @Component({
   standalone: true,
@@ -38,7 +38,7 @@ export class RoleComponent implements OnInit {
   subHeader = "";
   errors: string[] = [];
 
-  roleWithUsers$ = new Observable<RoleViewModel>();
+  roleWithUsers$ = new Observable<RoleWithAdminUsers>();
 
   ngOnInit() {
     this.#refreshRole();

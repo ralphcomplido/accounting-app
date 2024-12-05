@@ -243,7 +243,7 @@ export class IdentityService {
    * @method logIn
    * @description Logs the user in.
    * @param {LoginRequest} loginRequest - The request object containing login information.
-   * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
+   * @returns {Observable<LoginResult>} An observable containing the result of the operation.
    */
   logIn(loginRequest: LoginRequest) {
     return this.#dataService.logIn(loginRequest).pipe(tap(result => this.#onTokenReceived(result.bearerToken)));
@@ -253,7 +253,7 @@ export class IdentityService {
    * @method register
    * @description Registers a new user.
    * @param {RegisterRequest} registerRequest - The request object containing registration information.
-   * @returns {Observable<ApiResponse<LoginResult>>} An observable containing the result of the operation.
+   * @returns {Observable<LoginResult>} An observable containing the result of the operation.
    */
   register(registerRequest: RegisterRequest) {
     return this.#dataService.register(registerRequest).pipe(tap(result => this.#onTokenReceived(result?.bearerToken)));
@@ -262,7 +262,7 @@ export class IdentityService {
   /**
    * @method logOut
    * @description Logs the user out.
-   * @returns {Observable<ApiResponse<boolean>>} An observable containing the result of the operation.
+   * @returns {Observable<boolean>} An observable containing the result of the operation.
    */
   logOut() {
     return this.#dataService.logOut().pipe(tap(() => this.#onTokenReceived(undefined)));
@@ -272,7 +272,7 @@ export class IdentityService {
    * @method verifyCode
    * @description Verifies a two-factor login code.
    * @param {VerifyCodeRequest} verifyCodeRequest - The request object containing the code to verify.
-   * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
+   * @returns {Observable<string>} An observable containing the result of the operation.
    */
   verifyCode(verifyCodeRequest: VerifyCodeRequest) {
     return this.#dataService.verifyCode(verifyCodeRequest).pipe(tap(token => this.#onTokenReceived(token)));
@@ -282,7 +282,7 @@ export class IdentityService {
    * @method resetPassword
    * @description Resets the user's password.
    * @param {ResetPasswordRequest} resetPasswordRequest - The request object containing password reset information.
-   * @returns {Observable<ApiResponse<boolean>>} An observable containing the result of the operation.
+   * @returns {Observable<boolean>} An observable containing the result of the operation.
    */
   resetPassword(resetPasswordRequest: ResetPasswordRequest) {
     return this.#dataService.resetPassword(resetPasswordRequest);
@@ -292,7 +292,7 @@ export class IdentityService {
    * @method newPassword
    * @description Sets a new password for the user.
    * @param {NewPasswordRequest} newPasswordRequest - The request object containing the new password information.
-   * @returns {Observable<ApiResponse<string>>} An observable containing the result of the operation.
+   * @returns {Observable<string>} An observable containing the result of the operation.
    */
   newPassword(newPasswordRequest: NewPasswordRequest) {
     return this.#dataService.newPassword(newPasswordRequest).pipe(tap(token => this.#onTokenReceived(token)));
