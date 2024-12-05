@@ -21,12 +21,14 @@ The LightNap solution structure spreads out EF assets across multiple projects:
 
 As a result, additional parameters are required for the EF tools to work properly.
 
+Before modifying the migrations for a given project, set the `DatabaseProvider` key in the `appsettings.json` file of the `LightNap.WebApi` project to the appropriate value (like `SqlServer`).
+
 ## Adding a Migration
 
 To add a migration for SQL Server, use the following command from the `/src` folder:
 
 ```bash
-dotnet ef migrations add <MigrationName> --context ApplicationDbContext --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
+dotnet ef migrations add <MigrationName> --context ApplicationDbContext --startup-project LightNap.WebApi --project LightNap.DataProviders.SqlServer
 ```
 
 ## Removing a Migration
@@ -34,7 +36,7 @@ dotnet ef migrations add <MigrationName> --context ApplicationDbContext --projec
 Similarly, you can remove the most recent migration using the following command:
 
 ```bash
-dotnet ef migrations remove --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
+dotnet ef migrations remove --startup-project LightNap.WebApi --project LightNap.DataProviders.SqlServer
 ```
 
 ## Updating the Database
@@ -42,25 +44,10 @@ dotnet ef migrations remove --project LightNap.DataProviders.SqlServer --startup
 To apply changes to the database, use the following command:
 
 ```bash
-dotnet ef database update --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
+dotnet ef database update --startup-project LightNap.WebApi --project LightNap.DataProviders.SqlServer
 ```
 
 {: .note}
 
 The `LightNap.WebApi` project also offers automatic migrations by setting
 [`SiteSettings.AutomaticallyApplyEfMigrations`](../configuring-application-settings) to `true`.
-
-## Regenerating the InitialCreate Migration
-
-Prior to deploying a database it is common to tear down and regenerate the entire `InitialCreate` migration. To do this for SQL Server, use the following commands:
-
-```bash
-dotnet ef database drop --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
-dotnet ef migrations remove --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
-dotnet ef migrations add InitialCreate --context ApplicationDbContext --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
-dotnet ef database update --project LightNap.DataProviders.SqlServer --startup-project LightNap.WebApi
-```
-
-{: .important}
-
-That the `drop` command above will request confirmation to avoid inadvertently dropping the wrong database.
