@@ -15,6 +15,9 @@ var host = Host.CreateDefaultBuilder(args)
         string databaseProvider = context.Configuration.GetRequiredSetting("DatabaseProvider");
         switch (databaseProvider)
         {
+            case "InMemory":
+                services.AddLightNapInMemoryDatabase();
+                break;
             case "Sqlite":
                 services.AddLightNapSqlite(context.Configuration);
                 break;
@@ -24,6 +27,7 @@ var host = Host.CreateDefaultBuilder(args)
             default: throw new ArgumentException($"Unsupported 'DatabaseProvider' setting: '{databaseProvider}'");
         }
 
+        // Manage the tasks to run here. All transient dependencies added for IMaintenanceTask will be in the collection passed to MainService.
         services.AddTransient<IMaintenanceTask, CountUsersMaintenanceTask>();
         services.AddTransient<IMaintenanceTask, PurgeExpiredRefreshTokensMaintenanceTask>();
 
