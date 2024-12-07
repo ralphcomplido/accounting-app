@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets the timestamp of the last time the device was seen.
         /// </summary>
-        public long LastSeen { get; set; }
+        public DateTime LastSeen { get; set; }
 
         /// <summary>
         /// Gets or sets the IP address of the device.

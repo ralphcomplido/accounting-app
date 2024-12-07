@@ -1,7 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { API_URL_ROOT, ApiResponse } from "@core";
+import { API_URL_ROOT } from "@core";
 import { ApplicationSettings, ChangePasswordRequest, Device, Profile, UpdateProfileRequest } from "@profile";
+import { DeviceHelper } from "@profile/helpers/device.helper";
+import { tap } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +25,9 @@ export class DataService {
   }
 
   getDevices() {
-    return this.#http.get<Device>(`${this.#apiUrlRoot}devices`);
+    return this.#http
+      .get<Array<Device>>(`${this.#apiUrlRoot}devices`)
+      .pipe(tap(devices => devices.forEach(device => DeviceHelper.rehydrate(device))));
   }
 
   revokeDevice(deviceId: string) {

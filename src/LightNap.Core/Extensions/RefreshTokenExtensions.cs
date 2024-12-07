@@ -19,7 +19,7 @@ namespace LightNap.Core.Extensions
             {
                 Details = token.Details,
                 Id = token.Id,
-                LastSeen = new DateTimeOffset(token.LastSeen).ToUnixTimeMilliseconds(),
+                LastSeen = token.LastSeen,
                 IpAddress = token.IpAddress,
             };
         }

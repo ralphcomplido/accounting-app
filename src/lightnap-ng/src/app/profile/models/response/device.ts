@@ -10,9 +10,9 @@ export interface Device {
 
     /**
      * The timestamp of the last time the device was seen.
-     * @type {number}
+     * @type {Date}
      */
-    lastSeen: number;
+    lastSeen: Date;
 
     /**
      * The IP address from the last time the device was seen.

@@ -239,15 +239,15 @@ namespace LightNap.Core.Tests
             // Note the LastSeen timestamp is descending to match the descending order expected from the API.
             var expectedDevices = new List<DeviceDto>
             {
-                new() { Id = "device1", LastSeen = 2, IpAddress = "192.168.1.1", Details = "Device 1" },
-                new() { Id = "device2", LastSeen = 1, IpAddress = "192.168.1.2", Details = "Device 2" }
+                new() { Id = "device1", LastSeen = new DateTime(2024, 12, 7), IpAddress = "192.168.1.1", Details = "Device 1" },
+                new() { Id = "device2", LastSeen = new DateTime(2024, 12, 6), IpAddress = "192.168.1.2", Details = "Device 2" }
             };
 
             this._dbContext.RefreshTokens.AddRange(expectedDevices.Select(d => new RefreshToken
             {
                 Id = d.Id,
                 Token = "token",
-                LastSeen = DateTimeOffset.FromUnixTimeSeconds(d.LastSeen).DateTime,
+                LastSeen = d.LastSeen,
                 IpAddress = d.IpAddress,
                 Expires = DateTime.UtcNow.AddDays(1),
                 IsRevoked = false,
