@@ -8,6 +8,11 @@ namespace LightNap.Core.Interfaces
     public interface ITokenService
     {
         /// <summary>
+        /// Gets the expiration offset minutes used for new access tokens.
+        /// </summary>
+        int ExpirationMinutes { get; }
+
+        /// <summary>
         /// Generates an access token asynchronously for the specified user.
         /// </summary>
         /// <param name="user">The user for whom the access token is generated.</param>

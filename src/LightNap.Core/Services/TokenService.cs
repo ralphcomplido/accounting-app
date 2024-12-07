@@ -21,6 +21,7 @@ namespace LightNap.Core.Services
         private readonly string _issuer;
         private readonly string _audience;
         private readonly int _expirationMinutes;
+        public int ExpirationMinutes => this._expirationMinutes;
         private readonly JsonWebTokenHandler _tokenHandler;
 
         /// </summary>
