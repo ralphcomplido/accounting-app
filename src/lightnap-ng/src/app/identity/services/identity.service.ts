@@ -122,7 +122,7 @@ export class IdentityService {
       .pipe(
         takeUntilDestroyed(),
         filter(
-          () => !this.#requestingRefreshToken && this.#token?.length > 0 && this.#expires + IdentityService.TokenExpirationWindowMillis < Date.now()
+          () => !this.#requestingRefreshToken && this.#token?.length > 0 && this.#expires - IdentityService.TokenExpirationWindowMillis < Date.now()
         )
       )
       .subscribe({
