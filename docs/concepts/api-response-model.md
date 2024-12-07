@@ -2,7 +2,7 @@
 title: API Response Model
 layout: home
 parent: Concepts
-nav_order: 300
+nav_order: 400
 ---
 
 # {{ page.title }}
@@ -15,8 +15,8 @@ All API responses should be returned as JSON using the following structure:
 
 ```json
 {
-  "result": {},
   "type": "Success",
+  "result": {},
   "errorMessages": []
 }
 ```
@@ -43,7 +43,7 @@ The main exceptions are:
 - `404 Not Found` is automatically sent when the API URL requested does not exist.
 
   {: .note }
-  `404 Not Found` is not sent when a requested item is not found during a `GET` query. Instead, `null` should be returned as the `Result` property payload of the `ApiResponseDto` object so that the API consumer understands that the API call succeeded and that the requested item does not exist.
+  `404 Not Found` should not sent when a requested item is not found during a `GET` query. Instead, `null` should be returned as the `Result` property payload of the `ApiResponseDto` object so that the API consumer understands that the API call succeeded and that the requested item does not exist.
 
 - `405 Method Not Allowed` is automatically sent when an endpoint exists but the wrong verb is used. For example, using `POST` on a `PUT` endpoint.
 

@@ -35,6 +35,9 @@ If the loading request to retrieve a token fails then the user needs to authenti
 - When the user submits a multi-factor code after a successful login.
 - When the user sets a new password using the link from a "forgot password" email.
 
+{: .note }
+If the user does not opt for their device to be remembered, then the refresh token cookie issued by the back-end will be set to expire at the end of the current browser session. The next time the browser is opened they will no longer have that cookie available and will need to authenticate.
+
 ### Token Refresh
 
 If the `IdentityService` was able to retrieve an initial token it will regularly attempt to refresh it prior to expiration.
@@ -72,7 +75,6 @@ When it's unknown whether the user is logged in, such as during front-end loadin
 - `watchLoggedInToAnyRole$(allowedRoles: Array<string>)` emits `true` or `false` when the user's status as being a member of at least one of the specified roles changes.
 
 {: .note }
-
 The asynchronous observables will not emit until the initial user access token request has returned. As a result, they can be relied on to determine user status upon the initial load of the front-end. All will emit `false` when the user is determined to not be logged in.
 
 ### tokenInterceptor
@@ -94,3 +96,7 @@ The front-end provides guards and directives to make it easier to tailor the use
 - `showByRoles` and `hideByRoles` will show or hide an element based on the user's roles.
 
 See [this article](../common-scenarios/working-with-roles#using-roles-on-the-front-end) for more details on using these to evaluate roles.
+
+## Managing Refresh Tokens/Devices
+
+Learn about the relationship between refresh tokens and devices in [this article](./devices).
