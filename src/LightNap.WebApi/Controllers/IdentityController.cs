@@ -1,4 +1,3 @@
-using LightNap.Core.Api;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
 using LightNap.Core.Identity.Interfaces;
@@ -20,11 +19,11 @@ namespace LightNap.WebApi.Controllers
         /// <param name="requestDto">The login request DTO.</param>
         /// <returns>The API response containing the login result.</returns>
         [HttpPost("login")]
-        [ProducesResponseType(typeof(ApiResponseDto<LoginResultDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponseDto<LoginSuccessDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ApiResponseDto<LoginResultDto>> LogIn(LoginRequestDto requestDto)
+        public async Task<ApiResponseDto<LoginSuccessDto>> LogIn(LoginRequestDto requestDto)
         {
-            return new ApiResponseDto<LoginResultDto>(await identityService.LogInAsync(requestDto));
+            return new ApiResponseDto<LoginSuccessDto>(await identityService.LogInAsync(requestDto));
         }
 
         /// <summary>
@@ -33,11 +32,11 @@ namespace LightNap.WebApi.Controllers
         /// <param name="requestDto">The registration request DTO.</param>
         /// <returns>The API response containing the login result.</returns>
         [HttpPost("register")]
-        [ProducesResponseType(typeof(ApiResponseDto<LoginResultDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponseDto<LoginSuccessDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ApiResponseDto<LoginResultDto>> Register(RegisterRequestDto requestDto)
+        public async Task<ApiResponseDto<LoginSuccessDto>> Register(RegisterRequestDto requestDto)
         {
-            return new ApiResponseDto<LoginResultDto>(await identityService.RegisterAsync(requestDto));
+            return new ApiResponseDto<LoginSuccessDto>(await identityService.RegisterAsync(requestDto));
         }
 
         /// <summary>
@@ -70,20 +69,20 @@ namespace LightNap.WebApi.Controllers
         /// Sets a new password for a user.
         /// </summary>
         /// <param name="requestDto">The new password request DTO.</param>
-        /// <returns>The API response containing the new access token.</returns>
+        /// <returns>The API response containing the login result.</returns>
         [HttpPost("new-password")]
-        [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
+        [ProducesResponseType(typeof(ApiResponseDto<LoginSuccessDto>), 200)]
         [ProducesResponseType(400)]
-        public async Task<ApiResponseDto<string>> NewPassword(NewPasswordRequestDto requestDto)
+        public async Task<ApiResponseDto<LoginSuccessDto>> NewPassword(NewPasswordRequestDto requestDto)
         {
-            return new ApiResponseDto<string>(await identityService.NewPasswordAsync(requestDto));
+            return new ApiResponseDto<LoginSuccessDto>(await identityService.NewPasswordAsync(requestDto));
         }
 
         /// <summary>
         /// Verifies the two-factor authentication code.
         /// </summary>
         /// <param name="requestDto">The verify code request DTO.</param>
-        /// <returns>The API response containing the new access token.</returns>
+        /// <returns>The API response containing the login result.</returns>
         [HttpPost("verify-code")]
         [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
         [ProducesResponseType(400)]

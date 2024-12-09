@@ -21,6 +21,11 @@
         public bool RequireTwoFactorForNewUsers { get; set; }
 
         /// <summary>
+        /// True to require email verification before a user can log in.
+        /// </summary>
+        public bool RequireEmailVerification { get; set; }
+
+        /// <summary>
         /// The root URL for emails sent by the site.
         /// </summary>
         public required string SiteUrlRootForEmails { get; set; }

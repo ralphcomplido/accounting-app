@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { API_URL_ROOT } from "@core";
-import { LoginRequest, LoginResult, NewPasswordRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity";
+import { LoginRequest, LoginSuccessResult, NewPasswordRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity";
 
 @Injectable({
   providedIn: "root",
@@ -15,11 +15,11 @@ export class DataService {
   }
 
   logIn(loginRequest: LoginRequest) {
-    return this.#http.post<LoginResult>(`${this.#identityApiUrlRoot}login`, loginRequest);
+    return this.#http.post<LoginSuccessResult>(`${this.#identityApiUrlRoot}login`, loginRequest);
   }
 
   register(registerRequest: LoginRequest) {
-    return this.#http.post<LoginResult>(`${this.#identityApiUrlRoot}register`, registerRequest);
+    return this.#http.post<LoginSuccessResult>(`${this.#identityApiUrlRoot}register`, registerRequest);
   }
 
   logOut() {
@@ -31,7 +31,7 @@ export class DataService {
   }
 
   newPassword(newPasswordRequest: NewPasswordRequest) {
-    return this.#http.post<string>(`${this.#identityApiUrlRoot}new-password`, newPasswordRequest);
+    return this.#http.post<LoginSuccessResult>(`${this.#identityApiUrlRoot}new-password`, newPasswordRequest);
   }
 
   verifyCode(verifyCodeRequest: VerifyCodeRequest) {

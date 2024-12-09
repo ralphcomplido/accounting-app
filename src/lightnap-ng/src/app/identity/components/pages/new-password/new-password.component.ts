@@ -51,7 +51,20 @@ export class NewPasswordComponent {
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: () => this.#routeAlias.navigate("user-home"),
+        next: result => {
+          switch (result.type) {
+            case "AccessToken":
+              this.#routeAlias.navigate("user-home");
+              break;
+            case "TwoFactorRequired":
+              this.#routeAlias.navigate("verify-code", this.email);
+              break;
+            case "EmailVerificationRequired":
+              throw new Error("Email verification is not yet implemented.");
+            default:
+              throw new Error(`Unexpected LoginSuccessResult.type: '${result.type}'`);
+          }
+        },
         error: response => (this.errors = response.errorMessages),
       });
   }

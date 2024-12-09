@@ -65,10 +65,17 @@ export class RegisterComponent {
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: loginResult => {
-          if (loginResult.twoFactorRequired) {
-            this.#routeAlias.navigate("verify-code", this.form.value.email);
-          } else {
-            this.#routeAlias.navigate("user-home");
+          switch (loginResult.type) {
+            case "TwoFactorRequired":
+              this.#routeAlias.navigate("verify-code", this.form.value.email);
+              break;
+            case "AccessToken":
+              this.#routeAlias.navigate("user-home");
+              break;
+            case "EmailVerificationRequired":
+              throw new Error("Email verification is not yet implemented.");
+            default:
+              throw new Error(`Unexpected LoginSuccessResult.type: '${loginResult.type}'`);
           }
         },
         error: response => (this.errors = response.errorMessages),

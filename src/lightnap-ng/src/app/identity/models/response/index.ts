@@ -1,1 +1,1 @@
-export * from "./login-result";
+export * from "./login-success-result";

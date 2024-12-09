@@ -159,7 +159,7 @@ namespace LightNap.Core.Tests
                 RememberMe = false
             });
 
-            Assert.IsNotNull(loginResult.BearerToken);
+            Assert.IsNotNull(loginResult.AccessToken);
         }
 
         [TestMethod]

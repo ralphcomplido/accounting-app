@@ -5,6 +5,7 @@ using LightNap.Core.Data.Entities;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
 using LightNap.Core.Identity.Interfaces;
+using LightNap.Core.Identity.Models;
 using LightNap.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,20 +34,26 @@ namespace LightNap.Core.Identity.Services
         /// <param name="user">The application user.</param>
         /// <param name="rememberMe">Indicates whether to remember the user.</param>
         /// <param name="deviceDetails">The device details.</param>
-        /// <returns>The login result DTO containing the bearer token or a flag indicating if two-factor authentication is required.</returns>
-        private async Task<LoginResultDto> HandleUserLoginAsync(ApplicationUser user, bool rememberMe, string deviceDetails)
+        /// <returns>The login result DTO containing the access token or a flag indicating whether further steps are required.</returns>
+        private async Task<LoginSuccessDto> HandleUserLoginAsync(ApplicationUser user, bool rememberMe, string deviceDetails)
         {
+            if (applicationSettings.Value.RequireEmailVerification && !user.EmailConfirmed)
+            {
+                return new LoginSuccessDto() { Type = LoginSuccessType.EmailVerificationRequired };
+            }
+
             if (user.TwoFactorEnabled)
             {
                 string code = await userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
                 await emailService.SendTwoFactorEmailAsync(user, code);
-                return new LoginResultDto() { TwoFactorRequired = true };
+                return new LoginSuccessDto() { Type = LoginSuccessType.TwoFactorRequired };
             }
 
             await this.CreateRefreshTokenAsync(user, rememberMe, deviceDetails);
-            return new LoginResultDto()
+            return new LoginSuccessDto()
             {
-                BearerToken = await tokenService.GenerateAccessTokenAsync(user)
+                AccessToken = await tokenService.GenerateAccessTokenAsync(user),
+                Type = LoginSuccessType.AccessToken
             };
         }
 
@@ -109,8 +116,8 @@ namespace LightNap.Core.Identity.Services
         /// Logs in a user.
         /// </summary>
         /// <param name="requestDto">The login request DTO.</param>
-        /// <returns>The API response containing the login result.</returns>
-        public async Task<LoginResultDto> LogInAsync(LoginRequestDto requestDto)
+        /// <returns>The login result.</returns>
+        public async Task<LoginSuccessDto> LogInAsync(LoginRequestDto requestDto)
         {
             ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
 
@@ -135,8 +142,8 @@ namespace LightNap.Core.Identity.Services
         /// Registers a new user.
         /// </summary>
         /// <param name="requestDto">The registration request DTO.</param>
-        /// <returns>The API response containing the login result.</returns>
-        public async Task<LoginResultDto> RegisterAsync(RegisterRequestDto requestDto)
+        /// <returns>The login result.</returns>
+        public async Task<LoginSuccessDto> RegisterAsync(RegisterRequestDto requestDto)
         {
             var existingUser = await userManager.FindByEmailAsync(requestDto.Email);
             if (existingUser is not null) { throw new UserFriendlyApiException("This email is already in use."); }
@@ -163,31 +170,24 @@ namespace LightNap.Core.Identity.Services
         /// <summary>
         /// Logs out the current user.
         /// </summary>
-        /// <returns>The API response indicating the success of the operation.</returns>
+        /// <returns>The success of the operation.</returns>
         public async Task LogOutAsync()
         {
-            string? refreshTokenCookie = cookieManager.GetCookie(Constants.Cookies.RefreshToken);
-            if (refreshTokenCookie is not null)
-            {
-                RefreshToken? refreshToken = await db.RefreshTokens.FirstOrDefaultAsync(token => token.Token == refreshTokenCookie);
-                if (refreshToken is not null)
-                {
-                    db.RefreshTokens.Remove(refreshToken);
-                    await db.SaveChangesAsync();
-                }
-                cookieManager.RemoveCookie(Constants.Cookies.RefreshToken);
-            }
+            string? refreshTokenCookie = cookieManager.GetCookie(Constants.Cookies.RefreshToken) ?? throw new UserFriendlyApiException("You are not logged in");
+            RefreshToken? refreshToken = await db.RefreshTokens.FirstOrDefaultAsync(token => token.Token == refreshTokenCookie) ?? throw new UserFriendlyApiException("You are not logged in");
+            db.RefreshTokens.Remove(refreshToken);
+            await db.SaveChangesAsync();
+            cookieManager.RemoveCookie(Constants.Cookies.RefreshToken);
         }
 
         /// <summary>
         /// Resets the password for a user.
         /// </summary>
         /// <param name="requestDto">The reset password request DTO.</param>
-        /// <returns>The API response indicating the success of the operation.</returns>
+        /// <returns>The success of the operation.</returns>
         public async Task ResetPasswordAsync(ResetPasswordRequestDto requestDto)
         {
             ApplicationUser? user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
-
 
             string token = await userManager.GeneratePasswordResetTokenAsync(user);
             string url = $"{applicationSettings.Value.SiteUrlRootForEmails}#/identity/new-password/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
@@ -207,8 +207,8 @@ namespace LightNap.Core.Identity.Services
         /// Sets a new password for a user.
         /// </summary>
         /// <param name="requestDto">The new password request DTO.</param>
-        /// <returns>The API response containing the new access token.</returns>
-        public async Task<string> NewPasswordAsync(NewPasswordRequestDto requestDto)
+        /// <returns>The login result.</returns>
+        public async Task<LoginSuccessDto> NewPasswordAsync(NewPasswordRequestDto requestDto)
         {
             ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
 
@@ -219,16 +219,14 @@ namespace LightNap.Core.Identity.Services
                 throw new UserFriendlyApiException("Unable to set new password.");
             }
 
-            await this.CreateRefreshTokenAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
-
-            return await tokenService.GenerateAccessTokenAsync(user);
+            return await this.HandleUserLoginAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
         }
 
         /// <summary>
         /// Verifies the two-factor authentication code.
         /// </summary>
         /// <param name="requestDto">The verify code request DTO.</param>
-        /// <returns>The API response containing the new access token.</returns>
+        /// <returns>The access token.</returns>
         public async Task<string> VerifyCodeAsync(VerifyCodeRequestDto requestDto)
         {
             ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
@@ -252,7 +250,7 @@ namespace LightNap.Core.Identity.Services
         /// <summary>
         /// Gets a new access token using the refresh token.
         /// </summary>
-        /// <returns>The API response containing the new access token.</returns>
+        /// <returns>The login result.</returns>
         public async Task<string> GetAccessTokenAsync()
         {
             var user = await this.ValidateRefreshTokenAsync() ?? throw new UserFriendlyApiException("This account needs to sign in.");

@@ -56,15 +56,17 @@ export class LoginComponent {
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: result => {
-          if (result.twoFactorRequired) {
-            this.#routeAlias.navigate("verify-code", this.form.value.email);
-          } else {
-            const redirectUrl = this.#identityService.redirectUrl;
-            if (redirectUrl) {
-              this.#router.navigateByUrl(redirectUrl);
-            } else {
+          switch (result.type) {
+            case "TwoFactorRequired":
+              this.#routeAlias.navigate("verify-code", this.form.value.email);
+              break;
+            case "AccessToken":
               this.#routeAlias.navigate("user-home");
-            }
+              break;
+            case "EmailVerificationRequired":
+              throw new Error("Email verification is not yet implemented.");
+            default:
+              throw new Error(`Unexpected LoginSuccessResult.type: '${result.type}'`);
           }
         },
         error: response => (this.errors = response.errorMessages),

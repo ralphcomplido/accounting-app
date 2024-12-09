@@ -4,6 +4,7 @@ using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
+using LightNap.Core.Identity.Models;
 using LightNap.Core.Identity.Services;
 using LightNap.Core.Interfaces;
 using LightNap.Core.Tests.Utilities;
@@ -105,8 +106,8 @@ namespace LightNap.Core.Tests
             var result = await this._identityService.LogInAsync(requestDto);
 
             // Assert
-            Assert.IsFalse(result.TwoFactorRequired);
-            Assert.IsNotNull(result.BearerToken);
+            Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
+            Assert.IsNotNull(result.AccessToken);
 
             var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
             Assert.IsNotNull(cookie);
@@ -164,7 +165,7 @@ namespace LightNap.Core.Tests
             await this._userManager.AddPasswordAsync(user, requestDto.Password);
             var loginResult = await this._identityService.LogInAsync(requestDto);
             var newToken = "new-token";
-            Assert.AreNotEqual(newToken, loginResult.BearerToken);
+            Assert.AreNotEqual(newToken, loginResult.AccessToken);
             this._tokenServiceMock.Setup(ts => ts.GenerateAccessTokenAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(newToken);
 
             // Act
@@ -204,8 +205,8 @@ namespace LightNap.Core.Tests
             var registeredUser = await this._identityService.RegisterAsync(requestDto);
 
             // Assert
-            Assert.IsFalse(registeredUser.TwoFactorRequired);
-            Assert.IsNotNull(registeredUser.BearerToken);
+            Assert.AreEqual(registeredUser.Type, LoginSuccessType.AccessToken);
+            Assert.IsNotNull(registeredUser.AccessToken);
 
             var user = await this._userManager.FindByEmailAsync(requestDto.Email);
             Assert.IsNotNull(user);

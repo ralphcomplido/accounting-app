@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
-import { LoginRequest, LoginResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity/models";
+import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity/models";
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
@@ -243,20 +243,20 @@ export class IdentityService {
    * @method logIn
    * @description Logs the user in.
    * @param {LoginRequest} loginRequest - The request object containing login information.
-   * @returns {Observable<LoginResult>} An observable containing the result of the operation.
+   * @returns {Observable<LoginSuccessResult>} An observable containing the result of the operation.
    */
   logIn(loginRequest: LoginRequest) {
-    return this.#dataService.logIn(loginRequest).pipe(tap(result => this.#onTokenReceived(result.bearerToken)));
+    return this.#dataService.logIn(loginRequest).pipe(tap(result => this.#onTokenReceived(result.accessToken)));
   }
 
   /**
    * @method register
    * @description Registers a new user.
    * @param {RegisterRequest} registerRequest - The request object containing registration information.
-   * @returns {Observable<LoginResult>} An observable containing the result of the operation.
+   * @returns {Observable<LoginSuccessResult>} An observable containing the result of the operation.
    */
   register(registerRequest: RegisterRequest) {
-    return this.#dataService.register(registerRequest).pipe(tap(result => this.#onTokenReceived(result?.bearerToken)));
+    return this.#dataService.register(registerRequest).pipe(tap(result => this.#onTokenReceived(result?.accessToken)));
   }
 
   /**
@@ -295,6 +295,6 @@ export class IdentityService {
    * @returns {Observable<string>} An observable containing the result of the operation.
    */
   newPassword(newPasswordRequest: NewPasswordRequest) {
-    return this.#dataService.newPassword(newPasswordRequest).pipe(tap(token => this.#onTokenReceived(token)));
+    return this.#dataService.newPassword(newPasswordRequest).pipe(tap(result => this.#onTokenReceived(result.accessToken)));
   }
 }
