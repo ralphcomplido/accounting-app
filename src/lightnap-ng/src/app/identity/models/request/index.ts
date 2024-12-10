@@ -1,4 +1,5 @@
 export * from "./login-request";
+export * from "./login-type";
 export * from "./new-password-request";
 export * from "./register-request";
 export * from "./reset-password-request";

@@ -140,7 +140,19 @@ namespace LightNap.Core.Identity.Services
         /// <returns>The login result.</returns>
         public async Task<LoginSuccessDto> LogInAsync(LoginRequestDto requestDto)
         {
-            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
+            ApplicationUser user;
+            if (requestDto.Type == LoginType.Email)
+            {
+                user = await userManager.FindByEmailAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
+            }
+            else if (requestDto.Type == LoginType.UserName)
+            {
+                user = await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid username/password combination.");
+            }
+            else
+            {
+                user = await userManager.FindByEmailAsync(requestDto.Login) ?? await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid login/password combination.");
+            }
 
             var signInResult = await signInManager.CheckPasswordSignInAsync(user, requestDto.Password, false);
             if (!signInResult.Succeeded)
@@ -153,7 +165,7 @@ namespace LightNap.Core.Identity.Services
                 {
                     throw new UserFriendlyApiException("This account is not allowed to log in.");
                 }
-                throw new UserFriendlyApiException("Invalid email/password combination.");
+                throw new UserFriendlyApiException("Invalid login/password combination.");
             }
 
             return await this.HandleUserLoginAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);

@@ -34,7 +34,7 @@ export class LoginComponent {
   #routeAlias = inject(RouteAliasService);
 
   form = this.#fb.nonNullable.group({
-    email: this.#fb.control("", [Validators.required, Validators.email]),
+    login: this.#fb.control("", [Validators.required]),
     password: this.#fb.control("", [Validators.required]),
     rememberMe: this.#fb.control(true),
   });
@@ -46,7 +46,7 @@ export class LoginComponent {
 
     this.#identityService
       .logIn({
-        email: this.form.value.email,
+        login: this.form.value.login,
         password: this.form.value.password,
         rememberMe: this.form.value.rememberMe,
         deviceDetails: navigator.userAgent,
@@ -56,7 +56,7 @@ export class LoginComponent {
         next: result => {
           switch (result.type) {
             case "TwoFactorRequired":
-              this.#routeAlias.navigate("verify-code", this.form.value.email);
+              this.#routeAlias.navigate("verify-code", this.form.value.login);
               break;
             case "AccessToken":
               this.#routeAlias.navigate("user-home");

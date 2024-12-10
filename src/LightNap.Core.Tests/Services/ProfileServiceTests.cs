@@ -153,7 +153,7 @@ namespace LightNap.Core.Tests
 
             var loginResult = await identityService.LogInAsync(new LoginRequestDto
             {
-                Email = ProfileServiceTests._userEmail,
+                Login = ProfileServiceTests._userEmail,
                 Password = changePasswordDto.NewPassword,
                 DeviceDetails = "device-details",
                 RememberMe = false

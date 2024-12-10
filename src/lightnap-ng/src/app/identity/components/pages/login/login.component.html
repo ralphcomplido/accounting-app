@@ -4,13 +4,13 @@
 
   <div class="w-30rem">
     <form [formGroup]="form" (ngSubmit)="logIn()" autocomplete="off">
-      <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+      <label for="login" class="block text-900 text-xl font-medium mb-2">Email/User Name</label>
       <input
-        id="email"
+        id="login"
         type="text"
-        placeholder="Email address"
+        placeholder="Email/User Name"
         pInputText
-        formControlName="email"
+        formControlName="login"
         class="w-full md:w-30rem mb-5"
         style="padding: 1rem"
       />

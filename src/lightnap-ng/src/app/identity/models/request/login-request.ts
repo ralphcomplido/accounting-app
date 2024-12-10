@@ -1,11 +1,18 @@
+import { LoginType } from "./login-type";
+
 /**
  * Represents a request to log in to the application.
  */
 export interface LoginRequest {
     /**
-     * The email address of the user attempting to log in.
+     * The type of login field used in the request.
      */
-    email: string;
+    type?: LoginType;
+
+    /**
+     * The login field for the user attempting to log in.
+     */
+    login: string;
 
     /**
      * The password of the user attempting to log in.

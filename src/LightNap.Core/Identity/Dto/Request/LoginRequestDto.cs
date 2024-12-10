@@ -1,4 +1,5 @@
 ﻿using LightNap.Core.Configuration;
+using LightNap.Core.Identity.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace LightNap.Core.Identity.Dto.Request
@@ -9,12 +10,17 @@ namespace LightNap.Core.Identity.Dto.Request
     public class LoginRequestDto
     {
         /// <summary>
-        /// Gets or sets the email address.
+        /// Specifies the type of login. Uses LoginType.Unknown if not specified.
+        /// <seealso cref="LightNap.Core.Identity.Models.LoginType"/>
         /// </summary>
-        [EmailAddress]
+        public LoginType? Type { get; set; }
+
+        /// <summary>
+        /// The login identifier.
+        /// </summary>
         [Required]
-        [StringLength(Constants.Dto.MaxEmailLength)]
-        public required string Email { get; set; }
+        [StringLength(Constants.Dto.MaxLoginLength)]
+        public required string Login { get; set; }
 
         /// <summary>
         /// Gets or sets the password.

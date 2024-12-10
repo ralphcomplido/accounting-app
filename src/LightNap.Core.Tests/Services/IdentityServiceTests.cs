@@ -93,13 +93,13 @@ namespace LightNap.Core.Tests
             // Arrange
             var requestDto = new LoginRequestDto
             {
-                Email = "test@test.com",
+                Login = "test@test.com",
                 Password = "ValidPassword123!",
                 RememberMe = true,
                 DeviceDetails = "TestDevice",
             };
 
-            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Login);
             await this._userManager.AddPasswordAsync(user, requestDto.Password);
 
             // Act
@@ -120,7 +120,7 @@ namespace LightNap.Core.Tests
             // Arrange
             var requestDto = new LoginRequestDto
             {
-                Email = "test@test.com",
+                Login = "test@test.com",
                 Password = "ValidPassword123!",
                 RememberMe = true,
                 DeviceDetails = "TestDevice",
@@ -137,13 +137,13 @@ namespace LightNap.Core.Tests
             // Arrange
             var requestDto = new LoginRequestDto
             {
-                Email = "test@test.com",
+                Login = "test@test.com",
                 Password = "BadPassword123!",
                 RememberMe = true,
                 DeviceDetails = "TestDevice",
             };
 
-            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Login);
             await this._userManager.AddPasswordAsync(user, "GoodPassword123!");
 
             // Act
@@ -156,12 +156,12 @@ namespace LightNap.Core.Tests
             // Arrange
             var requestDto = new LoginRequestDto
             {
-                Email = "test@test.com",
+                Login = "test@test.com",
                 Password = "ValidPassword123!",
                 RememberMe = true,
                 DeviceDetails = "TestDevice",
             };
-            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Login);
             await this._userManager.AddPasswordAsync(user, requestDto.Password);
             var loginResult = await this._identityService.LogInAsync(requestDto);
             var newToken = "new-token";
@@ -320,6 +320,96 @@ namespace LightNap.Core.Tests
 
             // Act
             await this._identityService.NewPasswordAsync(newPasswordRequestDto);
+        }
+
+        [TestMethod]
+        public async Task LogInAsync_ValidEmailOnly_ReturnsSuccess()
+        {
+            // Arrange
+            var requestDto = new LoginRequestDto
+            {
+                Login = "test@test.com",
+                Password = "ValidPassword123!",
+                RememberMe = true,
+                DeviceDetails = "TestDevice",
+                Type = LoginType.Email
+            };
+
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Login);
+            await this._userManager.AddPasswordAsync(user, requestDto.Password);
+
+            // Act
+            var result = await this._identityService.LogInAsync(requestDto);
+
+            // Assert
+            Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
+            Assert.IsNotNull(result.AccessToken);
+
+            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            Assert.IsNotNull(cookie);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task LogInAsync_EmailLoginForUserNameType_ThrowsError()
+        {
+            // Arrange
+            var requestDto = new LoginRequestDto
+            {
+                Login = "test@test.com",
+                Password = "ValidPassword123!",
+                RememberMe = true,
+                DeviceDetails = "TestDevice",
+                Type = LoginType.UserName
+            };
+
+            // Act
+            await this._identityService.LogInAsync(requestDto);
+        }
+
+        [TestMethod]
+        public async Task LogInAsync_ValidUserNameOnly_ReturnsSuccess()
+        {
+            // Arrange
+            var requestDto = new LoginRequestDto
+            {
+                Login = "UserName",
+                Password = "ValidPassword123!",
+                RememberMe = true,
+                DeviceDetails = "TestDevice",
+                Type = LoginType.UserName
+            };
+
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", requestDto.Login, "test@test.com");
+            await this._userManager.AddPasswordAsync(user, requestDto.Password);
+
+            // Act
+            var result = await this._identityService.LogInAsync(requestDto);
+
+            // Assert
+            Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
+            Assert.IsNotNull(result.AccessToken);
+
+            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            Assert.IsNotNull(cookie);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task LogInAsync_UserNameLoginForEmailType_ThrowsError()
+        {
+            // Arrange
+            var requestDto = new LoginRequestDto
+            {
+                Login = "UserName",
+                Password = "ValidPassword123!",
+                RememberMe = true,
+                DeviceDetails = "TestDevice",
+                Type = LoginType.Email
+            };
+
+            // Act
+            await this._identityService.LogInAsync(requestDto);
         }
 
     }

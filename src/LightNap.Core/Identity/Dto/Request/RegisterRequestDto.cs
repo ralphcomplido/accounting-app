@@ -13,7 +13,7 @@ namespace LightNap.Core.Identity.Dto.Request
         /// </summary>
         [EmailAddress]
         [Required]
-        [StringLength(Constants.Dto.MaxEmailLength)]
+        [StringLength(Constants.Dto.MaxLoginLength)]
         public required string Email { get; set; }
 
         /// <summary>
