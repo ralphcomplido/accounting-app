@@ -29,7 +29,18 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendPasswordResetEmailAsync(ApplicationUser user, string passwordResetUrl)
         {
-            await SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Reset your password", $"You may reset your password at: {passwordResetUrl}"));
+            await this.SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Reset your password", $"You may reset your password at: {passwordResetUrl}"));
+        }
+
+        /// <summary>
+        /// Logs the email verification email details to the console asynchronously.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task SendVerificationEmailAsync(ApplicationUser user, string emailVerificationUrl)
+        {
+            await this.SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Confirm your email", $"You may confirm your email at: {emailVerificationUrl}"));
         }
 
         /// <summary>
@@ -39,7 +50,7 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendRegistrationEmailAsync(ApplicationUser user)
         {
-            await SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Welcome to our site", $"Thank you for registering."));
+            await this.SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Welcome to our site", $"Thank you for registering."));
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendTwoFactorEmailAsync(ApplicationUser user, string code)
         {
-            await SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Your login security code", $"Your login code is: {code}"));
+            await this.SendEmailAsync(new MailMessage("noreply@sharplogic.com", user.Email!, "Your login security code", $"Your login code is: {code}"));
         }
     }
 }

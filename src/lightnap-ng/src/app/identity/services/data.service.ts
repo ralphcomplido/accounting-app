@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { API_URL_ROOT } from "@core";
-import { LoginRequest, LoginSuccessResult, NewPasswordRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity";
+import { LoginRequest, LoginSuccessResult, NewPasswordRequest, ResetPasswordRequest, SendVerificationEmailRequest, VerifyCodeRequest, VerifyEmailRequest } from "@identity";
 
 @Injectable({
   providedIn: "root",
@@ -36,5 +36,13 @@ export class DataService {
 
   verifyCode(verifyCodeRequest: VerifyCodeRequest) {
     return this.#http.post<string>(`${this.#identityApiUrlRoot}verify-code`, verifyCodeRequest);
+  }
+
+  requestVerificationEmail(sendVerificationEmailRequest: SendVerificationEmailRequest) {
+    return this.#http.post<boolean>(`${this.#identityApiUrlRoot}request-verification-email`, sendVerificationEmailRequest);
+  }
+
+  verifyEmail(verifyEmailRequest: VerifyEmailRequest) {
+    return this.#http.post<boolean>(`${this.#identityApiUrlRoot}verify-email`, verifyEmailRequest);
   }
 }

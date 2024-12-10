@@ -32,4 +32,7 @@ export type RouteAlias =
     | 'reset-instructions-sent'
     | 'change-password'
     | 'verify-code'
-    | 'register';
+    | 'register'
+    | 'email-verification-required'
+    | 'request-verification-email'
+    | 'confirm-email';

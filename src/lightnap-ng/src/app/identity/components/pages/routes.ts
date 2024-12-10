@@ -22,4 +22,19 @@ export const Routes: AppRoute[] = [
     data: { alias: "verify-code" },
     loadComponent: () => import("./verify-code/verify-code.component").then(m => m.VerifyCodeComponent),
   },
+  {
+    path: "email-verification-required",
+    data: { alias: "email-verification-required" },
+    loadComponent: () =>
+      import("./email-verification-required/email-verification-required.component").then(m => m.EmailVerificationRequiredComponent),
+  },
+  {
+    path: "request-verification-email",
+    data: { alias: "request-verification-email" },
+    loadComponent: () => import("./request-verification-email/request-verification-email.component").then(m => m.RequestVerificationEmailComponent),
+  },
+  {
+    path: "confirm-email/:email/:code",
+    loadComponent: () => import("./confirm-email/confirm-email.component").then(m => m.ConfirmEmailComponent),
+  },
 ];

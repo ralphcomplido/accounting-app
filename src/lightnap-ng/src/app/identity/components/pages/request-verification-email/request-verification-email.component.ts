@@ -8,14 +8,14 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
-import { IdentityService } from "src/app/identity/services/identity.service";
+import { IdentityService } from "@identity/services/identity.service";
 
 @Component({
   standalone: true,
-  templateUrl: "./reset-password.component.html",
+  templateUrl: './request-verification-email.component.html',
   imports: [ReactiveFormsModule, RouterModule, ButtonModule, PasswordModule, InputTextModule, RoutePipe, IdentityCardComponent, ErrorListComponent],
 })
-export class ResetPasswordComponent {
+export class RequestVerificationEmailComponent {
   #identityService = inject(IdentityService);
   #blockUi = inject(BlockUiService);
   #fb = inject(FormBuilder);
@@ -27,13 +27,13 @@ export class ResetPasswordComponent {
 
   errors: Array<string> = [];
 
-  resetPassword() {
-    this.#blockUi.show({ message: "Resetting password..." });
+  resendVerificationEmail() {
+    this.#blockUi.show({ message: "Resending verification email..." });
     this.#identityService
-      .resetPassword({ email: this.form.value.email })
+      .requestVerificationEmail({ email: this.form.value.email })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: () => this.#routeAlias.getRoute("reset-instructions-sent"),
+        next: () => this.#routeAlias.navigate("email-verification-required"),
         error: response => (this.errors = response.errorMessages),
       });
   }

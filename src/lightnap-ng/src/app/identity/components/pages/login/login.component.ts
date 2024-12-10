@@ -10,7 +10,6 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
@@ -28,7 +27,6 @@ import { LayoutService } from "src/app/layout/services/layout.service";
   ],
 })
 export class LoginComponent {
-  layoutService = inject(LayoutService);
   #identityService = inject(IdentityService);
   #router = inject(Router);
   #blockUi = inject(BlockUiService);
@@ -64,7 +62,8 @@ export class LoginComponent {
               this.#routeAlias.navigate("user-home");
               break;
             case "EmailVerificationRequired":
-              throw new Error("Email verification is not yet implemented.");
+              this.#routeAlias.navigate("email-verification-required");
+              break;
             default:
               throw new Error(`Unexpected LoginSuccessResult.type: '${result.type}'`);
           }

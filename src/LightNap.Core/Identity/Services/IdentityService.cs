@@ -113,6 +113,27 @@ namespace LightNap.Core.Identity.Services
         }
 
         /// <summary>
+        /// Sends a verification email asynchronously.
+        /// </summary>
+        /// <param name="user">The application user.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        private async Task SendVerificationEmailAsync(ApplicationUser user)
+        {
+            string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}/identity/confirm-email/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
+
+            try
+            {
+                await emailService.SendVerificationEmailAsync(user, url);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An error occurred while sending an email verification link to '{email}': {e}", user.Email, e);
+                throw new UserFriendlyApiException("An unexpected error occurred while sending the email verification link.");
+            }
+        }
+
+        /// <summary>
         /// Logs in a user.
         /// </summary>
         /// <param name="requestDto">The login request DTO.</param>
@@ -162,6 +183,11 @@ namespace LightNap.Core.Identity.Services
                 await emailService.SendRegistrationEmailAsync(user);
             }
 
+            if (applicationSettings.Value.RequireEmailVerification)
+            {
+                await this.SendVerificationEmailAsync(user);
+            }
+
             logger.LogInformation("New user '{userName}' ('{email}') registered!", user.Email, user.UserName);
 
             return await this.HandleUserLoginAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
@@ -198,7 +224,7 @@ namespace LightNap.Core.Identity.Services
             }
             catch (Exception e)
             {
-                logger.LogError(e, "An error occurred while sending a password reset link to '{email}'", user.Email);
+                logger.LogError(e, "An error occurred while sending a password reset link to '{email}': {e}", user.Email, e);
                 throw new UserFriendlyApiException("An unexpected error occurred while sending the password reset link.");
             }
         }
@@ -257,6 +283,35 @@ namespace LightNap.Core.Identity.Services
             if (!await signInManager.CanSignInAsync(user)) { throw new UserFriendlyApiException("This account may not sign in."); }
 
             return await tokenService.GenerateAccessTokenAsync(user);
+        }
+
+        /// <summary>
+        /// Requests an email verification email to be sent to the user.
+        /// </summary>
+        /// <param name="requestDto">Contains the email address of the user.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task RequestVerificationEmailAsync(SendVerificationEmailRequestDto requestDto)
+        {
+            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
+            if (user.EmailConfirmed) { throw new UserFriendlyApiException("This email is already verified."); }
+            await this.SendVerificationEmailAsync(user);
+        }
+
+        /// <summary>
+        /// Verifies an email verification code.
+        /// </summary>
+        /// <param name="requestDto">The details to verify.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task VerifyEmailAsync(VerifyEmailRequestDto requestDto)
+        {
+            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
+            if (user.EmailConfirmed) { throw new UserFriendlyApiException("This email is already verified."); }
+            IdentityResult result = await userManager.ConfirmEmailAsync(user, requestDto.Code);
+            if (!result.Succeeded)
+            {
+                if (result.Errors.Any()) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
+                throw new UserFriendlyApiException("Unable to verify email.");
+            }
         }
     }
 }

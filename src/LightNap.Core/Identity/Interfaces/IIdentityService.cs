@@ -54,5 +54,19 @@ namespace LightNap.Core.Identity.Interfaces
         /// </summary>
         /// <returns>A new access token.</returns>
         Task<string> GetAccessTokenAsync();
+
+        /// <summary>
+        /// Requests email verification for a user asynchronously.
+        /// </summary>
+        /// <param name="requestDto">Contains the email address of the user.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task RequestVerificationEmailAsync(SendVerificationEmailRequestDto requestDto);
+
+        /// <summary>
+        /// Verifies an email asynchronously.
+        /// </summary>
+        /// <param name="requestDto">The verify email request data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task VerifyEmailAsync(VerifyEmailRequestDto requestDto);
     }
 }

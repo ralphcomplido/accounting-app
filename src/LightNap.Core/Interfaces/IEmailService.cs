@@ -39,5 +39,13 @@ namespace LightNap.Core.Interfaces
         /// <param name="user">The user to send the email to.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task SendRegistrationEmailAsync(ApplicationUser user);
+
+        /// <summary>
+        /// Sends a email verification email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task SendVerificationEmailAsync(ApplicationUser user, string emailVerificationUrl);
     }
 }

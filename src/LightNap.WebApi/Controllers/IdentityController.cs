@@ -101,5 +101,33 @@ namespace LightNap.WebApi.Controllers
         {
             return new ApiResponseDto<string>(await identityService.GetAccessTokenAsync());
         }
+
+        /// <summary>
+        /// Requests an email verification email for a user.
+        /// </summary>
+        /// <param name="requestDto">Contains the email address of the user.</param>
+        /// <returns>The API response indicating the success of the operation.</returns>
+        [HttpPost("request-verification-email")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        [ProducesResponseType(400)]
+        public async Task<ApiResponseDto<bool>> RequestVerificationEmail(SendVerificationEmailRequestDto requestDto)
+        {
+            await identityService.RequestVerificationEmailAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
+        }
+
+        /// <summary>
+        /// Verifies the email address of a user.
+        /// </summary>
+        /// <param name="requestDto">The verify email request DTO.</param>
+        /// <returns>The API response indicating the success of the operation.</returns>
+        [HttpPost("verify-email")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        [ProducesResponseType(400)]
+        public async Task<ApiResponseDto<bool>> VerifyEmail(VerifyEmailRequestDto requestDto)
+        {
+            await identityService.VerifyEmailAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
+        }
     }
 }

@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
-import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity/models";
+import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, SendVerificationEmailRequest, VerifyCodeRequest, VerifyEmailRequest } from "@identity/models";
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
@@ -296,5 +296,25 @@ export class IdentityService {
    */
   newPassword(newPasswordRequest: NewPasswordRequest) {
     return this.#dataService.newPassword(newPasswordRequest).pipe(tap(result => this.#onTokenReceived(result.accessToken)));
+  }
+
+  /**
+   * @method requestVerificationEmail
+   * @description Requests a new verification email.
+   * @param {SendVerificationEmailRequest} sendVerificationEmailRequest - The email address to send the verification email to.
+   * @returns {Observable<boolean>} An observable containing the result of the operation.
+   */
+  requestVerificationEmail(sendVerificationEmailRequest: SendVerificationEmailRequest) {
+    return this.#dataService.requestVerificationEmail(sendVerificationEmailRequest);
+  }
+
+  /**
+   * @method verifyEmail
+   * @description Verifies an email address.
+   * @param {VerifyEmailRequest} verifyEmailRequest - The request object containing the email and verification code.
+   * @returns {Observable<boolean>} An observable containing the result of the operation.
+   */
+  verifyEmail(verifyEmailRequest: VerifyEmailRequest) {
+    return this.#dataService.verifyEmail(verifyEmailRequest);
   }
 }

@@ -12,7 +12,6 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
@@ -34,7 +33,6 @@ export class RegisterComponent {
   #blockUi = inject(BlockUiService);
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
-  layoutService = inject(LayoutService);
 
   form = this.#fb.nonNullable.group(
     {
@@ -73,7 +71,8 @@ export class RegisterComponent {
               this.#routeAlias.navigate("user-home");
               break;
             case "EmailVerificationRequired":
-              throw new Error("Email verification is not yet implemented.");
+              this.#routeAlias.navigate("email-verification-required");
+              break;
             default:
               throw new Error(`Unexpected LoginSuccessResult.type: '${loginResult.type}'`);
           }

@@ -11,7 +11,6 @@ import { CheckboxModule } from "primeng/checkbox";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
@@ -21,7 +20,6 @@ import { LayoutService } from "src/app/layout/services/layout.service";
 export class NewPasswordComponent {
   #identityService = inject(IdentityService);
   #blockUi = inject(BlockUiService);
-  layoutService = inject(LayoutService);
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
 

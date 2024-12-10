@@ -22,14 +22,14 @@ namespace LightNap.Core.Services
         /// <param name="configuration">The configuration to use for setting up the SMTP client.</param>
         public SmtpEmailService(IConfiguration configuration)
         {
-            _smtpClient = new SmtpClient(configuration.GetRequiredSetting("Smtp:Host"), int.Parse(configuration.GetRequiredSetting("Smtp:Port")))
+            this._smtpClient = new SmtpClient(configuration.GetRequiredSetting("Smtp:Host"), int.Parse(configuration.GetRequiredSetting("Smtp:Port")))
             {
                 Credentials = new NetworkCredential(configuration.GetRequiredSetting("Smtp:User"), configuration.GetRequiredSetting("Smtp:Password")),
                 EnableSsl = bool.Parse(configuration.GetRequiredSetting("Smtp:EnableSsl"))
             };
 
-            _fromEmail = configuration.GetRequiredSetting("Smtp:FromEmail");
-            _fromDisplayName = configuration.GetRequiredSetting("Smtp:FromDisplayName");
+            this._fromEmail = configuration.GetRequiredSetting("Smtp:FromEmail");
+            this._fromDisplayName = configuration.GetRequiredSetting("Smtp:FromDisplayName");
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendEmailAsync(MailMessage message)
         {
-            message.From = new MailAddress(_fromEmail, _fromDisplayName);
-            await _smtpClient.SendMailAsync(message);
+            message.From = new MailAddress(this._fromEmail, this._fromDisplayName);
+            await this._smtpClient.SendMailAsync(message);
         }
 
         /// <summary>
@@ -51,7 +51,18 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendPasswordResetEmailAsync(ApplicationUser user, string passwordResetUrl)
         {
-            await SendEmailAsync(new MailMessage(_fromEmail, user.Email!, "Reset your password", $"You may reset your password at: {passwordResetUrl}"));
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Reset your password", $"You may reset your password at: {passwordResetUrl}"));
+        }
+
+        /// <summary>
+        /// Sends an email verification email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task SendVerificationEmailAsync(ApplicationUser user, string emailVerificationUrl)
+        {
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Confirm your email", $"You may confirm your email at: {emailVerificationUrl}"));
         }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendRegistrationEmailAsync(ApplicationUser user)
         {
-            await SendEmailAsync(new MailMessage(_fromEmail, user.Email!, "Welcome to our site", $"Thank you for registering."));
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Welcome to our site", $"Thank you for registering."));
         }
 
         /// <summary>
@@ -72,7 +83,7 @@ namespace LightNap.Core.Services
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendTwoFactorEmailAsync(ApplicationUser user, string code)
         {
-            await SendEmailAsync(new MailMessage(_fromEmail, user.Email!, "Your login security code", $"Your login code is: {code}"));
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Your login security code", $"Your login code is: {code}"));
         }
     }
 }

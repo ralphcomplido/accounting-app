@@ -9,7 +9,6 @@ import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { finalize } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
-import { LayoutService } from "src/app/layout/services/layout.service";
 
 @Component({
   standalone: true,
@@ -21,7 +20,6 @@ export class VerifyCodeComponent {
   #blockUi = inject(BlockUiService);
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
-  layoutService = inject(LayoutService);
 
   readonly email = input("");
 

@@ -12,6 +12,7 @@
         {
             public const int Max2FaCodeLength = 512;
             public const int MaxEmailLength = 256;
+            public const int MaxEmailVerificationCodeLength = 512;
             public const int MaxPasswordLength = 128;
             public const int MaxDeviceDetailsLength = 512;
             public const int MaxPasswordResetTokenLength = 512;
