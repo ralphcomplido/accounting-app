@@ -1,0 +1,20 @@
+<p-card header="Change Your Email">
+  <form [formGroup]="form" (ngSubmit)="changeEmail()" autocomplete="off">
+    <div class="flex flex-column w-20rem">
+      <label for="newEmail" class="block text-900 text-xl font-medium mb-2">New Email</label>
+      <input
+        id="newEmail"
+        type="text"
+        placeholder="New email address"
+        pInputText
+        formControlName="newEmail"
+        class="w-full md:w-30rem mb-5"
+        style="padding: 1rem"
+      />
+
+      <error-list [errors]="errors" />
+
+      <p-button type="submit" label="Change Email" styleClass="w-full" [disabled]="!form.valid" />
+    </div>
+  </form>
+</p-card>

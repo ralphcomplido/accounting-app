@@ -1,23 +1,22 @@
 ﻿using LightNap.Core.Configuration;
 using System.ComponentModel.DataAnnotations;
 
-namespace LightNap.Core.Identity.Dto.Request
+namespace LightNap.Core.Profile.Dto.Request
 {
     /// <summary>
-    /// Data transfer object for submitting an email verficiation code.
+    /// Data transfer object for confirming an email change.
     /// </summary>
-    public class VerifyEmailRequestDto
+    public class ConfirmEmailChangeRequestDto
     {
         /// <summary>
-        /// The email.
+        /// The email to change to.
         /// </summary>
-        [EmailAddress]
         [Required]
         [StringLength(Constants.Dto.MaxLoginLength)]
-        public required string Email { get; set; }
+        public required string NewEmail { get; set; }
 
         /// <summary>
-        /// The verification code.
+        /// The change confirmation code.
         /// </summary>
         [Required]
         [StringLength(Constants.Dto.MaxVerificationCodeLength)]

@@ -55,6 +55,17 @@ namespace LightNap.Core.Services
         }
 
         /// <summary>
+        /// Sends an email change email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="emailChangeUrl">The URL for verifying the email change.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task SendChangeEmailAsync(ApplicationUser user, string newEmail, string emailChangeUrl)
+        {
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, newEmail, "Confirm your email change", $"You may confirm your email change at: {emailChangeUrl}"));
+        }
+
+        /// <summary>
         /// Sends an email verification email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>

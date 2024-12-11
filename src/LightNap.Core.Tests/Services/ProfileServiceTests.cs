@@ -15,8 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using System.Web;
 
-namespace LightNap.Core.Tests
+namespace LightNap.Core.Tests.Services
 {
     [TestClass]
     public class ProfileServiceTests
@@ -32,6 +33,7 @@ namespace LightNap.Core.Tests
         private IUserContext _userContext;
         private ProfileService _profileService;
         private IServiceProvider _serviceProvider;
+        private Mock<IEmailService> _emailServiceMock;
 #pragma warning restore CS8618
 
         [TestInitialize]
@@ -46,20 +48,33 @@ namespace LightNap.Core.Tests
 
             this._serviceProvider = services.BuildServiceProvider();
             this._dbContext = this._serviceProvider.GetRequiredService<ApplicationDbContext>();
+            var logger = this._serviceProvider.GetRequiredService<ILogger<ProfileService>>();
 
             this._userManager = this._serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            await TestHelper.CreateTestUserAsync(this._userManager, ProfileServiceTests._userId, ProfileServiceTests._userName, ProfileServiceTests._userEmail);
+            await TestHelper.CreateTestUserAsync(this._userManager, _userId, _userName, _userEmail);
 
             this._userContext = new TestUserContext()
             {
-                UserId = ProfileServiceTests._userId
+                UserId = _userId
             };
 
             var userContextMock = new Mock<IUserContext>();
-            userContextMock.Setup(uc => uc.GetUserId()).Returns(ProfileServiceTests._userId);
+            userContextMock.Setup(uc => uc.GetUserId()).Returns(_userId);
             this._userContext = userContextMock.Object;
 
-            this._profileService = new ProfileService(this._dbContext, this._userManager, this._userContext);
+            this._emailServiceMock = new Mock<IEmailService>();
+
+            var applicationSettings = Options.Create(
+                new ApplicationSettings
+                {
+                    AutomaticallyApplyEfMigrations = false,
+                    LogOutInactiveDeviceDays = 30,
+                    RequireTwoFactorForNewUsers = false,
+                    SiteUrlRootForEmails = "https://example.com/",
+                    UseSameSiteStrictCookies = true
+                });
+
+            this._profileService = new ProfileService(logger, this._dbContext, this._userManager, this._userContext, this._emailServiceMock.Object, applicationSettings);
         }
 
         [TestCleanup]
@@ -75,9 +90,9 @@ namespace LightNap.Core.Tests
             // Arrange
             var expectedProfile = new ProfileDto
             {
-                Id = ProfileServiceTests._userId,
-                Email = ProfileServiceTests._userEmail,
-                UserName = ProfileServiceTests._userName
+                Id = _userId,
+                Email = _userEmail,
+                UserName = _userName
             };
 
             // Act
@@ -113,7 +128,7 @@ namespace LightNap.Core.Tests
                 ConfirmNewPassword = "NewPassword123!"
             };
 
-            var user = await this._userManager.FindByIdAsync(ProfileServiceTests._userId);
+            var user = await this._userManager.FindByIdAsync(_userId);
             var identityResult = await this._userManager.AddPasswordAsync(user!, changePasswordDto.CurrentPassword);
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
@@ -153,7 +168,7 @@ namespace LightNap.Core.Tests
 
             var loginResult = await identityService.LogInAsync(new LoginRequestDto
             {
-                Login = ProfileServiceTests._userEmail,
+                Login = _userEmail,
                 Password = changePasswordDto.NewPassword,
                 DeviceDetails = "device-details",
                 RememberMe = false
@@ -174,7 +189,7 @@ namespace LightNap.Core.Tests
                 ConfirmNewPassword = "NewPassword123!"
             };
 
-            var user = await this._userManager.FindByIdAsync(ProfileServiceTests._userId);
+            var user = await this._userManager.FindByIdAsync(_userId);
             var identityResult = await this._userManager.AddPasswordAsync(user!, "DifferentP@ssw0rd");
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
@@ -194,12 +209,67 @@ namespace LightNap.Core.Tests
                 ConfirmNewPassword = "NotNewPassword123!"
             };
 
-            var user = await this._userManager.FindByIdAsync(ProfileServiceTests._userId);
+            var user = await this._userManager.FindByIdAsync(_userId);
             var identityResult = await this._userManager.AddPasswordAsync(user!, "OldPassword123!");
             if (!identityResult.Succeeded) { Assert.Fail("Failed to add password to user."); }
 
             // Act
             await this._profileService.ChangePasswordAsync(changePasswordDto);
+        }
+
+        [TestMethod]
+        public async Task ChangeEmail_ShouldStartEmailChangeProcess()
+        {
+            // Arrange
+            var changeEmailDto = new ChangeEmailRequestDto
+            {
+                NewEmail = "newuser@test.com"
+            };
+
+            this._emailServiceMock
+                .Setup(ts => ts.SendChangeEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await this._profileService.ChangeEmailAsync(changeEmailDto);
+
+            // Assert
+            this._emailServiceMock.Verify(
+               ts => ts.SendChangeEmailAsync(It.IsAny<ApplicationUser>(), changeEmailDto.NewEmail, It.IsAny<string>()),
+               Times.Once);
+        }
+
+        [TestMethod]
+        public async Task ConfirmEmailChange_ShouldConfirmEmailChange()
+        {
+            // Arrange
+            var changeEmailDto = new ChangeEmailRequestDto
+            {
+                NewEmail = "newuser@test.com"
+            };
+
+            string capturedEmailChangeUrl = string.Empty;
+            this._emailServiceMock
+                .Setup(ts => ts.SendChangeEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string, string>((user, newEmail, url) => capturedEmailChangeUrl = url)
+                .Returns(Task.CompletedTask);
+            await this._profileService.ChangeEmailAsync(changeEmailDto);
+
+            // Not ideal since it's hardcoded to a very specific URL format, so expect to discover this comment if that gets changed.
+            string emailChangeToken = HttpUtility.UrlDecode(capturedEmailChangeUrl[(capturedEmailChangeUrl.LastIndexOf('/') + 1)..]);
+
+            var confirmEmailChangeDto = new ConfirmEmailChangeRequestDto
+            {
+                NewEmail = "newuser@test.com",
+                Code = emailChangeToken
+            };
+
+            // Act
+            await this._profileService.ConfirmEmailChangeAsync(confirmEmailChangeDto);
+
+            // Assert
+            var updatedUser = await this._userManager.FindByIdAsync(_userId);
+            Assert.AreEqual(confirmEmailChangeDto.NewEmail, updatedUser!.Email);
         }
 
         [TestMethod]
@@ -252,7 +322,7 @@ namespace LightNap.Core.Tests
                 Expires = DateTime.UtcNow.AddDays(1),
                 IsRevoked = false,
                 Details = d.Details,
-                UserId = ProfileServiceTests._userId
+                UserId = _userId
             }));
             await this._dbContext.SaveChangesAsync();
 
@@ -284,7 +354,7 @@ namespace LightNap.Core.Tests
                 Expires = DateTime.UtcNow.AddDays(1),
                 IsRevoked = false,
                 Details = "Device 1",
-                UserId = ProfileServiceTests._userId
+                UserId = _userId
             };
             this._dbContext.RefreshTokens.Add(refreshToken);
             await this._dbContext.SaveChangesAsync();

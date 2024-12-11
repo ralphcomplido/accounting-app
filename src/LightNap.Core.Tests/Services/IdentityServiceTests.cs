@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using System.Web;
 
-namespace LightNap.Core.Tests
+namespace LightNap.Core.Tests.Services
 {
     [TestClass]
     public class IdentityServiceTests
@@ -109,7 +109,7 @@ namespace LightNap.Core.Tests
             Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
             Assert.IsNotNull(result.AccessToken);
 
-            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
         }
 
@@ -211,7 +211,7 @@ namespace LightNap.Core.Tests
             var user = await this._userManager.FindByEmailAsync(requestDto.Email);
             Assert.IsNotNull(user);
 
-            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
 
             this._emailServiceMock.Verify(ts => ts.SendRegistrationEmailAsync(It.IsAny<ApplicationUser>()), Times.Once);
@@ -231,7 +231,7 @@ namespace LightNap.Core.Tests
                 DeviceDetails = "TestDevice"
             };
             await this._identityService.RegisterAsync(requestDto);
-            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
 
             // Act
@@ -289,7 +289,7 @@ namespace LightNap.Core.Tests
             await this._identityService.ResetPasswordAsync(passwordResetRequestDto);
 
             // Not ideal since it's hardcoded to a very specific URL format, so expect to discover this comment if that gets changed.
-            string passwordResetToken = HttpUtility.UrlDecode(capturedPasswordResetUrl.Substring(capturedPasswordResetUrl.LastIndexOf('/') + 1));
+            string passwordResetToken = HttpUtility.UrlDecode(capturedPasswordResetUrl[(capturedPasswordResetUrl.LastIndexOf('/') + 1)..]);
 
             var newPasswordRequestDto = new NewPasswordRequestDto
             {
@@ -345,7 +345,7 @@ namespace LightNap.Core.Tests
             Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
             Assert.IsNotNull(result.AccessToken);
 
-            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
         }
 
@@ -390,7 +390,7 @@ namespace LightNap.Core.Tests
             Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
             Assert.IsNotNull(result.AccessToken);
 
-            var cookie = this._cookieManager.GetCookie(IdentityServiceTests._refreshTokenCookieName);
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
         }
 

@@ -9,7 +9,7 @@
 
         <div class="flex flex-column gap-1">
           <label for="email" class="font-semibold">Email</label>
-          <span id="email">{{ profile.email }}</span>
+          <span id="email">{{ profile.email }} (<a [routerLink]="'change-email' | route">change</a>)</span>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="updateProfile()" autocomplete="off">

@@ -10,13 +10,12 @@
         /// </summary>
         internal static class Dto
         {
-            public const int Max2FaCodeLength = 512;
             public const int MaxLoginLength = 256;
-            public const int MaxEmailVerificationCodeLength = 512;
             public const int MaxPasswordLength = 128;
             public const int MaxDeviceDetailsLength = 512;
             public const int MaxPasswordResetTokenLength = 512;
             public const int MaxUserNameLength = 32;
+            public const int MaxVerificationCodeLength = 512;
         }
 
         /// <summary>

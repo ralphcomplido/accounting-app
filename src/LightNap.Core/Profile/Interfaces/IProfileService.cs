@@ -54,5 +54,21 @@ namespace LightNap.Core.Profile.Interfaces
         /// <param name="deviceId">The ID of the device to be revoked.</param>  
         /// <returns>A task that represents the asynchronous operation.</returns>  
         Task RevokeDeviceAsync(string deviceId);
+
+        /// <summary>
+        /// Starts the email change process for the logged-in user.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the new email.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="UserFriendlyApiException">Thrown when the email change fails.</exception>
+        Task ChangeEmailAsync(ChangeEmailRequestDto requestDto);
+
+        /// <summary>
+        /// Confirms the email change for the specified user.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the new email and the confirmation code.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="UserFriendlyApiException">Thrown when the email confirmation fails.</exception>
+        Task ConfirmEmailChangeAsync(ConfirmEmailChangeRequestDto requestDto);
     }
 }

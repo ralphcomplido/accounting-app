@@ -1,4 +1,3 @@
-using LightNap.Core.Api;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 using LightNap.Core.Profile.Interfaces;
@@ -133,6 +132,46 @@ namespace LightNap.WebApi.Controllers
         public async Task<ApiResponseDto<bool>> RevokeDevice(string deviceId)
         {
             await profileService.RevokeDeviceAsync(deviceId);
+            return new ApiResponseDto<bool>(true);
+        }
+
+        /// <summary>
+        /// Changes the email of the current user.
+        /// </summary>
+        /// <param name="requestDto">The email change request.</param>
+        /// <returns>
+        /// An <see cref="ApiResponseDto{T}"/> indicating whether the email was changed successfully.
+        /// </returns>
+        /// <response code="200">If the email was changed successfully.</response>
+        /// <response code="400">If the request is invalid or the current email is incorrect.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        [HttpPost("change-email")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<ApiResponseDto<bool>> ChangeEmail(ChangeEmailRequestDto requestDto)
+        {
+            await profileService.ChangeEmailAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
+        }
+
+        /// <summary>
+        /// Confirms the email change of the current user.
+        /// </summary>
+        /// <param name="requestDto">The email change confirmation details.</param>
+        /// <returns>
+        /// An <see cref="ApiResponseDto{T}"/> indicating whether the email change was confirmed successfully.
+        /// </returns>
+        /// <response code="200">If the email change was confirmed successfully.</response>
+        /// <response code="400">If the token is invalid or expired.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        [HttpPost("confirm-email-change")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<ApiResponseDto<bool>> ConfirmEmailChange(ConfirmEmailChangeRequestDto requestDto)
+        {
+            await profileService.ConfirmEmailChangeAsync(requestDto);
             return new ApiResponseDto<bool>(true);
         }
     }

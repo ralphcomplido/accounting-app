@@ -25,6 +25,8 @@ export type RouteAlias =
     // Profile
     | 'profile'
     | 'devices'
+    | 'change-email'
+    | 'change-email-requested'
 
     // Identity
     | 'login'

@@ -1,4 +1,5 @@
 ﻿using LightNap.Core.Api;
+using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Extensions;
@@ -8,13 +9,17 @@ using LightNap.Core.Profile.Dto.Response;
 using LightNap.Core.Profile.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Web;
 
 namespace LightNap.Core.Profile.Services
 {
     /// <summary>  
     /// Service for managing user profiles.  
     /// </summary>  
-    public class ProfileService(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IUserContext userContext) : IProfileService
+    public class ProfileService(ILogger<ProfileService> logger, ApplicationDbContext db, UserManager<ApplicationUser> userManager, IUserContext userContext,
+        IEmailService emailService, IOptions<ApplicationSettings> applicationSettings) : IProfileService
     {
         /// <summary>  
         /// Changes the password for the specified user.  
@@ -34,6 +39,52 @@ namespace LightNap.Core.Profile.Services
                 if (result.Errors.Any()) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
                 throw new UserFriendlyApiException("Unable to change password.");
             }
+        }
+
+        /// <summary>
+        /// Starts the email change process for the logged-in user.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the new email.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="UserFriendlyApiException">Thrown when the email change fails.</exception>
+        public async Task ChangeEmailAsync(ChangeEmailRequestDto requestDto)
+        {
+            var user = await userManager.FindByIdAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to change email.");
+            var token = await userManager.GenerateChangeEmailTokenAsync(user, requestDto.NewEmail);
+
+            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}/profile/confirm-email-change/{HttpUtility.UrlEncode(requestDto.NewEmail)}/{HttpUtility.UrlEncode(token)}";
+
+            try
+            {
+                await emailService.SendChangeEmailAsync(user, requestDto.NewEmail, url);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An error occurred while sending an email change link to '{email}': {e}", user.Email, e);
+                throw new UserFriendlyApiException("An unexpected error occurred while sending the email change link.");
+            }
+        }
+
+        /// <summary>
+        /// Confirms the email change for the specified user.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the new email and the confirmation code.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="UserFriendlyApiException">Thrown when the email confirmation fails.</exception>
+        public async Task ConfirmEmailChangeAsync(ConfirmEmailChangeRequestDto requestDto)
+        {
+            var user = await userManager.FindByIdAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to confirm email change.");
+
+            var result = await userManager.ChangeEmailAsync(user, requestDto.NewEmail, requestDto.Code);
+            if (!result.Succeeded)
+            {
+                if (result.Errors.Any()) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
+                throw new UserFriendlyApiException("Unable to confirm email change.");
+            }
+
+            user.EmailConfirmed = true;
+
+            await userManager.UpdateAsync(user);
         }
 
         /// <summary>  

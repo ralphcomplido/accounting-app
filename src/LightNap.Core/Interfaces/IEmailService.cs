@@ -18,6 +18,14 @@ namespace LightNap.Core.Interfaces
         Task SendEmailAsync(MailMessage message);
 
         /// <summary>
+        /// Sends a email change email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="emailChangeUrl">The URL for verifying the email change.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task SendChangeEmailAsync(ApplicationUser user, string newEmail, string emailChangeUrl);
+
+        /// <summary>
         /// Sends a two-factor authentication email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>

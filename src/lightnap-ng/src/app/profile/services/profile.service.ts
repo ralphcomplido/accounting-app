@@ -1,10 +1,16 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IdentityService } from "@identity";
-import { ApplicationSettings, ChangePasswordRequest, StyleSettings, UpdateProfileRequest } from "@profile";
+import {
+  ApplicationSettings,
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  ConfirmChangeEmailRequest,
+  StyleSettings,
+  UpdateProfileRequest,
+} from "@profile";
 import { filter, of, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
-import { ApiResponse, SuccessApiResponse } from "@core";
 
 @Injectable({
   providedIn: "root",
@@ -98,6 +104,26 @@ export class ProfileService {
    */
   changePassword(changePasswordRequest: ChangePasswordRequest) {
     return this.#dataService.changePassword(changePasswordRequest);
+  }
+
+  /**
+   * @method changeEmail
+   * @description Changes the user's email address.
+   * @param {ChangeEmailRequest} changeEmailRequest - The request object containing email change information.
+   * @returns {Observable<boolean>} An observable containing true if successful.
+   */
+  changeEmail(changeEmailRequest: ChangeEmailRequest) {
+    return this.#dataService.changeEmail(changeEmailRequest);
+  }
+
+  /**
+   * @method confirmEmailChange
+   * @description Confirms the user's email change.
+   * @param {ConfirmChangeEmailRequest} confirmChangeEmailRequest - The request object containing email change confirmation information.
+   * @returns {Observable<boolean>} An observable containing true if successful.
+   */
+  confirmEmailChange(confirmChangeEmailRequest: ConfirmChangeEmailRequest) {
+    return this.#dataService.confirmEmailChange(confirmChangeEmailRequest);
   }
 
   /**

@@ -9,7 +9,7 @@ namespace LightNap.Core.Identity.Dto.Request
     public class VerifyCodeRequestDto
     {
         /// <summary>
-        /// Gets or sets the email address of the user.
+        /// The email address of the user.
         /// </summary>
         [EmailAddress]
         [Required]
@@ -17,19 +17,19 @@ namespace LightNap.Core.Identity.Dto.Request
         public required string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets the verification code.
+        /// The verification code.
         /// </summary>
         [Required]
-        [StringLength(Constants.Dto.Max2FaCodeLength)]
+        [StringLength(Constants.Dto.MaxVerificationCodeLength)]
         public required string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remember the user on this device.
+        /// True to remember the user on this device.
         /// </summary>
         public bool RememberMe { get; set; }
 
         /// <summary>
-        /// Gets or sets the details of the device.
+        /// The details of the device.
         /// </summary>
         [Required]
         [StringLength(Constants.Dto.MaxDeviceDetailsLength)]

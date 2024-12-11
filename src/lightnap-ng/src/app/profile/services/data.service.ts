@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { API_URL_ROOT } from "@core";
-import { ApplicationSettings, ChangePasswordRequest, Device, Profile, UpdateProfileRequest } from "@profile";
+import { ApplicationSettings, ChangeEmailRequest, ChangePasswordRequest, ConfirmChangeEmailRequest, Device, Profile, UpdateProfileRequest } from "@profile";
 import { DeviceHelper } from "@profile/helpers/device.helper";
 import { tap } from "rxjs";
 
@@ -14,6 +14,14 @@ export class DataService {
 
   changePassword(changePasswordRequest: ChangePasswordRequest) {
     return this.#http.post<boolean>(`${this.#apiUrlRoot}change-password`, changePasswordRequest);
+  }
+
+  changeEmail(changeEmailRequest: ChangeEmailRequest) {
+    return this.#http.post<boolean>(`${this.#apiUrlRoot}change-email`, changeEmailRequest);
+  }
+
+  confirmEmailChange(confirmChangeEmailRequest: ConfirmChangeEmailRequest) {
+    return this.#http.post<boolean>(`${this.#apiUrlRoot}confirm-email-change`, confirmChangeEmailRequest);
   }
 
   getProfile() {
