@@ -154,7 +154,7 @@ namespace LightNap.Core.Identity.Services
                 user = await userManager.FindByEmailAsync(requestDto.Login) ?? await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid login/password combination.");
             }
 
-            var signInResult = await signInManager.CheckPasswordSignInAsync(user, requestDto.Password, false);
+            var signInResult = await signInManager.CheckPasswordSignInAsync(user, requestDto.Password, true);
             if (!signInResult.Succeeded)
             {
                 if (signInResult.IsLockedOut)
