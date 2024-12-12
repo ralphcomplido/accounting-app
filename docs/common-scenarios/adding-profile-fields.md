@@ -24,26 +24,10 @@ We'll start off by updating the back-end by changing in layers from entity model
     ```csharp
     public class ApplicationUser : IdentityUser
     {
-      public required string FirstName { get; set; }
-      public required string LastName { get; set; }
+      public required string FirstName { get; set; } = string.Empty;
+      public required string LastName { get; set; } = string.Empty;
       ...
     ```
-
-3. Update the constructor to set default values for these fields. Alternatively you could allow these to be nullable or required as constructor parameters. This tutorial will keep things simple and just default them to values.
-
-    ```csharp
-    [SetsRequiredMembers]
-    public ApplicationUser(string userName, string email, bool twoFactorEnabled)
-    {
-      this.FirstName = "DefaultFirst";
-      this.LastName = "DefaultLast";
-      ...
-    ```
-
-4. Add an [Entity Framework migration](../getting-started/database-providers/ef-migrations) and update the database.
-
-    {: .note}
-    It's recommended to use the [in-memory data provider](../getting-started//database-providers/in-memory-provider) while working out the details of an entity model update, if feasible. Then a single migration can be created and applied once the design is finalized.
 
 ### Updating the Data Transfer Objects (DTOs)
 
@@ -93,6 +77,17 @@ Almost all access to the `ApplicationUser` class is restricted to the services e
       ...
     ```
 
+9. Open `Identity/Dto/Request/RegisterRequestDto.cs`. This is the DTO submitted by users registering an account on the site.
+10. Add fields for the first and last name.
+
+    ```csharp
+    public class RegisterRequestDto
+    {
+      public required string FirstName { get; set; }
+      public required string LastName { get; set; }
+      ...
+    ```
+
 {: .note}
 If there were other DTOs for `ApplicationUser`, such as those used by the `PublicService` or `UserService` services, then those would need to be updated as well.
 
@@ -113,7 +108,19 @@ There is no direct mapping relationship between the `ApplicationUser` class and 
         ...
     ```
 
-3. Add fields for the first and last name to the `UpdateLoggedInUser` method.
+3. Update fields for the first and last name to the `ToCreate` method.
+
+    ```csharp
+    public static ApplicationUser ToCreate(this RegisterRequestDto dto, bool twoFactorEnabled)
+    {
+      var user = new ApplicationUser()
+      {
+        FirstName = dto.FirstName,
+        LastName = dto.LastName,
+      ...
+    ```
+
+4. Add fields for the first and last name to the `UpdateLoggedInUser` method.
 
     ```csharp
     public static void UpdateLoggedInUser(this ApplicationUser user, UpdateProfileDto dto)
@@ -123,7 +130,7 @@ There is no direct mapping relationship between the `ApplicationUser` class and 
       ...
     ```
 
-4. Add fields for the first and last name to the `ToAdminUserDto` method.
+5. Add fields for the first and last name to the `ToAdminUserDto` method.
 
     ```csharp
     public static AdminUserDto ToAdminUserDto(this ApplicationUser user)
@@ -136,42 +143,13 @@ There is no direct mapping relationship between the `ApplicationUser` class and 
         ...
     ```
 
-5. Add fields for the first and last name to the `UpdateAdminUserDto` method.
+6. Add fields for the first and last name to the `UpdateAdminUserDto` method.
 
     ```csharp
     public static void UpdateAdminUserDto(this ApplicationUser user, UpdateAdminUserDto dto)
     {
       user.FirstName = dto.FirstName;
       user.LastName = dto.LastName;
-      ...
-    ```
-
-### Updating the Registration Back-End
-
-In this scenario we will assume that the user also needs to provide these fields when registering a new account.
-
-1. Open `Identity/Dto/Request/RegisterRequestDto.cs`. This is the DTO submitted by users registering an account on the site.
-2. Add fields for the first and last name.
-
-    ```csharp
-    public class RegisterRequestDto
-    {
-      public required string FirstName { get; set; }
-      public required string LastName { get; set; }
-      ...
-    ```
-
-3. Open `Extensions/ApplicationUserExtensions.cs`. This file contains extension methods that map between `ApplicationUser` and DTOs.
-
-4. Update the `ToCreate` method to set the fields on a new `ApplicationUser`.
-
-    ```csharp
-    public async Task<LoginResultDto> RegisterAsync(RegisterRequestDto requestDto)
-    {
-      ...
-      ApplicationUser user = new(requestDto.UserName, requestDto.Email, applicationSettings.Value.RequireTwoFactorForNewUsers);
-      user.FirstName = requestDto.FirstName;
-      user.LastName = requestDto.LastName;
       ...
     ```
 
@@ -205,8 +183,19 @@ In this scenario we will assume that the user also needs to provide these fields
         {
             query = query.Where(user => user.LastName == user.LastName);
         }
-    ...
+        ...
     ```
+
+### Add A Migration
+
+1. Add an [Entity Framework migration](../getting-started/database-providers/ef-migrations) and update the database.
+
+    {: .note}
+    It's recommended to use the [in-memory data provider](../getting-started//database-providers/in-memory-provider) while working out the details of an entity model update, if feasible. Then a single migration can be created and applied once the design is finalized.
+
+### Update Tests
+
+For the sake of brevity, updates to the test project are not covered in this article. However, updating them should be straightforward as the API surface area limits changes exposed to the outside to the DTOs with new fields, such as `RegisterRequestDto`. It's also a good practice to add/update tests for the new fields and functionality.
 
 ### Additional Back-End Changes
 
