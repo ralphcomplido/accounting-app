@@ -5,15 +5,26 @@
   <div class="w-30rem">
     <form [formGroup]="form" (ngSubmit)="logIn()" autocomplete="off">
       <label for="login" class="block text-900 text-xl font-medium mb-2">Email/User Name</label>
-      <input
-        id="login"
-        type="text"
-        placeholder="Email/User Name"
-        pInputText
-        formControlName="login"
-        class="w-full md:w-30rem mb-5"
-        style="padding: 1rem"
-      />
+
+      <p-inputGroup>
+        <input
+          id="login"
+          type="text"
+          placeholder="Email/User Name"
+          pInputText
+          formControlName="login"
+          class="w-full md:w-30rem mb-5"
+          style="padding: 1rem"
+        />
+        <p-button
+          icon="pi pi-sparkles"
+          title="Send Magic Link"
+          styleClass="w-full p-3 text-xl mb-2"
+          pRipple
+          (onClick)="sendMagicLink()"
+          [disabled]="!showMagicLink.valid"
+        />
+      </p-inputGroup>
 
       <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
       <p-password

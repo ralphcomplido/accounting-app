@@ -30,6 +30,8 @@ export type RouteAlias =
 
     // Identity
     | 'login'
+    | 'magic-link-sent'
+    | 'login'
     | 'reset-password'
     | 'reset-instructions-sent'
     | 'change-password'

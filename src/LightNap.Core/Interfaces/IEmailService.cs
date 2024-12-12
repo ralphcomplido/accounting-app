@@ -31,7 +31,7 @@ namespace LightNap.Core.Interfaces
         /// <param name="user">The user to send the email to.</param>
         /// <param name="code">The two-factor authentication code.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendTwoFactorEmailAsync(ApplicationUser user, string code);
+        Task SendTwoFactorAsync(ApplicationUser user, string code);
 
         /// <summary>
         /// Sends a password reset email to the specified user.
@@ -39,14 +39,14 @@ namespace LightNap.Core.Interfaces
         /// <param name="user">The user to send the email to.</param>
         /// <param name="passwordResetUrl">The URL for resetting the password.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendPasswordResetEmailAsync(ApplicationUser user, string passwordResetUrl);
+        Task SendPasswordResetAsync(ApplicationUser user, string passwordResetUrl);
 
         /// <summary>
         /// Sends a registration email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendRegistrationEmailAsync(ApplicationUser user);
+        Task SendRegistrationWelcomeAsync(ApplicationUser user);
 
         /// <summary>
         /// Sends a email verification email to the specified user.
@@ -54,6 +54,14 @@ namespace LightNap.Core.Interfaces
         /// <param name="user">The user to send the email to.</param>
         /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendVerificationEmailAsync(ApplicationUser user, string emailVerificationUrl);
+        Task SendEmailVerificationAsync(ApplicationUser user, string emailVerificationUrl);
+
+        /// <summary>
+        /// Sends a magic link email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="magicLinkUrl">The magic link URL.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task SendMagicLinkAsync(ApplicationUser user, string magicLinkUrl);
     }
 }

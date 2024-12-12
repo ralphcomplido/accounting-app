@@ -6,12 +6,23 @@
     public static class Constants
     {
         /// <summary>
+        /// Contains constant values related to the Identity service.
+        /// </summary>
+        internal static class Identity
+        {
+            /// <summary>
+            /// The purpose string used to create and validate magic link tokens.
+            /// </summary>
+            public const string MagicLinkTokenPurpose = "MagicLink";
+        }
+
+        /// <summary>
         /// Contains constant values related to DTO lengths.
         /// </summary>
         internal static class Dto
         {
             public const int MaxLoginLength = 256;
-            public const int MaxPasswordLength = 128;
+            public const int MaxPasswordLength = 256;
             public const int MaxDeviceDetailsLength = 512;
             public const int MaxPasswordResetTokenLength = 512;
             public const int MaxUserNameLength = 32;

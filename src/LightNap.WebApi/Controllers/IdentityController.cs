@@ -129,5 +129,19 @@ namespace LightNap.WebApi.Controllers
             await identityService.VerifyEmailAsync(requestDto);
             return new ApiResponseDto<bool>(true);
         }
+
+        /// <summary>
+        /// Requests a magic link the user can use to log in.
+        /// </summary>
+        /// <param name="requestDto">Contains the email address of the user.</param>
+        /// <returns>The API response indicating the success of the operation.</returns>
+        [HttpPost("request-magic-link")]
+        [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
+        [ProducesResponseType(400)]
+        public async Task<ApiResponseDto<bool>> RequestMagicLinkEmail(SendMagicLinkRequestDto requestDto)
+        {
+            await identityService.RequestMagicLinkEmailAsync(requestDto);
+            return new ApiResponseDto<bool>(true);
+        }
     }
 }

@@ -68,5 +68,12 @@ namespace LightNap.Core.Identity.Interfaces
         /// <param name="requestDto">The verify email request data transfer object.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task VerifyEmailAsync(VerifyEmailRequestDto requestDto);
+
+        /// <summary>
+        /// Requests a magic link the user can use to log in.
+        /// </summary>
+        /// <param name="requestDto">The request data transfer object containing the email address.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task RequestMagicLinkEmailAsync(SendMagicLinkRequestDto requestDto);
     }
 }

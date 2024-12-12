@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { TimerService } from '@core';
-import { InitializationService } from '@core/services/initialization.service';
-import { NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from '@identity';
-import { of } from 'rxjs';
-import { DataService } from './data.service';
-import { IdentityService } from './identity.service';
+import { TestBed } from "@angular/core/testing";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { TimerService } from "@core";
+import { InitializationService } from "@core/services/initialization.service";
+import { NewPasswordRequest, RegisterRequest, ResetPasswordRequest, VerifyCodeRequest } from "@identity";
+import { of } from "rxjs";
+import { DataService } from "./data.service";
+import { IdentityService } from "./identity.service";
 
 describe("IdentityService", () => {
   let service: IdentityService;
@@ -20,11 +20,14 @@ describe("IdentityService", () => {
     const dataSpy = jasmine.createSpyObj("DataService", [
       "getAccessToken",
       "logIn",
-      "register",
       "logOut",
-      "verifyCode",
-      "resetPassword",
       "newPassword",
+      "register",
+      "requestMagicLinkEmail",
+      "requestVerificationEmail",
+      "resetPassword",
+      "verifyCode",
+      "verifyEmail",
     ]);
     const timerSpy = jasmine.createSpyObj("TimerService", ["watchTimer$"]);
     const initializationSpy = jasmine.createSpyObj("InitializationService", ["initialized$"]);
@@ -110,5 +113,32 @@ describe("IdentityService", () => {
       expect(service.getBearerToken()).toBe(`Bearer ${token}`);
     });
     expect(dataServiceSpy.newPassword).toHaveBeenCalledWith(newPasswordRequest);
+  });
+
+  it("should request magic link email", () => {
+    const sendMagicLinkEmailRequest = {} as any;
+    dataServiceSpy.requestMagicLinkEmail.and.returnValue(of(true));
+    service.requestMagicLinkEmail(sendMagicLinkEmailRequest).subscribe(result => {
+      expect(result).toBe(true);
+    });
+    expect(dataServiceSpy.requestMagicLinkEmail).toHaveBeenCalledWith(sendMagicLinkEmailRequest);
+  });
+
+  it("should request verification email", () => {
+    const sendVerificationEmailRequest = {} as any;
+    dataServiceSpy.requestVerificationEmail.and.returnValue(of(true));
+    service.requestVerificationEmail(sendVerificationEmailRequest).subscribe(result => {
+      expect(result).toBe(true);
+    });
+    expect(dataServiceSpy.requestVerificationEmail).toHaveBeenCalledWith(sendVerificationEmailRequest);
+  });
+
+  it("should verify email", () => {
+    const verifyEmailRequest = {} as any;
+    dataServiceSpy.verifyEmail.and.returnValue(of(true));
+    service.verifyEmail(verifyEmailRequest).subscribe(result => {
+      expect(result).toBe(true);
+    });
+    expect(dataServiceSpy.verifyEmail).toHaveBeenCalledWith(verifyEmailRequest);
   });
 });

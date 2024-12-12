@@ -199,7 +199,7 @@ namespace LightNap.Core.Tests.Services
                 DeviceDetails = "TestDevice"
             };
 
-            this._emailServiceMock.Setup(ts => ts.SendRegistrationEmailAsync(It.IsAny<ApplicationUser>())).Returns(Task.CompletedTask);
+            this._emailServiceMock.Setup(ts => ts.SendRegistrationWelcomeAsync(It.IsAny<ApplicationUser>())).Returns(Task.CompletedTask);
 
             // Act
             var registeredUser = await this._identityService.RegisterAsync(requestDto);
@@ -214,7 +214,7 @@ namespace LightNap.Core.Tests.Services
             var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
             Assert.IsNotNull(cookie);
 
-            this._emailServiceMock.Verify(ts => ts.SendRegistrationEmailAsync(It.IsAny<ApplicationUser>()), Times.Once);
+            this._emailServiceMock.Verify(ts => ts.SendRegistrationWelcomeAsync(It.IsAny<ApplicationUser>()), Times.Once);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace LightNap.Core.Tests.Services
 
             string capturedPasswordResetUrl = string.Empty;
             this._emailServiceMock
-                .Setup(ts => ts.SendPasswordResetEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Setup(ts => ts.SendPasswordResetAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
                 .Callback<ApplicationUser, string>((user, url) => capturedPasswordResetUrl = url)
                 .Returns(Task.CompletedTask);
 
@@ -264,7 +264,7 @@ namespace LightNap.Core.Tests.Services
             await this._identityService.ResetPasswordAsync(requestDto);
 
             // Assert
-            this._emailServiceMock.Verify(ts => ts.SendPasswordResetEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
+            this._emailServiceMock.Verify(ts => ts.SendPasswordResetAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
             Assert.IsFalse(string.IsNullOrEmpty(capturedPasswordResetUrl), "Password reset URL should be captured.");
         }
 
@@ -282,7 +282,7 @@ namespace LightNap.Core.Tests.Services
 
             string capturedPasswordResetUrl = string.Empty;
             this._emailServiceMock
-                .Setup(ts => ts.SendPasswordResetEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Setup(ts => ts.SendPasswordResetAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
                 .Callback<ApplicationUser, string>((user, url) => capturedPasswordResetUrl = url)
                 .Returns(Task.CompletedTask);
 
@@ -412,5 +412,80 @@ namespace LightNap.Core.Tests.Services
             await this._identityService.LogInAsync(requestDto);
         }
 
+        [TestMethod]
+        public async Task RequestMagicLinkEmailAsync_ValidEmail_SendsEmail()
+        {
+            // Arrange
+            var requestDto = new SendMagicLinkRequestDto
+            {
+                Email = "test@test.com"
+            };
+
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
+            string capturedMagicLinkUrl = string.Empty;
+            this._emailServiceMock
+                .Setup(ts => ts.SendMagicLinkAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string>((user, url) => capturedMagicLinkUrl = url)
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await this._identityService.RequestMagicLinkEmailAsync(requestDto);
+
+            // Assert
+            this._emailServiceMock.Verify(ts => ts.SendMagicLinkAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
+            Assert.IsFalse(string.IsNullOrEmpty(capturedMagicLinkUrl), "Magic link URL should be captured.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserFriendlyApiException))]
+        public async Task RequestMagicLinkEmailAsync_InvalidEmail_ThrowsError()
+        {
+            // Arrange
+            var requestDto = new SendMagicLinkRequestDto
+            {
+                Email = "invalid@test.com"
+            };
+
+            // Act
+            await this._identityService.RequestMagicLinkEmailAsync(requestDto);
+        }
+
+        [TestMethod]
+        public async Task LogInFromMagicLinkEmailAsync_ValidEmail_Succeeds()
+        {
+            // Arrange
+            var requestDto = new SendMagicLinkRequestDto
+            {
+                Email = "test@test.com"
+            };
+
+            var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
+            string capturedMagicLinkUrl = string.Empty;
+            this._emailServiceMock
+                .Setup(ts => ts.SendMagicLinkAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string>((user, url) => capturedMagicLinkUrl = url)
+                .Returns(Task.CompletedTask);
+            await this._identityService.RequestMagicLinkEmailAsync(requestDto);
+            string magicLinkToken = HttpUtility.UrlDecode(capturedMagicLinkUrl[(capturedMagicLinkUrl.LastIndexOf('/') + 1)..]);
+
+            var loginRequest = new LoginRequestDto
+            {
+                Type = LoginType.MagicLink,
+                DeviceDetails = "",
+                Login = requestDto.Email,
+                Password = magicLinkToken
+            };
+
+            // Act
+            var result = await this._identityService.LogInAsync(loginRequest);
+
+            // Assert
+            Assert.AreEqual(result.Type, LoginSuccessType.AccessToken);
+            Assert.IsNotNull(result.AccessToken);
+
+            var cookie = this._cookieManager.GetCookie(_refreshTokenCookieName);
+            Assert.IsNotNull(cookie);
+
+        }
     }
 }

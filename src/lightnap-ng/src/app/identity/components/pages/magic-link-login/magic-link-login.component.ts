@@ -12,10 +12,10 @@ import { IdentityService } from "@identity/services/identity.service";
 
 @Component({
   standalone: true,
-  templateUrl: "./confirm-email.component.html",
+  templateUrl: './magic-link-login.component.html',
   imports: [ReactiveFormsModule, RouterModule, ButtonModule, InputTextModule, CheckboxModule, IdentityCardComponent, ErrorListComponent],
 })
-export class ConfirmEmailComponent implements OnInit {
+export class MagicLinkLoginComponent implements OnInit {
   #identityService = inject(IdentityService);
   #blockUi = inject(BlockUiService);
   #routeAlias = inject(RouteAliasService);
@@ -26,11 +26,14 @@ export class ConfirmEmailComponent implements OnInit {
   errors: Array<string> = [];
 
   ngOnInit() {
-    this.#blockUi.show({ message: "Verifying email..." });
+    this.#blockUi.show({ message: "Verifying login..." });
     this.#identityService
-      .verifyEmail({
-        code: this.code(),
-        email: this.email(),
+      .logIn({
+        type: "MagicLink",
+        password: this.code(),
+        login: this.email(),
+        deviceDetails: navigator.userAgent,
+        rememberMe: false
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

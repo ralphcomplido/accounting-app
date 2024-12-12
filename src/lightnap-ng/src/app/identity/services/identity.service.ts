@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
-import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, SendVerificationEmailRequest, VerifyCodeRequest, VerifyEmailRequest } from "@identity/models";
+import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, SendMagicLinkEmailRequest, SendVerificationEmailRequest, VerifyCodeRequest, VerifyEmailRequest } from "@identity/models";
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
@@ -316,5 +316,15 @@ export class IdentityService {
    */
   verifyEmail(verifyEmailRequest: VerifyEmailRequest) {
     return this.#dataService.verifyEmail(verifyEmailRequest);
+  }
+
+  /**
+   * @method requestMagicLinkEmail
+   * @description Requests a new magic link email.
+   * @param {SendMagicLinkEmailRequest} sendMagicLinkEmailRequest - The email address to send the magic link email to.
+   * @returns {Observable<boolean>} An observable containing the result of the operation.
+   */
+  requestMagicLinkEmail(sendMagicLinkEmailRequest: SendMagicLinkEmailRequest) {
+    return this.#dataService.requestMagicLinkEmail(sendMagicLinkEmailRequest);
   }
 }

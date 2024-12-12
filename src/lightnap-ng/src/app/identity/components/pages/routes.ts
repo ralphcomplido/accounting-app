@@ -3,6 +3,15 @@ import { AppRoute } from "@routing";
 export const Routes: AppRoute[] = [
   { path: "login", data: { alias: "login" }, loadComponent: () => import("./login/login.component").then(m => m.LoginComponent) },
   {
+    path: "magic-link-sent",
+    data: { alias: "magic-link-sent" },
+    loadComponent: () => import("./magic-link-sent/magic-link-sent.component").then(m => m.MagicLinkSentComponent),
+  },
+  {
+    path: "magic-link-login/:email/:code",
+    loadComponent: () => import("./magic-link-login/magic-link-login.component").then(m => m.MagicLinkLoginComponent),
+  },
+  {
     path: "reset-password",
     data: { alias: "reset-password" },
     loadComponent: () => import("./reset-password/reset-password.component").then(m => m.ResetPasswordComponent),

@@ -49,7 +49,7 @@ namespace LightNap.Core.Services
         /// <param name="user">The user to send the email to.</param>
         /// <param name="passwordResetUrl">The URL for resetting the password.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async Task SendPasswordResetEmailAsync(ApplicationUser user, string passwordResetUrl)
+        public async Task SendPasswordResetAsync(ApplicationUser user, string passwordResetUrl)
         {
             await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Reset your password", $"You may reset your password at: {passwordResetUrl}"));
         }
@@ -71,7 +71,7 @@ namespace LightNap.Core.Services
         /// <param name="user">The user to send the email to.</param>
         /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async Task SendVerificationEmailAsync(ApplicationUser user, string emailVerificationUrl)
+        public async Task SendEmailVerificationAsync(ApplicationUser user, string emailVerificationUrl)
         {
             await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Confirm your email", $"You may confirm your email at: {emailVerificationUrl}"));
         }
@@ -81,7 +81,7 @@ namespace LightNap.Core.Services
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async Task SendRegistrationEmailAsync(ApplicationUser user)
+        public async Task SendRegistrationWelcomeAsync(ApplicationUser user)
         {
             await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Welcome to our site", $"Thank you for registering."));
         }
@@ -92,9 +92,20 @@ namespace LightNap.Core.Services
         /// <param name="user">The user to send the email to.</param>
         /// <param name="code">The two-factor authentication code.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async Task SendTwoFactorEmailAsync(ApplicationUser user, string code)
+        public async Task SendTwoFactorAsync(ApplicationUser user, string code)
         {
             await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Your login security code", $"Your login code is: {code}"));
+        }
+
+        /// <summary>
+        /// Sends a magic link email to the specified user.
+        /// </summary>
+        /// <param name="user">The user to send the email to.</param>
+        /// <param name="magicLinkUrl">The magic link URL.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task SendMagicLinkAsync(ApplicationUser user, string magicLinkUrl)
+        {
+            await this.SendEmailAsync(new MailMessage(this._fromEmail, user.Email!, "Your login link", $"You may log in at: {magicLinkUrl}"));
         }
     }
 }

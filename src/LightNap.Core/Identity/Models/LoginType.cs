@@ -6,7 +6,7 @@
     public enum LoginType
     {
         /// <summary>
-        /// The login type is unknown and all fields should be tried until a record is found.
+        /// The login type is unknown then email will be tried, followed by username.
         /// </summary>
         Unknown,
 
@@ -18,6 +18,11 @@
         /// <summary>
         /// The login is a username.
         /// </summary>
-        UserName
+        UserName,
+
+        /// <summary>
+        /// The login is an email but the password is a MagicLink token.
+        /// </summary>
+        MagicLink
     }
 }

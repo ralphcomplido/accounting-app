@@ -45,7 +45,7 @@ namespace LightNap.Core.Identity.Services
             if (user.TwoFactorEnabled)
             {
                 string code = await userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
-                await emailService.SendTwoFactorEmailAsync(user, code);
+                await emailService.SendTwoFactorAsync(user, code);
                 return new LoginSuccessDto() { Type = LoginSuccessType.TwoFactorRequired };
             }
 
@@ -124,7 +124,7 @@ namespace LightNap.Core.Identity.Services
 
             try
             {
-                await emailService.SendVerificationEmailAsync(user, url);
+                await emailService.SendEmailVerificationAsync(user, url);
             }
             catch (Exception e)
             {
@@ -141,31 +141,47 @@ namespace LightNap.Core.Identity.Services
         public async Task<LoginSuccessDto> LogInAsync(LoginRequestDto requestDto)
         {
             ApplicationUser user;
-            if (requestDto.Type == LoginType.Email)
+
+            switch (requestDto.Type)
             {
-                user = await userManager.FindByEmailAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
+                case LoginType.Email:
+                case LoginType.MagicLink:
+                    user = await userManager.FindByEmailAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
+                    break;
+                case LoginType.UserName:
+                    user = await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid username/password combination.");
+                    break;
+                default:
+                    user = await userManager.FindByEmailAsync(requestDto.Login) ??
+                        await userManager.FindByNameAsync(requestDto.Login) ??
+                        throw new UserFriendlyApiException("Invalid login/password combination.");
+                    break;
             }
-            else if (requestDto.Type == LoginType.UserName)
+
+            if (await userManager.IsLockedOutAsync(user))
             {
-                user = await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid username/password combination.");
+                throw new UserFriendlyApiException("This account is locked.");
+            }
+
+            if (requestDto.Type == LoginType.MagicLink)
+            {
+                bool isValid = await userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, Constants.Identity.MagicLinkTokenPurpose, requestDto.Password);
+                if (!isValid)
+                {
+                    throw new UserFriendlyApiException("Invalid email/token combination.");
+                }
             }
             else
             {
-                user = await userManager.FindByEmailAsync(requestDto.Login) ?? await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid login/password combination.");
-            }
-
-            var signInResult = await signInManager.CheckPasswordSignInAsync(user, requestDto.Password, true);
-            if (!signInResult.Succeeded)
-            {
-                if (signInResult.IsLockedOut)
+                var signInResult = await signInManager.CheckPasswordSignInAsync(user, requestDto.Password, true);
+                if (!signInResult.Succeeded)
                 {
-                    throw new UserFriendlyApiException("This account is locked.");
+                    if (signInResult.IsNotAllowed)
+                    {
+                        throw new UserFriendlyApiException("This account is not allowed to log in.");
+                    }
+                    throw new UserFriendlyApiException("Invalid login/password combination.");
                 }
-                if (signInResult.IsNotAllowed)
-                {
-                    throw new UserFriendlyApiException("This account is not allowed to log in.");
-                }
-                throw new UserFriendlyApiException("Invalid login/password combination.");
             }
 
             return await this.HandleUserLoginAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
@@ -192,7 +208,7 @@ namespace LightNap.Core.Identity.Services
 
             if (!user.TwoFactorEnabled)
             {
-                await emailService.SendRegistrationEmailAsync(user);
+                await emailService.SendRegistrationWelcomeAsync(user);
             }
 
             if (applicationSettings.Value.RequireEmailVerification)
@@ -232,7 +248,7 @@ namespace LightNap.Core.Identity.Services
 
             try
             {
-                await emailService.SendPasswordResetEmailAsync(user, url);
+                await emailService.SendPasswordResetAsync(user, url);
             }
             catch (Exception e)
             {
@@ -277,7 +293,7 @@ namespace LightNap.Core.Identity.Services
             {
                 user.EmailConfirmed = true;
                 await userManager.UpdateAsync(user);
-                await emailService.SendRegistrationEmailAsync(user);
+                await emailService.SendRegistrationWelcomeAsync(user);
             }
 
             await this.CreateRefreshTokenAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
@@ -325,5 +341,21 @@ namespace LightNap.Core.Identity.Services
                 throw new UserFriendlyApiException("Unable to verify email.");
             }
         }
+
+        /// <summary>
+        /// Requests a magic link the user can use to log in.
+        /// </summary>
+        /// <param name="requestDto">Contains the email address of the user.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task RequestMagicLinkEmailAsync(SendMagicLinkRequestDto requestDto)
+        {
+            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
+
+            string token = await userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, Constants.Identity.MagicLinkTokenPurpose);
+            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}identity/magic-link-login/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
+
+            await emailService.SendMagicLinkAsync(user, url);
+        }
+
     }
 }
