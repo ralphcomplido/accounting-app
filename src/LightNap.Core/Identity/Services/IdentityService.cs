@@ -194,9 +194,6 @@ namespace LightNap.Core.Identity.Services
         /// <returns>The login result.</returns>
         public async Task<LoginSuccessDto> RegisterAsync(RegisterRequestDto requestDto)
         {
-            var existingUser = await userManager.FindByEmailAsync(requestDto.Email);
-            if (existingUser is not null) { throw new UserFriendlyApiException("This email is already in use."); }
-
             ApplicationUser user = new(requestDto.UserName, requestDto.Email, applicationSettings.Value.RequireTwoFactorForNewUsers);
 
             var result = await userManager.CreateAsync(user, requestDto.Password);
