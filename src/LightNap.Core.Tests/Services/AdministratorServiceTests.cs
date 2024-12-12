@@ -7,7 +7,6 @@ using LightNap.Core.Extensions;
 using LightNap.Core.Tests.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data;
 
 namespace LightNap.Core.Tests.Services
 {
@@ -155,14 +154,9 @@ namespace LightNap.Core.Tests.Services
         {
             // Arrange
             var requestDto = new SearchAdminUsersRequestDto { Email = "example" };
-            List<ApplicationUser> users =
-            [
-                new ApplicationUser { UserName = "testuser1", Email = "test1@example.com", Id = "test-user-id1" },
-                new ApplicationUser { UserName = "testuser2", Email = "test2@exNOTample.com", Id = "test-user-id2" },
-                new ApplicationUser { UserName = "testuser3", Email = "test3@example.com", Id = "test-user-id3" }
-            ];
-
-            await Task.WhenAll(users.Select(user => this._userManager.CreateAsync(user)));
+            await TestHelper.CreateTestUserAsync(this._userManager, "test-user-id1", "testuser1", "test1@example.com");
+            await TestHelper.CreateTestUserAsync(this._userManager, "test-user-id2", "testuser2", "test2@exNOTample.com");
+            await TestHelper.CreateTestUserAsync(this._userManager, "test-user-id3", "testuser3", "test3@example.com");
 
             // Act
             var result = await this._administratorService.SearchUsersAsync(requestDto);

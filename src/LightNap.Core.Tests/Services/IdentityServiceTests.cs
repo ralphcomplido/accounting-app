@@ -29,7 +29,7 @@ namespace LightNap.Core.Tests.Services
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _dbContext;
         private IdentityService _identityService;
-        private ICookieManager _cookieManager;
+        private TestCookieManager _cookieManager;
         private Mock<IEmailService> _emailServiceMock;
         private Mock<ITokenService> _tokenServiceMock;
 #pragma warning restore CS8618
