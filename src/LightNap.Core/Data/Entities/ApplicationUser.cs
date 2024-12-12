@@ -1,6 +1,5 @@
 ﻿using LightNap.Core.Profile.Dto.Response;
 using Microsoft.AspNetCore.Identity;
-using System.Diagnostics.CodeAnalysis;
 
 namespace LightNap.Core.Data.Entities
 {
@@ -10,9 +9,11 @@ namespace LightNap.Core.Data.Entities
     /// <remarks>
     /// Initializes a new instance of the <see cref="ApplicationUser"/> class.
     /// </remarks>
-    [method: SetsRequiredMembers]
-    public class ApplicationUser() : IdentityUser()
+    public class ApplicationUser : IdentityUser
     {
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+
         /// <summary>
         /// The date when the user was created.
         /// </summary>
