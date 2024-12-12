@@ -157,9 +157,9 @@ namespace LightNap.Core.Tests.Services
             var requestDto = new SearchAdminUsersRequestDto { Email = "example" };
             List<ApplicationUser> users =
             [
-                new("testuser1", "test1@example.com", true) { Id = "test-user-id1" },
-                new("testuser2", "test2@exNOTample.com", true) { Id = "test-user-id2" },
-                new("testuser3", "test3@example.com", true) { Id = "test-user-id3" }
+                new ApplicationUser { UserName = "testuser1", Email = "test1@example.com", Id = "test-user-id1" },
+                new ApplicationUser { UserName = "testuser2", Email = "test2@exNOTample.com", Id = "test-user-id2" },
+                new ApplicationUser { UserName = "testuser3", Email = "test3@example.com", Id = "test-user-id3" }
             ];
 
             await Task.WhenAll(users.Select(user => this._userManager.CreateAsync(user)));

@@ -2,6 +2,7 @@
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
 using LightNap.Core.Identity.Interfaces;
@@ -140,24 +141,14 @@ namespace LightNap.Core.Identity.Services
         /// <returns>The login result.</returns>
         public async Task<LoginSuccessDto> LogInAsync(LoginRequestDto requestDto)
         {
-            ApplicationUser user;
-
-            switch (requestDto.Type)
+            ApplicationUser user = requestDto.Type switch
             {
-                case LoginType.Email:
-                case LoginType.MagicLink:
-                    user = await userManager.FindByEmailAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid email/password combination.");
-                    break;
-                case LoginType.UserName:
-                    user = await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid username/password combination.");
-                    break;
-                default:
-                    user = await userManager.FindByEmailAsync(requestDto.Login) ??
-                        await userManager.FindByNameAsync(requestDto.Login) ??
-                        throw new UserFriendlyApiException("Invalid login/password combination.");
-                    break;
-            }
-
+                LoginType.Email or LoginType.MagicLink => await userManager.FindByEmailAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid email/password combination."),
+                LoginType.UserName => await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("Invalid username/password combination."),
+                _ => await userManager.FindByEmailAsync(requestDto.Login) ??
+                                        await userManager.FindByNameAsync(requestDto.Login) ??
+                                        throw new UserFriendlyApiException("Invalid login/password combination."),
+            };
             if (await userManager.IsLockedOutAsync(user))
             {
                 throw new UserFriendlyApiException("This account is locked.");
@@ -194,8 +185,7 @@ namespace LightNap.Core.Identity.Services
         /// <returns>The login result.</returns>
         public async Task<LoginSuccessDto> RegisterAsync(RegisterRequestDto requestDto)
         {
-            ApplicationUser user = new(requestDto.UserName, requestDto.Email, applicationSettings.Value.RequireTwoFactorForNewUsers);
-
+            ApplicationUser user = requestDto.ToCreate(applicationSettings.Value.RequireTwoFactorForNewUsers);
             var result = await userManager.CreateAsync(user, requestDto.Password);
             if (!result.Succeeded)
             {

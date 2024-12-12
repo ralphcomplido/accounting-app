@@ -1,6 +1,7 @@
 ﻿using LightNap.Core.Administrator.Dto.Request;
 using LightNap.Core.Administrator.Dto.Response;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 
@@ -24,6 +25,23 @@ namespace LightNap.Core.Extensions
                 Id = user.Id,
                 UserName = user.UserName!
             };
+        }
+
+        /// <summary>
+        /// Converts a RegisterRequestDto object to an ApplicationUser object.
+        /// </summary>
+        /// <param name="dto">The RegisterRequestDto object containing the registration details.</param>
+        /// <param name="twoFactorEnabled">A boolean indicating if two-factor authentication is enabled.</param>
+        /// <returns>An ApplicationUser object created from the registration details.</returns>
+        public static ApplicationUser ToCreate(this RegisterRequestDto dto, bool twoFactorEnabled)
+        {
+            var user = new ApplicationUser()
+            {
+                Email = dto.Email,
+                TwoFactorEnabled = twoFactorEnabled,
+                UserName = dto.UserName
+            };
+            return user;
         }
 
         /// <summary>

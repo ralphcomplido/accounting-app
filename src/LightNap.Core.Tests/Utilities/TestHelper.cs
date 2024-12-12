@@ -1,7 +1,7 @@
-﻿using LightNap.Core.Api;
-using LightNap.Core.Data.Entities;
+﻿using LightNap.Core.Data.Entities;
+using LightNap.Core.Extensions;
+using LightNap.Core.Identity.Dto.Request;
 using Microsoft.AspNetCore.Identity;
-using System.Net.NetworkInformation;
 
 namespace LightNap.Core.Tests.Utilities
 {
@@ -21,9 +21,16 @@ namespace LightNap.Core.Tests.Utilities
         /// <returns>The created <see cref="ApplicationUser"/>.</returns>
         public static async Task<ApplicationUser> CreateTestUserAsync(UserManager<ApplicationUser> userManager, string userId, string? userName = null, string? email = null)
         {
-            userName ??= Guid.NewGuid().ToString("N");
-            email ??= $"{Guid.NewGuid():N}@test.com";
-            ApplicationUser user = new(userName, email, false) { Id = userId };
+            var registerRequestDto = new RegisterRequestDto()
+            {
+                UserName = userName ?? Guid.NewGuid().ToString("N"),
+                Email = email ?? $"{Guid.NewGuid():N}@test.com",
+                Password = "P@ssw0rd",
+                ConfirmPassword = "P@ssw0rd",
+                DeviceDetails = "Test Environment"
+            };
+            ApplicationUser user = registerRequestDto.ToCreate(false);
+            user.Id = userId;
             await userManager.CreateAsync(user);
             return user;
         }

@@ -1,5 +1,7 @@
 ﻿using LightNap.Core.Configuration;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Extensions;
+using LightNap.Core.Identity.Dto.Request;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Data;
@@ -97,10 +99,19 @@ namespace LightNap.WebApi.Configuration
 
             if (user is null)
             {
-                user = new ApplicationUser(userName, email, requireTwoFactor);
-
                 bool passwordProvided = !string.IsNullOrWhiteSpace(password);
                 string passwordToSet = passwordProvided ? password! : $"P@ssw0rd{Guid.NewGuid()}";
+
+                var registerRequestDto = new RegisterRequestDto()
+                {
+                    ConfirmPassword = passwordToSet,
+                    DeviceDetails = "Seeder",
+                    Email = email,
+                    Password = passwordToSet,
+                    UserName = userName
+                };
+
+                user = registerRequestDto.ToCreate(requireTwoFactor);
 
                 var result = await userManager.CreateAsync(user, passwordToSet);
                 if (!result.Succeeded)

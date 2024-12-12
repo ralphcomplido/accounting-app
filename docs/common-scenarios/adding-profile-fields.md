@@ -161,9 +161,9 @@ In this scenario we will assume that the user also needs to provide these fields
       ...
     ```
 
-3. Open `Identity/Services/IdentityService.cs`. This is the service that fulfills all identity-related functionality.
+3. Open `Extensions/ApplicationUserExtensions.cs`. This file contains extension methods that map between `ApplicationUser` and DTOs.
 
-4. Update the `RegisterAsync` method to set the fields on a new `ApplicationUser`.
+4. Update the `ToCreate` method to set the fields on a new `ApplicationUser`.
 
     ```csharp
     public async Task<LoginResultDto> RegisterAsync(RegisterRequestDto requestDto)
