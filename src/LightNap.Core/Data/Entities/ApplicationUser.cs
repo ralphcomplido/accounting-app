@@ -11,9 +11,6 @@ namespace LightNap.Core.Data.Entities
     /// </remarks>
     public class ApplicationUser : IdentityUser
     {
-        public required string FirstName { get; set; }
-        public required string LastName { get; set; }
-
         /// <summary>
         /// The date when the user was created.
         /// </summary>
