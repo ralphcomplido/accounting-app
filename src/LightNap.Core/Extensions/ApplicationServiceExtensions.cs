@@ -26,9 +26,9 @@ namespace LightNap.Core.Extensions
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <returns>The updated service collection.</returns>
-        public static IServiceCollection AddLogToConsoleEmailer(this IServiceCollection services)
+        public static IServiceCollection AddLogToConsoleEmailSender(this IServiceCollection services)
         {
-            return services.AddSingleton<IEmailService, LogToConsoleEmailService>();
+            return services.AddSingleton<IEmailSender, LogToConsoleEmailSender>();
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace LightNap.Core.Extensions
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <returns>The updated service collection.</returns>
-        public static IServiceCollection AddSmtpEmailer(this IServiceCollection services)
+        public static IServiceCollection AddSmtpEmailSender(this IServiceCollection services)
         {
-            return services.AddSingleton<IEmailService, SmtpEmailService>();
+            return services.AddSingleton<IEmailSender, SmtpEmailSender>();
         }
     }
 }

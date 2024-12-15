@@ -15,7 +15,7 @@ namespace LightNap.Core.Interfaces
         /// </summary>
         /// <param name="message">The email message to send.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendEmailAsync(MailMessage message);
+        Task SendMailAsync(MailMessage message);
 
         /// <summary>
         /// Sends a email change email to the specified user.

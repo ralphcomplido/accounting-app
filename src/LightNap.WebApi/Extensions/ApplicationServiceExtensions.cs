@@ -82,17 +82,20 @@ namespace LightNap.WebApi.Extensions
         /// <exception cref="ArgumentException">Thrown when the email provider is unsupported.</exception>
         public static IServiceCollection AddEmailServices(this IServiceCollection services, IConfiguration configuration)
         {
-            string emailProvider = configuration.GetRequiredSetting("EmailProvider");
+            string emailProvider = configuration.GetRequiredSetting("Email:Provider");
             switch (emailProvider)
             {
                 case "LogToConsole":
-                    services.AddLogToConsoleEmailer();
+                    services.AddLogToConsoleEmailSender();
                     break;
                 case "Smtp":
-                    services.AddSmtpEmailer();
+                    services.AddSmtpEmailSender();
                     break;
-                default: throw new ArgumentException($"Unsupported 'EmailProvider' setting: '{emailProvider}'");
+                default: throw new ArgumentException($"Unsupported 'Email:Provider' setting: '{emailProvider}'");
             }
+
+            services.AddScoped<IEmailService, DefaultEmailService>();
+
             return services;
         }
 
