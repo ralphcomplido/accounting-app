@@ -1,13 +1,13 @@
-﻿using LightNap.Core.Interfaces;
-using System.Diagnostics;
+﻿using LightNap.Core.Email.Interfaces;
+using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 
-namespace LightNap.Core.Services
+namespace LightNap.Core.Email.Services
 {
     /// <summary>
     /// Service for logging email details to the console instead of sending them.
     /// </summary>
-    public class LogToConsoleEmailSender : IEmailSender
+    public class LogToConsoleEmailSender(ILogger<LogToConsoleEmailSender> logger) : IEmailSender
     {
         /// <summary>
         /// Logs the email details to the console asynchronously.
@@ -16,7 +16,14 @@ namespace LightNap.Core.Services
         /// <returns>A completed task.</returns>
         public Task SendMailAsync(MailMessage message)
         {
-            Trace.TraceInformation($"Not sending email to '{message.To}' with subject '{message.Subject}' and body '{message.Body}'");
+            logger.LogInformation(
+@$"Logging email to console
+To: {message.To}
+From: {message.From}
+Subject: {message.Subject}
+--- Body Start ---
+{message.Body}
+--- Body End ---");
             return Task.CompletedTask;
         }
     }

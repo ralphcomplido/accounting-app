@@ -9,12 +9,11 @@ namespace LightNap.Core.Identity.Dto.Request
     public class VerifyCodeRequestDto
     {
         /// <summary>
-        /// The email address of the user.
+        /// The email address or user name of the user.
         /// </summary>
-        [EmailAddress]
         [Required]
         [StringLength(Constants.Dto.MaxLoginLength)]
-        public required string Email { get; set; }
+        public required string Login { get; set; }
 
         /// <summary>
         /// The verification code.

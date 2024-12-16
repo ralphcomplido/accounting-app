@@ -2,6 +2,7 @@
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Email.Interfaces;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Web;
 
 namespace LightNap.Core.Identity.Services
 {
@@ -121,11 +121,10 @@ namespace LightNap.Core.Identity.Services
         private async Task SendVerificationEmailAsync(ApplicationUser user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}/identity/confirm-email/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
 
             try
             {
-                await emailService.SendEmailVerificationAsync(user, url);
+                await emailService.SendEmailVerificationAsync(user, token);
             }
             catch (Exception e)
             {
@@ -231,11 +230,10 @@ namespace LightNap.Core.Identity.Services
             ApplicationUser? user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
 
             string token = await userManager.GeneratePasswordResetTokenAsync(user);
-            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}#/identity/new-password/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
 
             try
             {
-                await emailService.SendPasswordResetAsync(user, url);
+                await emailService.SendPasswordResetAsync(user, token);
             }
             catch (Exception e)
             {
@@ -270,7 +268,7 @@ namespace LightNap.Core.Identity.Services
         /// <returns>The access token.</returns>
         public async Task<string> VerifyCodeAsync(VerifyCodeRequestDto requestDto)
         {
-            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
+            ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Login) ?? await userManager.FindByNameAsync(requestDto.Login) ?? throw new UserFriendlyApiException("An account with this email was not found.");
             if (!await userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, requestDto.Code))
             {
                 throw new UserFriendlyApiException("Unable to verify code. Please try again or log in again to resend a new code.");
@@ -339,9 +337,8 @@ namespace LightNap.Core.Identity.Services
             ApplicationUser user = await userManager.FindByEmailAsync(requestDto.Email) ?? throw new UserFriendlyApiException("An account with this email was not found.");
 
             string token = await userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, Constants.Identity.MagicLinkTokenPurpose);
-            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}identity/magic-link-login/{HttpUtility.UrlEncode(user.Email)}/{HttpUtility.UrlEncode(token)}";
 
-            await emailService.SendMagicLinkAsync(user, url);
+            await emailService.SendMagicLinkAsync(user, token);
         }
 
     }

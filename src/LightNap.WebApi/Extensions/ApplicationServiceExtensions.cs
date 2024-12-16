@@ -2,6 +2,8 @@
 using LightNap.Core.Administrator.Services;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Email.Interfaces;
+using LightNap.Core.Email.Services;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Interfaces;
 using LightNap.Core.Identity.Services;

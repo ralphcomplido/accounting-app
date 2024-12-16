@@ -2,6 +2,7 @@ using LightNap.Core.Api;
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Email.Interfaces;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Services;
@@ -15,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using System.Web;
 
 namespace LightNap.Core.Tests.Services
 {
@@ -64,17 +64,7 @@ namespace LightNap.Core.Tests.Services
 
             this._emailServiceMock = new Mock<IEmailService>();
 
-            var applicationSettings = Options.Create(
-                new ApplicationSettings
-                {
-                    AutomaticallyApplyEfMigrations = false,
-                    LogOutInactiveDeviceDays = 30,
-                    RequireTwoFactorForNewUsers = false,
-                    SiteUrlRootForEmails = "https://example.com/",
-                    UseSameSiteStrictCookies = true
-                });
-
-            this._profileService = new ProfileService(logger, this._dbContext, this._userManager, this._userContext, this._emailServiceMock.Object, applicationSettings);
+            this._profileService = new ProfileService(logger, this._dbContext, this._userManager, this._userContext, this._emailServiceMock.Object);
         }
 
         [TestCleanup]
@@ -248,15 +238,12 @@ namespace LightNap.Core.Tests.Services
                 NewEmail = "newuser@test.com"
             };
 
-            string capturedEmailChangeUrl = string.Empty;
+            string emailChangeToken = string.Empty;
             this._emailServiceMock
                 .Setup(ts => ts.SendChangeEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<ApplicationUser, string, string>((user, newEmail, url) => capturedEmailChangeUrl = url)
+                .Callback<ApplicationUser, string, string>((user, newEmail, token) => emailChangeToken = token)
                 .Returns(Task.CompletedTask);
             await this._profileService.ChangeEmailAsync(changeEmailDto);
-
-            // Not ideal since it's hardcoded to a very specific URL format, so expect to discover this comment if that gets changed.
-            string emailChangeToken = HttpUtility.UrlDecode(capturedEmailChangeUrl[(capturedEmailChangeUrl.LastIndexOf('/') + 1)..]);
 
             var confirmEmailChangeDto = new ConfirmEmailChangeRequestDto
             {

@@ -1,6 +1,6 @@
 ﻿using LightNap.Core.Data;
-using LightNap.Core.Interfaces;
-using LightNap.Core.Services;
+using LightNap.Core.Email.Interfaces;
+using LightNap.Core.Email.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

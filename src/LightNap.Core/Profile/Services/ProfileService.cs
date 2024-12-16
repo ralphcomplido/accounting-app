@@ -1,7 +1,7 @@
 ﻿using LightNap.Core.Api;
-using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Email.Interfaces;
 using LightNap.Core.Extensions;
 using LightNap.Core.Interfaces;
 using LightNap.Core.Profile.Dto.Request;
@@ -10,8 +10,6 @@ using LightNap.Core.Profile.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Web;
 
 namespace LightNap.Core.Profile.Services
 {
@@ -19,7 +17,7 @@ namespace LightNap.Core.Profile.Services
     /// Service for managing user profiles.  
     /// </summary>  
     public class ProfileService(ILogger<ProfileService> logger, ApplicationDbContext db, UserManager<ApplicationUser> userManager, IUserContext userContext,
-        IEmailService emailService, IOptions<ApplicationSettings> applicationSettings) : IProfileService
+        IEmailService emailService) : IProfileService
     {
         /// <summary>  
         /// Changes the password for the specified user.  
@@ -52,11 +50,9 @@ namespace LightNap.Core.Profile.Services
             var user = await userManager.FindByIdAsync(userContext.GetUserId()) ?? throw new UserFriendlyApiException("Unable to change email.");
             var token = await userManager.GenerateChangeEmailTokenAsync(user, requestDto.NewEmail);
 
-            string url = $"{applicationSettings.Value.SiteUrlRootForEmails}/profile/confirm-email-change/{HttpUtility.UrlEncode(requestDto.NewEmail)}/{HttpUtility.UrlEncode(token)}";
-
             try
             {
-                await emailService.SendChangeEmailAsync(user, requestDto.NewEmail, url);
+                await emailService.SendChangeEmailAsync(user, requestDto.NewEmail, token);
             }
             catch (Exception e)
             {

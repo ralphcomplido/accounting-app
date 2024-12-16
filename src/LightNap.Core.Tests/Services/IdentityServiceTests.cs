@@ -2,6 +2,7 @@ using LightNap.Core.Api;
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Email.Interfaces;
 using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Models;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using System.Web;
 
 namespace LightNap.Core.Tests.Services
 {
@@ -280,16 +280,13 @@ namespace LightNap.Core.Tests.Services
             var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", passwordResetRequestDto.Email);
             await this._userManager.AddPasswordAsync(user, "OldPassword123!");
 
-            string capturedPasswordResetUrl = string.Empty;
+            string passwordResetToken = string.Empty;
             this._emailServiceMock
                 .Setup(ts => ts.SendPasswordResetAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Callback<ApplicationUser, string>((user, url) => capturedPasswordResetUrl = url)
+                .Callback<ApplicationUser, string>((user, token) => passwordResetToken = token)
                 .Returns(Task.CompletedTask);
 
             await this._identityService.ResetPasswordAsync(passwordResetRequestDto);
-
-            // Not ideal since it's hardcoded to a very specific URL format, so expect to discover this comment if that gets changed.
-            string passwordResetToken = HttpUtility.UrlDecode(capturedPasswordResetUrl[(capturedPasswordResetUrl.LastIndexOf('/') + 1)..]);
 
             var newPasswordRequestDto = new NewPasswordRequestDto
             {
@@ -460,13 +457,12 @@ namespace LightNap.Core.Tests.Services
             };
 
             var user = await TestHelper.CreateTestUserAsync(this._userManager, "user-id", "UserName", requestDto.Email);
-            string capturedMagicLinkUrl = string.Empty;
+            string magicLinkToken = string.Empty;
             this._emailServiceMock
                 .Setup(ts => ts.SendMagicLinkAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Callback<ApplicationUser, string>((user, url) => capturedMagicLinkUrl = url)
+                .Callback<ApplicationUser, string>((user, token) => magicLinkToken = token)
                 .Returns(Task.CompletedTask);
             await this._identityService.RequestMagicLinkEmailAsync(requestDto);
-            string magicLinkToken = HttpUtility.UrlDecode(capturedMagicLinkUrl[(capturedMagicLinkUrl.LastIndexOf('/') + 1)..]);
 
             var loginRequest = new LoginRequestDto
             {

@@ -21,7 +21,7 @@ export class VerifyCodeComponent {
   #fb = inject(FormBuilder);
   #routeAlias = inject(RouteAliasService);
 
-  readonly email = input("");
+  readonly login = input("");
 
   form = this.#fb.group({
     code1: this.#fb.control("", [Validators.required]),
@@ -87,7 +87,7 @@ export class VerifyCodeComponent {
     this.#identityService
       .verifyCode({
         code,
-        email: this.email(),
+        login: this.login(),
         deviceDetails: navigator.userAgent,
         rememberMe: value.rememberMe,
       })

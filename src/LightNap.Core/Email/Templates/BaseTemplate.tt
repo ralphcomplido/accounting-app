@@ -1,0 +1,27 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="LightNap.Core.Data.Entities" #>
+
+<html>
+  <body>
+    <div>
+      <p>Hello <#= User.UserName #>!</p>
+	  <# RenderBody(); #>
+	  <p>&mdash; <#= FromDisplayName #></p>
+    </div>
+	<hr>
+	<div>
+	  <small>This is a transactional email sent from <a href="<#= SiteUrlRoot #>"><#= SiteUrlRoot #></a>.</small>
+	</div>
+  </body>
+</html>
+
+<#+ 
+	public ApplicationUser User { get; set; }
+	public string FromDisplayName { get; set; }
+	public string SiteUrlRoot { get; set; }
+	protected virtual void RenderBody() { }
+#>

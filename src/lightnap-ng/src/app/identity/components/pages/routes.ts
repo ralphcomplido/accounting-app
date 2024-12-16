@@ -27,7 +27,7 @@ export const Routes: AppRoute[] = [
     loadComponent: () => import("./new-password/new-password.component").then(m => m.NewPasswordComponent),
   },
   {
-    path: "verify-code",
+    path: "verify-code/:login",
     data: { alias: "verify-code" },
     loadComponent: () => import("./verify-code/verify-code.component").then(m => m.VerifyCodeComponent),
   },

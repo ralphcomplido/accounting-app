@@ -1,7 +1,7 @@
 ﻿using LightNap.Core.Data.Entities;
 using System.Net.Mail;
 
-namespace LightNap.Core.Interfaces
+namespace LightNap.Core.Email.Interfaces
 {
     /// <summary>
     /// Interface for email services. Besides the basic SendEmailAsync method, it also includes methods for sending 
@@ -21,9 +21,9 @@ namespace LightNap.Core.Interfaces
         /// Sends a email change email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
-        /// <param name="emailChangeUrl">The URL for verifying the email change.</param>
+        /// <param name="token">The token for verifying the email change.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendChangeEmailAsync(ApplicationUser user, string newEmail, string emailChangeUrl);
+        Task SendChangeEmailAsync(ApplicationUser user, string newEmail, string token);
 
         /// <summary>
         /// Sends a two-factor authentication email to the specified user.
@@ -37,9 +37,9 @@ namespace LightNap.Core.Interfaces
         /// Sends a password reset email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
-        /// <param name="passwordResetUrl">The URL for resetting the password.</param>
+        /// <param name="token">The token for resetting the password.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendPasswordResetAsync(ApplicationUser user, string passwordResetUrl);
+        Task SendPasswordResetAsync(ApplicationUser user, string token);
 
         /// <summary>
         /// Sends a registration email to the specified user.
@@ -52,16 +52,16 @@ namespace LightNap.Core.Interfaces
         /// Sends a email verification email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
-        /// <param name="emailVerificationUrl">The URL for verifying the email.</param>
+        /// <param name="token">The token for verifying the email.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendEmailVerificationAsync(ApplicationUser user, string emailVerificationUrl);
+        Task SendEmailVerificationAsync(ApplicationUser user, string token);
 
         /// <summary>
         /// Sends a magic link email to the specified user.
         /// </summary>
         /// <param name="user">The user to send the email to.</param>
-        /// <param name="magicLinkUrl">The magic link URL.</param>
+        /// <param name="token">The magic link token.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SendMagicLinkAsync(ApplicationUser user, string magicLinkUrl);
+        Task SendMagicLinkAsync(ApplicationUser user, string token);
     }
 }

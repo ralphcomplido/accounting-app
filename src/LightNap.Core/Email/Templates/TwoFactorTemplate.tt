@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" inherits="BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Web" #>
+<#@ import namespace="LightNap.Core.Data.Entities" #>
+
+<# base.TransformText(); #>
+
+<#+ 
+	public string Code { get; set; }
+	protected override void RenderBody() 
+	{
+#>
+<p>Please enter the following code to log in: <strong><#= Code #></strong>.</p>
+<#+
+	}
+#>

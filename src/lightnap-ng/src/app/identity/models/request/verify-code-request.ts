@@ -3,9 +3,9 @@
  */
 export interface VerifyCodeRequest {
     /**
-     * The email address associated with the verification request.
+     * The email address or user name associated with the verification request.
      */
-    email: string;
+    login: string;
 
     /**
      * The verification code to be validated.

@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace LightNap.Core.Interfaces
+namespace LightNap.Core.Email.Interfaces
 {
     /// <summary>
     /// Interface for sending email.

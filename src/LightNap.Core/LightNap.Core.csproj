@@ -10,5 +10,76 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="9.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.2.1" />
+    <PackageReference Include="System.CodeDom" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Email\Templates\BaseTemplate.tt">
+      <LastGenOutput>BaseTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\TwoFactorTemplate.tt">
+      <LastGenOutput>TwoFactorTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\MagicLinkTemplate.tt">
+      <LastGenOutput>MagicLinkTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\ConfirmEmailTemplate.tt">
+      <LastGenOutput>ConfirmEmailTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\ChangeEmailTemplate.tt">
+      <LastGenOutput>ChangeEmailTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\ResetPasswordTemplate.tt">
+      <LastGenOutput>ResetPasswordTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Email\Templates\RegistrationWelcomeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RegistrationWelcomeTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Email\Templates\BaseTemplate.cs">
+      <DependentUpon>BaseTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\TwoFactorTemplate.cs">
+      <DependentUpon>TwoFactorTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\MagicLinkTemplate.cs">
+      <DependentUpon>MagicLinkTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\ConfirmEmailTemplate.cs">
+      <DependentUpon>ConfirmEmailTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\ChangeEmailTemplate.cs">
+      <DependentUpon>ChangeEmailTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\ResetPasswordTemplate.cs">
+      <DependentUpon>ResetPasswordTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Email\Templates\RegistrationWelcomeTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RegistrationWelcomeTemplate.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
