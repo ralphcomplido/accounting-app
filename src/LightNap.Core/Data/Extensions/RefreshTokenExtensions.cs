@@ -1,7 +1,7 @@
 ﻿using LightNap.Core.Data.Entities;
 using LightNap.Core.Profile.Dto.Response;
 
-namespace LightNap.Core.Extensions
+namespace LightNap.Core.Data.Extensions
 {
     /// <summary>
     /// Provides extension methods for converting RefreshToken objects to DeviceDto objects.

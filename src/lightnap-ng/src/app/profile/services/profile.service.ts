@@ -1,15 +1,17 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ApiResponse, TimerService } from "@core";
 import { IdentityService } from "@identity";
 import {
   ApplicationSettings,
   ChangeEmailRequest,
   ChangePasswordRequest,
   ConfirmChangeEmailRequest,
+  Notification,
   StyleSettings,
   UpdateProfileRequest,
 } from "@profile";
-import { filter, of, switchMap, tap } from "rxjs";
+import { filter, of, pipe, ReplaySubject, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
 
 @Injectable({
@@ -25,6 +27,7 @@ import { DataService } from "./data.service";
 export class ProfileService {
   #dataService = inject(DataService);
   #identityService = inject(IdentityService);
+  #timer = inject(TimerService);
 
   // This should be kept in sync with the server-side BrowserSettings class.
   #defaultApplicationSettings: ApplicationSettings = {
@@ -43,6 +46,9 @@ export class ProfileService {
 
   #settings?: ApplicationSettings;
 
+  #notifications?: Array<Notification>;
+  #notificationsSubject = new ReplaySubject<Array<Notification>>(1);
+
   /**
    * Constructs the ProfileService and sets up the subscription to handle user logout.
    */
@@ -55,6 +61,16 @@ export class ProfileService {
       )
       .subscribe(() => {
         this.#settings = undefined;
+      });
+
+    this.#timer
+      .watchTimer$(15 * 1000)
+      .pipe(
+        takeUntilDestroyed(),
+        filter(() => this.#identityService.loggedIn && this.#notificationsSubject.observed)
+      )
+      .subscribe({
+        next: () => this.#requestUnreadNotifications(),
       });
   }
 
@@ -185,5 +201,43 @@ export class ProfileService {
    */
   hasLoadedStyleSettings() {
     return !!this.#settings;
+  }
+
+  watchUnreadNotifications$() {
+    if (!this.#notifications) {
+      this.#requestUnreadNotifications();
+    }
+    return this.#notificationsSubject;
+  }
+
+  #requestUnreadNotifications() {
+    console.log("Requesting notifications");
+    this.#dataService.searchNotifications({ status: "Unread", sinceId: this.#notifications?.[0]?.id }).subscribe({
+      next: notifications => {
+        console.log("Notification response", notifications);
+        if (!notifications.data.length && this.#notifications) return;
+        this.#notifications = [...notifications.data, ...(this.#notifications || [])];
+        this.#notificationsSubject.next(this.#notifications);
+      },
+      error: (response: ApiResponse<any>) => console.error("Unable to request unread notifications", response.errorMessages),
+    });
+  }
+
+  #refreshNotifications() {
+    this.#dataService.searchNotifications({ status: "Unread" }).subscribe({
+        next: notifications => {
+          this.#notifications = notifications.data;
+          this.#notificationsSubject.next(this.#notifications);
+        },
+        error: (response: ApiResponse<any>) => console.error("Unable to refresh unread notifications", response.errorMessages),
+      });
+  }
+
+  markAllNotificationsAsRead() {
+    return this.#dataService.markAllNotificationsAsRead().pipe(tap(() => this.#refreshNotifications()));
+  }
+
+  markNotificationAsRead(id: number) {
+    return this.#dataService.markNotificationAsRead(id).pipe(tap(() => this.#refreshNotifications()));
   }
 }

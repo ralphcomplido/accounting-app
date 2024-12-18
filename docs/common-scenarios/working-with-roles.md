@@ -11,7 +11,7 @@ LightNap uses ASP.NET Roles to manage application authorization. By default ther
 
 ## Adding a Role
 
-Roles are defined in `Data/Entities/ApplicationRoles.cs` in the `LightNap.Core` project. To add a new role, simply use the existing `Administrator` role as a reference example. Roles use the custom `ApplicationRole` instance that can be extended with additional properties, if required.
+Roles are defined in `Configuration/ApplicationRoles.cs` in the `LightNap.Core` project. To add a new role, simply use the existing `Administrator` role as a reference example. Roles use the custom `ApplicationRole` instance that can be extended with additional properties, if required.
 
 New roles must also be added to the `ApplicationRoles.All` collection so that they can be managed on startup. The app automatically references this collection to add any roles that don't yet exist and delete those that don't exist anymore. It's also the list that's returned to the front-end for managing user membership in roles.
 

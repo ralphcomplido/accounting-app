@@ -2,13 +2,15 @@
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Data.Extensions;
 using LightNap.Core.Email.Interfaces;
-using LightNap.Core.Extensions;
 using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Dto.Response;
 using LightNap.Core.Identity.Interfaces;
 using LightNap.Core.Identity.Models;
 using LightNap.Core.Interfaces;
+using LightNap.Core.Notifications.Dto.Request;
+using LightNap.Core.Notifications.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,6 +26,7 @@ namespace LightNap.Core.Identity.Services
         SignInManager<ApplicationUser> signInManager,
         ITokenService tokenService,
         IEmailService emailService,
+        INotificationService notificationService,
         IOptions<ApplicationSettings> applicationSettings,
         ApplicationDbContext db,
         ICookieManager cookieManager,
@@ -201,6 +204,16 @@ namespace LightNap.Core.Identity.Services
             {
                 await this.SendVerificationEmailAsync(user);
             }
+
+            await notificationService.CreateRoleNotificationAsync(ApplicationRoles.Administrator.Name!,
+                new CreateNotificationDto()
+                {
+                    Type = NotificationType.AdministratorNewUserRegistration,
+                    Data = new Dictionary<string, object>()
+                    {
+                        { "UserId", user.Id }
+                    }
+                });
 
             logger.LogInformation("New user '{userName}' ('{email}') registered!", user.Email, user.UserName);
 

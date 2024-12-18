@@ -1,6 +1,6 @@
 ﻿using LightNap.Core.Interfaces;
 
-namespace LightNap.Core.Tests
+namespace LightNap.Core.Tests.Utilities
 {
     /// <summary>
     /// A test implementation of the ICookieManager interface for managing cookies in tests.
@@ -39,7 +39,7 @@ namespace LightNap.Core.Tests
         /// <param name="expires">The expiration date and time of the cookie.</param>
         public void SetCookie(string key, string value, bool isPersistent, DateTime expires)
         {
-            this._cookies[key] = (value, isPersistent ? expires : (DateTime?)null);
+            this._cookies[key] = (value, isPersistent ? expires : null);
         }
 
         /// <summary>

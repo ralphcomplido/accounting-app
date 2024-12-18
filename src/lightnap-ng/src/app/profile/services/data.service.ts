@@ -1,8 +1,19 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { API_URL_ROOT } from "@core";
-import { ApplicationSettings, ChangeEmailRequest, ChangePasswordRequest, ConfirmChangeEmailRequest, Device, Profile, UpdateProfileRequest } from "@profile";
+import { API_URL_ROOT, PagedResponse } from "@core";
+import {
+  ApplicationSettings,
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  ConfirmChangeEmailRequest,
+  Device,
+  Profile,
+  Notification,
+  SearchNotificationsRequest,
+  UpdateProfileRequest,
+} from "@profile";
 import { DeviceHelper } from "@profile/helpers/device.helper";
+import { NotificationHelper } from "@profile/helpers/notification.helper";
 import { tap } from "rxjs";
 
 @Injectable({
@@ -48,5 +59,19 @@ export class DataService {
 
   updateSettings(browserSettings: ApplicationSettings) {
     return this.#http.put<boolean>(`${this.#apiUrlRoot}settings`, browserSettings);
+  }
+
+  searchNotifications(searchNotificationsRequest: SearchNotificationsRequest) {
+    return this.#http
+      .post<PagedResponse<Notification>>(`${this.#apiUrlRoot}notifications`, searchNotificationsRequest)
+      .pipe(tap(results => results.data.forEach(NotificationHelper.rehydrate)));
+  }
+
+  markAllNotificationsAsRead() {
+    return this.#http.put<boolean>(`${this.#apiUrlRoot}notifications/mark-all-as-read`, undefined);
+  }
+
+  markNotificationAsRead(id: number) {
+    return this.#http.put<boolean>(`${this.#apiUrlRoot}notifications/${id}/mark-as-read`, undefined);
   }
 }

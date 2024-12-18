@@ -1,4 +1,6 @@
 using LightNap.Core.Api;
+using LightNap.Core.Notifications.Dto.Request;
+using LightNap.Core.Notifications.Dto.Response;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 
@@ -70,5 +72,9 @@ namespace LightNap.Core.Profile.Interfaces
         /// <returns>A task that represents the asynchronous operation.</returns>
         /// <exception cref="UserFriendlyApiException">Thrown when the email confirmation fails.</exception>
         Task ConfirmEmailChangeAsync(ConfirmEmailChangeRequestDto requestDto);
+
+        Task<PagedResponse<NotificationDto>> SearchMyNotificationsAsync(SearchNotificationsDto requestDto);
+        Task MarkAllNotificationsAsReadAsync();
+        Task MarkNotificationAsReadAsync(int id);
     }
 }

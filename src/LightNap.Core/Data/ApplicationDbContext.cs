@@ -3,6 +3,7 @@ using LightNap.Core.Data.Entities;
 using LightNap.Core.Profile.Dto.Response;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace LightNap.Core.Data
 {
@@ -12,7 +13,12 @@ namespace LightNap.Core.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         /// <summary>
-        /// Gets or sets the refresh tokens DbSet.
+        /// Notifications in the DB.
+        /// </summary>
+        public DbSet<Notification> Notifications { get; set; } = null!;
+
+        /// <summary>
+        /// Refresh tokens in the DB.
         /// </summary>
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
@@ -43,6 +49,19 @@ namespace LightNap.Core.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Notification>()
+                .Property(n => n.Data)
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, null as JsonSerializerOptions),
+                        v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, null as JsonSerializerOptions) ?? new Dictionary<string, object>()
+                    );
+
+            builder.Entity<Notification>()
+                .HasOne(rt => rt.User)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey(rt => rt.UserId)
+                .IsRequired();
+
             builder.Entity<RefreshToken>()
                 .HasOne(rt => rt.User)
                 .WithMany(u => u.RefreshTokens)
@@ -54,10 +73,10 @@ namespace LightNap.Core.Data
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             // Make sure all DateTime properties are stored as UTC.
-            configurationBuilder.Properties<DateTime>().HaveConversion(typeof(UtcValueConverter));
+            configurationBuilder.Properties<DateTime>().HaveConversion<UtcValueConverter>();
 
             // Storing this as a JSON string.
-            configurationBuilder.Properties<BrowserSettingsDto>().HaveConversion(typeof(BrowserSettingsConverter));
+            configurationBuilder.Properties<BrowserSettingsDto>().HaveConversion<BrowserSettingsValueConverter>();
         }
     }
 }

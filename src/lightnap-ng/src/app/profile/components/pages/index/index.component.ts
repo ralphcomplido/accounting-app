@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { BlockUiService, ErrorListComponent, ToastService } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
+import { NotificationsButtonComponent } from "@core/components/controls/notifications-button/notifications-button.component";
 import { ProfileService } from "@profile/services/profile.service";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
@@ -14,7 +15,7 @@ import { IdentityService } from "src/app/identity/services/identity.service";
 @Component({
   standalone: true,
   templateUrl: "./index.component.html",
-  imports: [CommonModule, ErrorListComponent, ReactiveFormsModule, ButtonModule, CardModule, RouterLink, RoutePipe, ApiResponseComponent],
+  imports: [CommonModule, ErrorListComponent, ReactiveFormsModule, ButtonModule, CardModule, RouterLink, RoutePipe, ApiResponseComponent, NotificationsButtonComponent],
 })
 export class IndexComponent {
   readonly #identityService = inject(IdentityService);

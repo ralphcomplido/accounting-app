@@ -1,7 +1,7 @@
 ﻿using LightNap.Core.Data.Entities;
 using LightNap.Core.Identity.Dto.Response;
 
-namespace LightNap.Core.Extensions
+namespace LightNap.Core.Data.Extensions
 {
     /// <summary>
     /// Provides extension methods for converting ApplicationRole objects to RoleDto objects.

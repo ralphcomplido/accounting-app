@@ -5,7 +5,7 @@ using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 
-namespace LightNap.Core.Extensions
+namespace LightNap.Core.Data.Extensions
 {
     /// <summary>
     /// Provides extension methods for working with ApplicationUser objects.
@@ -67,7 +67,7 @@ namespace LightNap.Core.Extensions
         /// <returns>An AdminUserDto object representing the ApplicationUser object.</returns>
         public static AdminUserDto ToAdminUserDto(this ApplicationUser user)
         {
-            long? lockoutEnd = (user.LockoutEnd.GetValueOrDefault(DateTimeOffset.MinValue) < DateTimeOffset.UtcNow) ? null : user.LockoutEnd?.ToUnixTimeMilliseconds();
+            long? lockoutEnd = user.LockoutEnd.GetValueOrDefault(DateTimeOffset.MinValue) < DateTimeOffset.UtcNow ? null : user.LockoutEnd?.ToUnixTimeMilliseconds();
 
             return new AdminUserDto()
             {

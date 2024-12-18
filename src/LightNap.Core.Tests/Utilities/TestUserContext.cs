@@ -1,6 +1,6 @@
 ﻿using LightNap.Core.Interfaces;
 
-namespace LightNap.Core.Tests
+namespace LightNap.Core.Tests.Utilities
 {
     /// <summary>
     /// Test implementation of IUserContext for unit testing purposes.

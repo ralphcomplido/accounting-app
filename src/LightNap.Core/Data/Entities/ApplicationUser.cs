@@ -27,6 +27,11 @@ namespace LightNap.Core.Data.Entities
         public virtual BrowserSettingsDto BrowserSettings { get; set; } = new BrowserSettingsDto();
 
         /// <summary>
+        /// The notifications associated with the user.
+        /// </summary>
+        public ICollection<Notification>? Notifications { get; set; }
+
+        /// <summary>
         /// The refresh tokens associated with the user.
         /// </summary>
         public ICollection<RefreshToken>? RefreshTokens { get; set; }

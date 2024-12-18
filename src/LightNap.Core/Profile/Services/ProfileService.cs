@@ -1,9 +1,12 @@
 ﻿using LightNap.Core.Api;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
+using LightNap.Core.Data.Extensions;
 using LightNap.Core.Email.Interfaces;
-using LightNap.Core.Extensions;
 using LightNap.Core.Interfaces;
+using LightNap.Core.Notifications.Dto.Request;
+using LightNap.Core.Notifications.Dto.Response;
+using LightNap.Core.Notifications.Interfaces;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 using LightNap.Core.Profile.Interfaces;
@@ -17,7 +20,7 @@ namespace LightNap.Core.Profile.Services
     /// Service for managing user profiles.  
     /// </summary>  
     public class ProfileService(ILogger<ProfileService> logger, ApplicationDbContext db, UserManager<ApplicationUser> userManager, IUserContext userContext,
-        IEmailService emailService) : IProfileService
+        IEmailService emailService, INotificationService notificationService) : IProfileService
     {
         /// <summary>  
         /// Changes the password for the specified user.  
@@ -157,6 +160,22 @@ namespace LightNap.Core.Profile.Services
 
             token.IsRevoked = true;
             await db.SaveChangesAsync();
+        }
+
+        public async Task<PagedResponse<NotificationDto>> SearchMyNotificationsAsync(SearchNotificationsDto requestDto)
+        {
+            return await notificationService.SearchNotificationsAsync(userContext.GetUserId(), requestDto);
+        }
+
+        public async Task MarkAllNotificationsAsReadAsync()
+        {
+            await notificationService.MarkAllAsReadAsync(userContext.GetUserId());
+        }
+
+        public async Task MarkNotificationAsReadAsync(int id)
+        {
+            Notification notification = await db.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userContext.GetUserId()) ?? throw new UserFriendlyApiException("Notification not found.");
+            await notificationService.MarkAsReadAsync(id);
         }
     }
 }

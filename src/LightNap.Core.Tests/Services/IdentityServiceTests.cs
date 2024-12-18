@@ -8,6 +8,8 @@ using LightNap.Core.Identity.Dto.Request;
 using LightNap.Core.Identity.Models;
 using LightNap.Core.Identity.Services;
 using LightNap.Core.Interfaces;
+using LightNap.Core.Notifications.Dto.Request;
+using LightNap.Core.Notifications.Interfaces;
 using LightNap.Core.Tests.Utilities;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +34,7 @@ namespace LightNap.Core.Tests.Services
         private TestCookieManager _cookieManager;
         private Mock<IEmailService> _emailServiceMock;
         private Mock<ITokenService> _tokenServiceMock;
+        private Mock<INotificationService> _notificationServiceMock;
 #pragma warning restore CS8618
 
         [TestInitialize]
@@ -59,6 +62,9 @@ namespace LightNap.Core.Tests.Services
 
             this._emailServiceMock = new Mock<IEmailService>();
 
+            this._notificationServiceMock = new Mock<INotificationService>();
+            this._notificationServiceMock.Setup(ns => ns.CreateUserNotificationAsync(ApplicationRoles.Administrator.Name!, It.IsAny<CreateNotificationDto>()));
+
             var applicationSettings = Options.Create(
                 new ApplicationSettings
                 {
@@ -77,7 +83,7 @@ namespace LightNap.Core.Tests.Services
             };
 
             this._identityService = new IdentityService(logger, this._userManager, signInManager, this._tokenServiceMock.Object, this._emailServiceMock.Object,
-                applicationSettings, this._dbContext, this._cookieManager, userContext);
+                this._notificationServiceMock.Object, applicationSettings, this._dbContext, this._cookieManager, userContext);
         }
 
         [TestCleanup]
