@@ -25,6 +25,7 @@ export type RouteAlias =
     // Profile
     | 'profile'
     | 'devices'
+    | 'notifications'
     | 'change-email'
     | 'change-email-requested'
 

@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, ElementRef, inject, viewChild } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { NotificationsButtonComponent } from "@profile/components/controls/notifications-button/notifications-button.component";
 import { ProfileService } from "@profile/services/profile.service";
 import { RoutePipe } from "@routing";
 import { MenuItem } from "primeng/api";
@@ -12,7 +13,7 @@ import { LayoutService } from "src/app/layout/services/layout.service";
   selector: "app-top-bar",
   standalone: true,
   templateUrl: "./app-top-bar.component.html",
-  imports: [CommonModule, RouterModule, ButtonModule, RippleModule, RoutePipe],
+  imports: [CommonModule, RouterModule, ButtonModule, RoutePipe, NotificationsButtonComponent, RippleModule, RoutePipe],
 })
 export class AppTopBarComponent {
   readonly layoutService = inject(LayoutService);

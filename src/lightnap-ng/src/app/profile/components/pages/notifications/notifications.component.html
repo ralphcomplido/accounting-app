@@ -1,0 +1,13 @@
+<p-card header="Manage Your Notifications">
+  <api-response [apiResponse]="notifications$" errorMessage="Error loading notifications" loadingMessage="Loading notifications...">
+    <ng-template #success let-notifications>
+      <ul>
+        @for (notification of notifications; track notification.id) {
+          <p-button label="Mark as Read" icon="pi pi-check" (click)="markAsRead(notification.id)" />
+          {{ notification | json }}
+        }
+      </ul>
+      <error-list [errors]="errors" />
+    </ng-template>
+  </api-response>
+</p-card>

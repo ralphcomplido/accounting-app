@@ -1,6 +1,0 @@
-@if (notifications$ | async; as notifications) {
-  <p-button (onClick)="markFirstAsRead()">
-    <i class="pi pi-bell"></i>
-    <p-badge [value]="notifications.length" />
-  </p-button>
-}

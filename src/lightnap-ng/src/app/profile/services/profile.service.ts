@@ -1,17 +1,18 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { ApiResponse, TimerService } from "@core";
+import { ApiResponse, RequestPollingManager, TimerService } from "@core";
 import { IdentityService } from "@identity";
 import {
-  ApplicationSettings,
-  ChangeEmailRequest,
-  ChangePasswordRequest,
-  ConfirmChangeEmailRequest,
-  Notification,
-  StyleSettings,
-  UpdateProfileRequest,
+    ApplicationSettings,
+    ChangeEmailRequest,
+    ChangePasswordRequest,
+    ConfirmChangeEmailRequest,
+    Notification,
+    SearchNotificationsRequest,
+    StyleSettings,
+    UpdateProfileRequest,
 } from "@profile";
-import { filter, of, pipe, ReplaySubject, switchMap, tap } from "rxjs";
+import { filter, finalize, of, ReplaySubject, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
 
 @Injectable({
@@ -22,7 +23,7 @@ import { DataService } from "./data.service";
  * @description
  * The ProfileService class provides methods to manage user profiles, devices, and application settings.
  * It interacts with the DataService and IdentityService to perform various operations such as fetching
- * and updating profiles, managing devices, and handling application settings.
+ * and updating profiles, managing devices, watching for notifications, and handling application settings.
  */
 export class ProfileService {
   #dataService = inject(DataService);
@@ -48,6 +49,7 @@ export class ProfileService {
 
   #notifications?: Array<Notification>;
   #notificationsSubject = new ReplaySubject<Array<Notification>>(1);
+  #notificationsPollingManager = new RequestPollingManager(() => this.#requestUnreadNotifications(), 15 * 1000);
 
   /**
    * Constructs the ProfileService and sets up the subscription to handle user logout.
@@ -57,20 +59,17 @@ export class ProfileService {
       .watchLoggedIn$()
       .pipe(
         takeUntilDestroyed(),
+        tap(loggedIn => {
+          if (loggedIn) {
+            this.#notificationsPollingManager.startPolling();
+          } else {
+            this.#notificationsPollingManager.stopPolling();
+          }
+        }),
         filter(loggedIn => !loggedIn)
       )
       .subscribe(() => {
         this.#settings = undefined;
-      });
-
-    this.#timer
-      .watchTimer$(15 * 1000)
-      .pipe(
-        takeUntilDestroyed(),
-        filter(() => this.#identityService.loggedIn && this.#notificationsSubject.observed)
-      )
-      .subscribe({
-        next: () => this.#requestUnreadNotifications(),
       });
   }
 
@@ -203,6 +202,10 @@ export class ProfileService {
     return !!this.#settings;
   }
 
+  searchNotifications(searchNotificationsRequest: SearchNotificationsRequest) {
+    return this.#dataService.searchNotifications(searchNotificationsRequest);
+  }
+
   watchUnreadNotifications$() {
     if (!this.#notifications) {
       this.#requestUnreadNotifications();
@@ -211,20 +214,21 @@ export class ProfileService {
   }
 
   #requestUnreadNotifications() {
-    console.log("Requesting notifications");
-    this.#dataService.searchNotifications({ status: "Unread", sinceId: this.#notifications?.[0]?.id }).subscribe({
-      next: notifications => {
-        console.log("Notification response", notifications);
+    return this.#dataService.searchNotifications({ status: "Unread", sinceId: this.#notifications?.[0]?.id }).pipe(
+      tap(notifications => {
         if (!notifications.data.length && this.#notifications) return;
         this.#notifications = [...notifications.data, ...(this.#notifications || [])];
         this.#notificationsSubject.next(this.#notifications);
-      },
-      error: (response: ApiResponse<any>) => console.error("Unable to request unread notifications", response.errorMessages),
-    });
+      })
+    );
   }
 
-  #refreshNotifications() {
-    this.#dataService.searchNotifications({ status: "Unread" }).subscribe({
+  #refreshUnreadNotifications() {
+    this.#notificationsPollingManager.pausePolling();
+    this.#dataService
+      .searchNotifications({ status: "Unread" })
+      .pipe(finalize(() => this.#notificationsPollingManager.resumePolling()))
+      .subscribe({
         next: notifications => {
           this.#notifications = notifications.data;
           this.#notificationsSubject.next(this.#notifications);
@@ -234,10 +238,10 @@ export class ProfileService {
   }
 
   markAllNotificationsAsRead() {
-    return this.#dataService.markAllNotificationsAsRead().pipe(tap(() => this.#refreshNotifications()));
+    return this.#dataService.markAllNotificationsAsRead().pipe(tap(() => this.#refreshUnreadNotifications()));
   }
 
   markNotificationAsRead(id: number) {
-    return this.#dataService.markNotificationAsRead(id).pipe(tap(() => this.#refreshNotifications()));
+    return this.#dataService.markNotificationAsRead(id).pipe(tap(() => this.#refreshUnreadNotifications()));
   }
 }
