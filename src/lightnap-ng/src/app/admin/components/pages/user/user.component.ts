@@ -1,7 +1,7 @@
 import { AdminUserWithRoles } from "@admin/models";
 import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
-import { Component, inject, input, OnInit } from "@angular/core";
+import { Component, inject, input, OnChanges, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { ConfirmPopupComponent, ToastService } from "@core";
@@ -34,7 +34,7 @@ import { Observable } from "rxjs";
     TagModule,
   ],
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnChanges {
   #adminService = inject(AdminService);
   #confirmationService = inject(ConfirmationService);
   #toast = inject(ToastService);
@@ -53,7 +53,7 @@ export class UserComponent implements OnInit {
 
   roles$ = this.#adminService.getRoles();
 
-  ngOnInit() {
+  ngOnChanges() {
     this.#refreshUser();
   }
 

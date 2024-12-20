@@ -73,8 +73,24 @@ namespace LightNap.Core.Profile.Interfaces
         /// <exception cref="UserFriendlyApiException">Thrown when the email confirmation fails.</exception>
         Task ConfirmEmailChangeAsync(ConfirmEmailChangeRequestDto requestDto);
 
-        Task<PagedResponse<NotificationDto>> SearchMyNotificationsAsync(SearchNotificationsDto requestDto);
+        /// <summary>
+        /// Searches the logged-in user's notifications based on the provided criteria.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the search criteria.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="NotificationSearchResultsDto"/> with the search results.</returns>
+        Task<NotificationSearchResultsDto> SearchNotificationsAsync(SearchNotificationsDto requestDto);
+
+        /// <summary>
+        /// Marks all notifications as read for the requesting user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         Task MarkAllNotificationsAsReadAsync();
+
+        /// <summary>
+        /// Marks a specific notification as read for the requesting user.
+        /// </summary>
+        /// <param name="id">The ID of the notification to be marked as read.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         Task MarkNotificationAsReadAsync(int id);
     }
 }

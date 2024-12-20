@@ -58,7 +58,7 @@ export class NewPasswordComponent {
               this.#routeAlias.navigate("verify-code", this.email);
               break;
             case "EmailVerificationRequired":
-              throw new Error("Email verification is not yet implemented.");
+              throw new Error("Email verification should not be required since email was used to set a new password.");
             default:
               throw new Error(`Unexpected LoginSuccessResult.type: '${result.type}'`);
           }

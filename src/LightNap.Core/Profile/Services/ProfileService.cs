@@ -162,16 +162,31 @@ namespace LightNap.Core.Profile.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task<PagedResponse<NotificationDto>> SearchMyNotificationsAsync(SearchNotificationsDto requestDto)
+        /// <summary>
+        /// Searches for notifications of the logged-in user based on the specified criteria.
+        /// </summary>
+        /// <param name="requestDto">The data transfer object containing the search criteria.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the search results.</returns>
+        public async Task<NotificationSearchResultsDto> SearchNotificationsAsync(SearchNotificationsDto requestDto)
         {
             return await notificationService.SearchNotificationsAsync(userContext.GetUserId(), requestDto);
         }
 
+        /// <summary>
+        /// Marks all notifications as read for the logged-in user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task MarkAllNotificationsAsReadAsync()
         {
             await notificationService.MarkAllAsReadAsync(userContext.GetUserId());
         }
 
+        /// <summary>
+        /// Marks a specific notification as read for the logged-in user.
+        /// </summary>
+        /// <param name="id">The ID of the notification to be marked as read.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="UserFriendlyApiException">Thrown when the notification is not found.</exception>
         public async Task MarkNotificationAsReadAsync(int id)
         {
             Notification notification = await db.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userContext.GetUserId()) ?? throw new UserFriendlyApiException("Notification not found.");

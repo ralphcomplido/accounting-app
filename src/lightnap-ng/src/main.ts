@@ -3,12 +3,12 @@ import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from "@angular/core";
 import { bootstrapApplication, BrowserModule } from "@angular/platform-browser";
 import { provideAnimations } from "@angular/platform-browser/animations";
-import { provideRouter, withRouterConfig } from "@angular/router";
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withRouterConfig } from "@angular/router";
 import { API_URL_ROOT } from "@core";
 import { apiResponseInterceptor } from "@core/interceptors/api-response-interceptor";
 import { tokenInterceptor } from "@core/interceptors/token-interceptor";
 import { InitializationService } from "@core/services/initialization.service";
-import { RouteConfig, Routes } from "@routing/routes";
+import { Routes } from "@routing/routes";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { AppComponent } from "./app/app.component";
 import { environment } from "./environments/environment";
@@ -23,7 +23,13 @@ export function initializeApp(initializationService: InitializationService) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(Routes, withRouterConfig(RouteConfig)),
+    provideRouter(
+      Routes,
+      withInMemoryScrolling(),
+      withComponentInputBinding(),
+      withRouterConfig({
+      })
+    ),
     importProvidersFrom(BrowserModule),
     InitializationService,
     {

@@ -43,9 +43,9 @@ export class RouteAliasService {
     const alias = route.data?.alias;
     if (alias) {
       if (this.#routeMap.has(alias)) {
-        const exisitingPath = this.#routeMap.get(alias).join("/");
+        const existingPath = this.#routeMap.get(alias).join("/");
         const newPath = path.join("/");
-        throw new Error(`Duplicate route for '${alias}': Two route paths have the same alias. See route: '${exisitingPath}' and '${newPath}'.`);
+        throw new Error(`Duplicate route for '${alias}': Two route paths have the same alias. See route: '${existingPath}' and '${newPath}'.`);
       }
       this.#routeMap.set(alias, [...path]);
     }

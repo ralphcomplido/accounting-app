@@ -1,4 +1,3 @@
-using LightNap.Core.Api;
 using LightNap.Core.Notifications.Dto.Request;
 using LightNap.Core.Notifications.Dto.Response;
 using LightNap.Core.Profile.Dto.Request;
@@ -188,9 +187,9 @@ namespace LightNap.WebApi.Controllers
         /// <response code="200">Returns the list of notifications.</response>
         /// <response code="401">If the user is not authenticated.</response>
         [HttpPost("notifications")]
-        public async Task<ApiResponseDto<PagedResponse<NotificationDto>>> SearchMyNotifications(SearchNotificationsDto requestDto)
+        public async Task<ApiResponseDto<NotificationSearchResultsDto>> SearchMyNotifications(SearchNotificationsDto requestDto)
         {
-            return new ApiResponseDto<PagedResponse<NotificationDto>>(await profileService.SearchMyNotificationsAsync(requestDto));
+            return new ApiResponseDto<NotificationSearchResultsDto>(await profileService.SearchNotificationsAsync(requestDto));
         }
 
         /// <summary>

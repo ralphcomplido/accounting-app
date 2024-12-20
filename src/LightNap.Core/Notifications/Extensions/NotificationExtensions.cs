@@ -4,8 +4,17 @@ using LightNap.Core.Notifications.Dto.Response;
 
 namespace LightNap.Core.Notifications.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for converting between Notification and related DTOs.
+    /// </summary>
     public static class NotificationExtensions
     {
+        /// <summary>
+        /// Converts a CreateNotificationDto to a Notification entity.
+        /// </summary>
+        /// <param name="dto">The CreateNotificationDto to convert.</param>
+        /// <param name="userId">The ID of the user associated with the notification.</param>
+        /// <returns>A new Notification entity.</returns>
         public static Notification ToCreate(this CreateNotificationDto dto, string userId)
         {
             return new Notification()
@@ -18,6 +27,11 @@ namespace LightNap.Core.Notifications.Extensions
             };
         }
 
+        /// <summary>
+        /// Converts a Notification entity to a NotificationDto.
+        /// </summary>
+        /// <param name="notification">The Notification entity to convert.</param>
+        /// <returns>A new NotificationDto.</returns>
         public static NotificationDto ToDto(this Notification notification)
         {
             return new NotificationDto()

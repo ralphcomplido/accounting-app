@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, ElementRef, inject, viewChild } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { NotificationsButtonComponent } from "@profile/components/controls/notifications-button/notifications-button.component";
-import { ProfileService } from "@profile/services/profile.service";
 import { RoutePipe } from "@routing";
 import { MenuItem } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -17,8 +16,6 @@ import { LayoutService } from "src/app/layout/services/layout.service";
 })
 export class AppTopBarComponent {
   readonly layoutService = inject(LayoutService);
-  readonly profileService = inject(ProfileService);
-  readonly notifications$ = this.profileService.watchUnreadNotifications$();
 
   readonly menuButton = viewChild.required<ElementRef>("menubutton");
   readonly topbarMenuButton = viewChild.required<ElementRef>("topbarmenubutton");

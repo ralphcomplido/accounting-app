@@ -8,10 +8,16 @@ import { NotificationType } from "../notifications/notification-type";
  */
 export interface SearchNotificationsRequest extends PaginationRequest {
   /**
-   * The ID to filter notifications since.
+   * The ID to filter notifications since. Returned notifications will be since this ID.
    * @type {number}
    */
   sinceId?: number;
+
+  /**
+   * The ID to filter notifications before. Returned notifications will be from prior to this ID.
+   * @type {number}
+   */
+  priorToId?: number;
 
   /**
    * The status of the notifications to filter by.

@@ -1,10 +1,14 @@
-@if (notifications$ | async; as notifications) {
-  @if (notifications.length) {
-    <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
-    <p-button link="true" size="large" rounded="true" (onClick)="menu.toggle($event)">
-        <i class="pi pi-bell text-xl" pBadge [value]="notifications.length" severity="info"></i>
-    </p-button>
-} @else {
-    <p-button icon="pi pi-bell" link="true" size="large" rounded="true" [routerLink]="'notifications' | route"></p-button>
-  }
+@if (latestNotifications$ | async; as latestNotifications) {
+  <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
+  <p-button link="true" size="large" rounded="true" (onClick)="menu.toggle($event)">
+    @if (latestNotifications.unreadCount > 0) {
+      @if (latestNotifications.unreadCount > 9) {
+        <i class="pi pi-bell text-xl" pBadge value="9+" severity="info"></i>
+      } @else {
+        <i class="pi pi-bell text-xl" pBadge [value]="latestNotifications.unreadCount" severity="info"></i>
+      }
+    } @else {
+      <i class="pi pi-bell text-xl" severity="info"></i>
+    }
+  </p-button>
 }

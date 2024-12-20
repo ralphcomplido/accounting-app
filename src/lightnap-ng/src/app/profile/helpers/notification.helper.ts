@@ -1,4 +1,4 @@
-import { Notification } from "@profile/models";
+import { Notification } from "@profile/models/response/notification";
 
 export class NotificationHelper {
     public static rehydrate(notification: Notification) {

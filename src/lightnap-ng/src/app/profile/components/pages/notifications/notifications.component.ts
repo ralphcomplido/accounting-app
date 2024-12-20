@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { ApiResponseComponent, ToastService } from "@core";
-import { ErrorListComponent } from "@core";
-import { ProfileService, Notification } from "@profile";
+import { Router } from "@angular/router";
+import { ApiResponseComponent, ErrorListComponent, ToastService } from "@core";
+import { NotificationData, NotificationService } from "@profile";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableModule } from "primeng/table";
@@ -14,10 +14,11 @@ import { map, Observable } from "rxjs";
   imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent],
 })
 export class NotificationsComponent {
-  readonly #profileService = inject(ProfileService);
+  readonly #notificationService = inject(NotificationService);
   readonly #toast = inject(ToastService);
+  readonly #router = inject(Router);
 
-  notifications$: Observable<Array<Notification>>;
+  notifications$: Observable<Array<NotificationData>>;
 
   errors = new Array<string>();
 
@@ -26,18 +27,16 @@ export class NotificationsComponent {
   }
 
   #refresh() {
-    this.notifications$ = this.#profileService.searchNotifications({}).pipe(map(results => results.data));
+    this.notifications$ = this.#notificationService.searchNotifications({}).pipe(map(results => results.data));
   }
 
-  markAsRead(id: number) {
-    this.#profileService.markNotificationAsRead(id).subscribe({
-      next: () => this.#refresh(),
-      error: response => (this.errors = response.errorMessages),
-    });
+  notificationClicked(notification: NotificationData) {
+    this.#notificationService.markNotificationAsRead(notification.id).subscribe();
+    this.#router.navigate(notification.routerLink);
   }
 
   markAllAsRead() {
-    this.#profileService.markAllNotificationsAsRead().subscribe({
+    this.#notificationService.markAllNotificationsAsRead().subscribe({
       next: () => {
         this.#toast.success("All notifications marked as read.");
         this.#refresh();

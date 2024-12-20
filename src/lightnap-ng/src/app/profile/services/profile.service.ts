@@ -1,18 +1,15 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { ApiResponse, RequestPollingManager, TimerService } from "@core";
 import { IdentityService } from "@identity";
 import {
     ApplicationSettings,
     ChangeEmailRequest,
     ChangePasswordRequest,
     ConfirmChangeEmailRequest,
-    Notification,
-    SearchNotificationsRequest,
     StyleSettings,
-    UpdateProfileRequest,
+    UpdateProfileRequest
 } from "@profile";
-import { filter, finalize, of, ReplaySubject, switchMap, tap } from "rxjs";
+import { filter, of, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
 
 @Injectable({
@@ -23,12 +20,11 @@ import { DataService } from "./data.service";
  * @description
  * The ProfileService class provides methods to manage user profiles, devices, and application settings.
  * It interacts with the DataService and IdentityService to perform various operations such as fetching
- * and updating profiles, managing devices, watching for notifications, and handling application settings.
+ * and updating profiles, managing devices, and handling application settings.
  */
 export class ProfileService {
   #dataService = inject(DataService);
   #identityService = inject(IdentityService);
-  #timer = inject(TimerService);
 
   // This should be kept in sync with the server-side BrowserSettings class.
   #defaultApplicationSettings: ApplicationSettings = {
@@ -47,10 +43,6 @@ export class ProfileService {
 
   #settings?: ApplicationSettings;
 
-  #notifications?: Array<Notification>;
-  #notificationsSubject = new ReplaySubject<Array<Notification>>(1);
-  #notificationsPollingManager = new RequestPollingManager(() => this.#requestUnreadNotifications(), 15 * 1000);
-
   /**
    * Constructs the ProfileService and sets up the subscription to handle user logout.
    */
@@ -59,13 +51,6 @@ export class ProfileService {
       .watchLoggedIn$()
       .pipe(
         takeUntilDestroyed(),
-        tap(loggedIn => {
-          if (loggedIn) {
-            this.#notificationsPollingManager.startPolling();
-          } else {
-            this.#notificationsPollingManager.stopPolling();
-          }
-        }),
         filter(loggedIn => !loggedIn)
       )
       .subscribe(() => {
@@ -200,48 +185,5 @@ export class ProfileService {
    */
   hasLoadedStyleSettings() {
     return !!this.#settings;
-  }
-
-  searchNotifications(searchNotificationsRequest: SearchNotificationsRequest) {
-    return this.#dataService.searchNotifications(searchNotificationsRequest);
-  }
-
-  watchUnreadNotifications$() {
-    if (!this.#notifications) {
-      this.#requestUnreadNotifications();
-    }
-    return this.#notificationsSubject;
-  }
-
-  #requestUnreadNotifications() {
-    return this.#dataService.searchNotifications({ status: "Unread", sinceId: this.#notifications?.[0]?.id }).pipe(
-      tap(notifications => {
-        if (!notifications.data.length && this.#notifications) return;
-        this.#notifications = [...notifications.data, ...(this.#notifications || [])];
-        this.#notificationsSubject.next(this.#notifications);
-      })
-    );
-  }
-
-  #refreshUnreadNotifications() {
-    this.#notificationsPollingManager.pausePolling();
-    this.#dataService
-      .searchNotifications({ status: "Unread" })
-      .pipe(finalize(() => this.#notificationsPollingManager.resumePolling()))
-      .subscribe({
-        next: notifications => {
-          this.#notifications = notifications.data;
-          this.#notificationsSubject.next(this.#notifications);
-        },
-        error: (response: ApiResponse<any>) => console.error("Unable to refresh unread notifications", response.errorMessages),
-      });
-  }
-
-  markAllNotificationsAsRead() {
-    return this.#dataService.markAllNotificationsAsRead().pipe(tap(() => this.#refreshUnreadNotifications()));
-  }
-
-  markNotificationAsRead(id: number) {
-    return this.#dataService.markNotificationAsRead(id).pipe(tap(() => this.#refreshUnreadNotifications()));
   }
 }

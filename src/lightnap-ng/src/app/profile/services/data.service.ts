@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { API_URL_ROOT, PagedResponse } from "@core";
+import { API_URL_ROOT } from "@core";
 import {
-  ApplicationSettings,
-  ChangeEmailRequest,
-  ChangePasswordRequest,
-  ConfirmChangeEmailRequest,
-  Device,
-  Profile,
-  Notification,
-  SearchNotificationsRequest,
-  UpdateProfileRequest,
+    ApplicationSettings,
+    ChangeEmailRequest,
+    ChangePasswordRequest,
+    ConfirmChangeEmailRequest,
+    Device,
+    NotificationSearchResults,
+    Profile,
+    SearchNotificationsRequest,
+    UpdateProfileRequest,
 } from "@profile";
 import { DeviceHelper } from "@profile/helpers/device.helper";
 import { NotificationHelper } from "@profile/helpers/notification.helper";
@@ -63,7 +63,7 @@ export class DataService {
 
   searchNotifications(searchNotificationsRequest: SearchNotificationsRequest) {
     return this.#http
-      .post<PagedResponse<Notification>>(`${this.#apiUrlRoot}notifications`, searchNotificationsRequest)
+      .post<NotificationSearchResults>(`${this.#apiUrlRoot}notifications`, searchNotificationsRequest)
       .pipe(tap(results => results.data.forEach(NotificationHelper.rehydrate)));
   }
 
