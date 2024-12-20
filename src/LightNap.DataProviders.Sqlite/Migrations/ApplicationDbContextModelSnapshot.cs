@@ -125,6 +125,36 @@ namespace LightNap.DataProviders.Sqlite.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("LightNap.Core.Data.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("LightNap.Core.Data.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
@@ -264,6 +294,17 @@ namespace LightNap.DataProviders.Sqlite.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LightNap.Core.Data.Entities.Notification", b =>
+                {
+                    b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LightNap.Core.Data.Entities.RefreshToken", b =>
                 {
                     b.HasOne("LightNap.Core.Data.Entities.ApplicationUser", "User")
@@ -328,6 +369,8 @@ namespace LightNap.DataProviders.Sqlite.Migrations
 
             modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Notifications");
+
                     b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
