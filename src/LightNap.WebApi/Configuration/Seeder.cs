@@ -1,4 +1,5 @@
 ﻿using LightNap.Core.Configuration;
+using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Data.Extensions;
 using LightNap.Core.Identity.Dto.Request;
@@ -9,93 +10,96 @@ using System.Data;
 namespace LightNap.WebApi.Configuration
 {
     /// <summary>
-    /// Class responsible for seeding roles and administrators.
+    /// Class responsible for seeding content in the application upon load.
     /// </summary>
-    public static class Seeder
+    public partial class Seeder
     {
+        private readonly RoleManager<ApplicationRole> RoleManager;
+        private readonly ILogger<Seeder> Logger;
+        private readonly UserManager<ApplicationUser> UserManager;
+        private readonly ApplicationDbContext Db;
+        private readonly IServiceProvider ServiceProvider;
+        private readonly IOptions<List<AdministratorConfiguration>> AdministratorConfigurations;
+        private readonly IOptions<ApplicationSettings> ApplicationSettings;
+
         /// <summary>
-        /// Seeds application content for development purposes.
+        /// Initializes a new instance of the <see cref="Seeder"/> class.
         /// </summary>
-        /// <param name="services">The service provider.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        public static Task SeedDevelopmentContentAsync(
-        // Suppress IDE0060 warning for unused parameter 'services'. Remove this when actually using the parameter.
-#pragma warning disable IDE0060
-        IServiceProvider services
-#pragma warning restore IDE0060
-            )
+        /// <param name="serviceProvider">Service provider to pull dependencies from.</param>
+        public Seeder(IServiceProvider serviceProvider)
         {
-            return Task.CompletedTask;
+            this.ServiceProvider = serviceProvider;
+            this.RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            this.Logger = serviceProvider.GetRequiredService<ILogger<Seeder>>();
+            this.UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            this.Db = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            this.AdministratorConfigurations = serviceProvider.GetRequiredService<IOptions<List<AdministratorConfiguration>>>();
+            this.ApplicationSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
+        }
+
+        public async Task SeedAsync()
+        {
+            await this.SeedRolesAsync();
+            await this.SeedAdministratorsAsync();
         }
 
         /// <summary>
         /// Seeds the roles in the application.
         /// </summary>
-        /// <param name="roleManager">The role manager.</param>
-        /// <param name="logger">The logger.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task SeedRolesAsync(RoleManager<ApplicationRole> roleManager, ILogger logger)
+        private async Task SeedRolesAsync()
         {
             foreach (ApplicationRole role in ApplicationRoles.All)
             {
-                if (!await roleManager.RoleExistsAsync(role.Name!))
+                if (!await this.RoleManager.RoleExistsAsync(role.Name!))
                 {
-                    var result = await roleManager.CreateAsync(role);
+                    var result = await this.RoleManager.CreateAsync(role);
                     if (!result.Succeeded)
                     {
                         throw new ArgumentException($"Unable to create role '{role.Name}': {string.Join("; ", result.Errors.Select(error => error.Description))}");
                     }
-                    logger.LogInformation("Added role '{roleName}'", role.Name);
+                    this.Logger.LogInformation("Added role '{roleName}'", role.Name);
                 }
             }
 
             var roleSet = new HashSet<string>(ApplicationRoles.All.Select(role => role.Name!), StringComparer.OrdinalIgnoreCase);
 
-            foreach (var role in roleManager.Roles.Where(role => role.Name != null && !roleSet.Contains(role.Name)))
+            foreach (var role in this.RoleManager.Roles.Where(role => role.Name != null && !roleSet.Contains(role.Name)))
             {
-                var result = await roleManager.DeleteAsync(role);
+                var result = await this.RoleManager.DeleteAsync(role);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException($"Unable to remove role '{role.Name}': {string.Join("; ", result.Errors.Select(error => error.Description))}");
                 }
-                logger.LogInformation("Removed role '{roleName}'", role.Name);
+                this.Logger.LogInformation("Removed role '{roleName}'", role.Name);
             }
         }
 
         /// <summary>
         /// Seeds the administrators in the application.
         /// </summary>
-        /// <param name="userManager">The user manager.</param>
-        /// <param name="administratorConfigurations">The administrators to create and promote.</param>
-        /// <param name="applicationSettings">Settings for the application.</param>
-        /// <param name="logger">The logger.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task SeedAdministratorsAsync(UserManager<ApplicationUser> userManager, IOptions<List<AdministratorConfiguration>> administratorConfigurations,
-            IOptions<ApplicationSettings> applicationSettings, ILogger logger)
+        private async Task SeedAdministratorsAsync()
         {
-            if (administratorConfigurations.Value is null) { return; }
+            if (this.AdministratorConfigurations.Value is null) { return; }
 
-            foreach (var administrator in administratorConfigurations.Value)
+            foreach (var administrator in this.AdministratorConfigurations.Value)
             {
-                ApplicationUser user = await Seeder.GetOrCreateUserAsync(userManager, administrator.UserName, administrator.Email, administrator.Password,
-                    applicationSettings.Value.RequireTwoFactorForNewUsers, logger);
-                await Seeder.AddUserToRole(userManager, user, ApplicationRoles.Administrator.Name!, logger);
+                ApplicationUser user = await this.GetOrCreateUserAsync(administrator.UserName, administrator.Email, administrator.Password);
+                await this.AddUserToRole(user, ApplicationRoles.Administrator.Name!);
             }
         }
 
         /// <summary>
         /// Creates a new user in the application.
         /// </summary>
-        /// <param name="userManager">The user manager.</param>
         /// <param name="userName">The user name.</param>
         /// <param name="email">The email address.</param>
         /// <param name="password">The password.</param>
-        /// <param name="requireTwoFactor">Indicates whether two-factor authentication is required.</param>
-        /// <param name="logger">The logger.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task<ApplicationUser> GetOrCreateUserAsync(UserManager<ApplicationUser> userManager, string userName, string email, string? password, bool requireTwoFactor, ILogger logger)
+        private async Task<ApplicationUser> GetOrCreateUserAsync(string userName, string email, string? password = null)
         {
-            ApplicationUser? user = await userManager.FindByEmailAsync(email);
+            ApplicationUser? user = await this.UserManager.FindByEmailAsync(email);
 
             if (user is null)
             {
@@ -111,15 +115,15 @@ namespace LightNap.WebApi.Configuration
                     UserName = userName
                 };
 
-                user = registerRequestDto.ToCreate(requireTwoFactor);
+                user = registerRequestDto.ToCreate(this.ApplicationSettings.Value.RequireTwoFactorForNewUsers);
 
-                var result = await userManager.CreateAsync(user, passwordToSet);
+                var result = await this.UserManager.CreateAsync(user, passwordToSet);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException($"Unable to create user '{userName}' ('{email}'): {string.Join("; ", result.Errors.Select(error => error.Description))}");
                 }
 
-                logger.LogInformation("Created user '{userName}' ('{email}')", userName, email);
+                this.Logger.LogInformation("Created user '{userName}' ('{email}')", userName, email);
             }
 
             return user;
@@ -128,16 +132,14 @@ namespace LightNap.WebApi.Configuration
         /// <summary>
         /// Adds a user to a specified role if they're not already in it.
         /// </summary>
-        /// <param name="userManager">The user manager.</param>
         /// <param name="user">The user to add to the role.</param>
         /// <param name="role">The role to add the user to.</param>
-        /// <param name="logger">The logger.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        private static async Task AddUserToRole(UserManager<ApplicationUser> userManager, ApplicationUser user, string role, ILogger logger)
+        private async Task AddUserToRole(ApplicationUser user, string role)
         {
-            if (!await userManager.IsInRoleAsync(user, role))
+            if (!await this.UserManager.IsInRoleAsync(user, role))
             {
-                var result = await userManager.AddToRoleAsync(user, role);
+                var result = await this.UserManager.AddToRoleAsync(user, role);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException(
@@ -145,8 +147,19 @@ namespace LightNap.WebApi.Configuration
                 }
             }
 
-            logger.LogInformation("Added user '{userName}' ('{email}') to role '{roleName}'", user.UserName, user.Email, role);
+            this.Logger.LogInformation("Added user '{userName}' ('{email}') to role '{roleName}'", user.UserName, user.Email, role);
         }
 
+        /// <summary>
+        /// Seeds the development content in the application. To implement this, add a Seeder partial class that implements the private method SeedDevelopmentContent.
+        /// </summary>
+        /// <returns></returns>
+        public Task SeedDevelopmentContentAsync()
+        {
+            this.SeedDevelopmentContent();
+            return Task.CompletedTask;
+        }
+
+        partial void SeedDevelopmentContent();
     }
 }

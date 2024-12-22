@@ -77,16 +77,12 @@ try
         await context.Database.MigrateAsync();
     }
 
-    var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-    await Seeder.SeedRolesAsync(roleManager, logger);
-
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    var administratorSettings = services.GetRequiredService<IOptions<List<AdministratorConfiguration>>>();
-    await Seeder.SeedAdministratorsAsync(userManager, administratorSettings, applicationSettings, logger);
+    Seeder seeder = new(services);
+    await seeder.SeedAsync();
 
     if (app.Environment.IsDevelopment())
     {
-        await Seeder.SeedDevelopmentContentAsync(services);
+        await seeder.SeedDevelopmentContentAsync();
     }
 }
 catch (Exception ex)

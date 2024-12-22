@@ -6,6 +6,9 @@
 # Angular deployment path
 /src/LightNap.WebApi/wwwroot
 
+# Local development seeder logic.
+/src/LightNap.WebApi/Configuration/Seeder.Development.cs
+
 # Configuration files
 appsettings.*.json
 
