@@ -40,12 +40,12 @@ export class NotificationsButtonComponent {
   readonly endMenuItems = new Array<MenuItem>(
     {
       label: "Mark all as read",
-      icon: "pi pi-check",
+      icon: "pi pi-folder-open",
       command: () => this.markAllAsRead(),
     },
     {
-      label: "See all notifications",
-      icon: "pi pi-check",
+      label: "See all",
+      icon: "pi pi-images",
       command: () => this.#routeAlias.navigate("notifications"),
     }
   );

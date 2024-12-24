@@ -1,4 +1,4 @@
-<p-card header="Notifications">
+<p-card header="Notification Center">
   <api-response [apiResponse]="notifications$" errorMessage="Error loading notifications" loadingMessage="Loading notifications...">
     <ng-template #success let-notifications>
       <div class="flex flex-column">
@@ -8,6 +8,8 @@
               {{ notification.title }}
             </span>
           </p-button>
+        } @empty {
+            <p>There are no notifications.</p>
         }
       </div>
       <error-list [errors]="errors" />
