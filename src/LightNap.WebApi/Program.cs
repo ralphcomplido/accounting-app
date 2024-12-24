@@ -79,11 +79,6 @@ try
 
     Seeder seeder = new(services);
     await seeder.SeedAsync();
-
-    if (app.Environment.IsDevelopment())
-    {
-        await seeder.SeedDevelopmentContentAsync();
-    }
 }
 catch (Exception ex)
 {

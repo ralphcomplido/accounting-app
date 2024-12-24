@@ -37,10 +37,16 @@ namespace LightNap.WebApi.Configuration
             this.ApplicationSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
         }
 
+        /// <summary>
+        /// Run seeding functionality necessary every time an application loads, regardless of environment.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task SeedAsync()
         {
             await this.SeedRolesAsync();
             await this.SeedAdministratorsAsync();
+            await this.SeedApplicationContentAsync();
+            await this.SeedEnvironmentContentAsync();
         }
 
         /// <summary>
@@ -151,15 +157,32 @@ namespace LightNap.WebApi.Configuration
         }
 
         /// <summary>
-        /// Seeds the development content in the application. To implement this, add a Seeder partial class that implements the private method SeedDevelopmentContent.
+        /// Seeds content in the application. This method runs after baseline seeding (like roles and administrators) and provides an opportunity to
+        /// seed any content required to be loaded regardless of environment.
         /// </summary>
-        /// <returns></returns>
-        public Task SeedDevelopmentContentAsync()
+        /// <returns>A task representing the asynchronous operation.</returns>
+        private Task SeedApplicationContentAsync()
         {
-            this.SeedDevelopmentContent();
+            // TODO: Add any seeding code you want run every time the app loads in any environment. For environment-specific seeding, see SeedEnvironmentContent().
+
             return Task.CompletedTask;
         }
 
-        partial void SeedDevelopmentContent();
+        /// <summary>
+        /// Seeds content in the application based on the implementation of a SeedEnvironmentContent partial method in the class. To use this, add a Seeder 
+        /// partial class (like Seeder.Development.cs) that implements the private method SeedEnvironmentContent(). It runs after SeedApplicationContentAsync()
+        /// and is always executed on load if it exists.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public Task SeedEnvironmentContentAsync()
+        {
+            this.SeedEnvironmentContent();
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Optional partial to implement in a new class (like Seeder.Development.cs) to seed environment-specific content.
+        /// </summary>
+        partial void SeedEnvironmentContent();
     }
 }

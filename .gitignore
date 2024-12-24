@@ -7,7 +7,7 @@
 /src/LightNap.WebApi/wwwroot
 
 # Local development seeder logic.
-/src/LightNap.WebApi/Configuration/Seeder.Development.cs
+/src/LightNap.WebApi/Configuration/Seeder.*.cs
 
 # Configuration files
 appsettings.*.json
