@@ -211,7 +211,7 @@ namespace LightNap.Core.Identity.Services
                     Type = NotificationType.AdministratorNewUserRegistration,
                     Data = new Dictionary<string, object>()
                     {
-                        { "UserId", user.Id }
+                        { "userId", user.Id }
                     }
                 });
 

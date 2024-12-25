@@ -101,11 +101,11 @@ export class NotificationService {
 
     switch (notification.type) {
       case "AdministratorNewUserRegistration":
-        return this.#adminService.getUser(notification.data.UserId).pipe(
+        return this.#adminService.getUser(notification.data.userId).pipe(
           map(user => {
             notificationData.title = `New user registered: ${user.userName}`;
             notificationData.description = "A new user registered!";
-            notificationData.routerLink = this.#routeAlias.getRoute("admin-user", notification.data.UserId);
+            notificationData.routerLink = this.#routeAlias.getRoute("admin-user", user.id);
             return notificationData;
           })
         );
