@@ -26,7 +26,7 @@ export class NotificationsComponent {
     switchMap(event =>
       this.#notificationService.searchNotifications({
         pageSize: this.pageSize,
-        pageNumber: event.first / this.pageSize + 1,
+        pageNumber: this.#currentPage,
       })
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to
@@ -35,8 +35,10 @@ export class NotificationsComponent {
   );
 
   errors = new Array<string>();
+  #currentPage = 0;
 
   onLazyLoad(event: TableLazyLoadEvent) {
+    this.#currentPage = event.first / this.pageSize + 1
     this.#lazyLoadEventSubject.next(event);
   }
 

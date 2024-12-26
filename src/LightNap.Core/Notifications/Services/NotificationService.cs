@@ -124,7 +124,7 @@ namespace LightNap.Core.Notifications.Services
 
             return new NotificationSearchResultsDto(items, requestDto.PageNumber, requestDto.PageSize, totalCount)
             {
-                UnreadCount = await query.CountAsync(n => n.UserId == userId && n.Status == NotificationStatus.Unread)
+                UnreadCount = await db.Notifications.CountAsync(n => n.UserId == userId && n.Status == NotificationStatus.Unread)
             };
         }
     }
