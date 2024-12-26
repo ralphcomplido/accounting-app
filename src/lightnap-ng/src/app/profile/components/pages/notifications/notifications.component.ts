@@ -1,18 +1,17 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { Router } from "@angular/router";
 import { ApiResponseComponent, EmptyPagedResponse, ErrorListComponent, ToastService } from "@core";
-import { NotificationData, NotificationService } from "@profile";
+import { NotificationItem, NotificationItemComponent, NotificationService } from "@profile";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
-import { debounceTime, map, Observable, startWith, Subject, switchMap } from "rxjs";
+import { startWith, Subject, switchMap } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: "./notifications.component.html",
-  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent],
+  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent, NotificationItemComponent],
 })
 export class NotificationsComponent {
   readonly pageSize = 10;
@@ -31,7 +30,7 @@ export class NotificationsComponent {
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to
     // fake an empty response so we can avoid a redundant call to the API.
-    startWith(new EmptyPagedResponse<NotificationData>())
+    startWith(new EmptyPagedResponse<NotificationItem>())
   );
 
   errors = new Array<string>();
@@ -42,7 +41,7 @@ export class NotificationsComponent {
     this.#lazyLoadEventSubject.next(event);
   }
 
-  notificationClicked(notification: NotificationData) {
+  notificationClicked(notification: NotificationItem) {
     this.#notificationService.markNotificationAsRead(notification.id).subscribe();
     this.#router.navigate(notification.routerLink);
   }

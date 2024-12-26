@@ -3,7 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ApiResponse, PagedResponse, RequestPollingManager } from "@core";
 import { IdentityService } from "@identity";
-import { LatestNotifications, NotificationData, SearchNotificationsRequest } from "@profile";
+import { LatestNotifications, NotificationItem, SearchNotificationsRequest } from "@profile";
 import { Notification } from "@profile/models/response/notification";
 import { RouteAliasService } from "@routing";
 import { combineLatest, finalize, forkJoin, map, of, ReplaySubject, switchMap, tap } from "rxjs";
@@ -18,8 +18,8 @@ export class NotificationService {
   #adminService = inject(AdminService);
   #routeAlias = inject(RouteAliasService);
 
-  #notifications?: Array<NotificationData>;
-  #notificationsSubject = new ReplaySubject<Array<NotificationData>>(1);
+  #notifications?: Array<NotificationItem>;
+  #notificationsSubject = new ReplaySubject<Array<NotificationItem>>(1);
   #unreadCountSubject = new ReplaySubject<number>(1);
   #pollingManager = new RequestPollingManager(() => this.#requestLatestNotifications(), 15 * 1000);
 
@@ -45,7 +45,7 @@ export class NotificationService {
     return this.#dataService.searchNotifications(searchNotificationsRequest).pipe(
       tap(results => this.#unreadCountSubject.next(results.unreadCount)),
       switchMap(results =>
-        this.#getNotificationDatas(results.data).pipe(map(notifications => <PagedResponse<NotificationData>>{ ...results, data: notifications }))
+        this.#loadNotificationItems(results.data).pipe(map(notifications => <PagedResponse<NotificationItem>>{ ...results, data: notifications }))
       )
     );
   }
@@ -87,13 +87,13 @@ export class NotificationService {
     return this.#dataService.markNotificationAsRead(id).pipe(tap(() => this.#refreshLatestNotifications()));
   }
 
-  #getNotificationDatas(notifications: Array<Notification>) {
-    if (!notifications.length) return of(new Array<NotificationData>());
-    return forkJoin(notifications.map(notification => this.#getNotificationData(notification)));
+  #loadNotificationItems(notifications: Array<Notification>) {
+    if (!notifications.length) return of(new Array<NotificationItem>());
+    return forkJoin(notifications.map(notification => this.#loadNotificationItem(notification)));
   }
 
-  #getNotificationData(notification: Notification) {
-    var notificationData = <NotificationData>{
+  #loadNotificationItem(notification: Notification) {
+    var notificationItem = <NotificationItem>{
       id: notification.id,
       timestamp: notification.timestamp,
       isUnread: notification.status === "Unread",
@@ -103,10 +103,11 @@ export class NotificationService {
       case "AdministratorNewUserRegistration":
         return this.#adminService.getUser(notification.data.userId).pipe(
           map(user => {
-            notificationData.title = `New user registered: ${user.userName}`;
-            notificationData.description = "A new user registered!";
-            notificationData.routerLink = this.#routeAlias.getRoute("admin-user", user.id);
-            return notificationData;
+            notificationItem.title = `New user registered: ${user.userName}`;
+            notificationItem.description = "A new user registered!";
+            notificationItem.icon = "pi pi-user";
+            notificationItem.routerLink = this.#routeAlias.getRoute("admin-user", user.id);
+            return notificationItem;
           })
         );
       default:

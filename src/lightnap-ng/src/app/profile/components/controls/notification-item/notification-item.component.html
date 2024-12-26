@@ -1,0 +1,16 @@
+<p-button styleClass="w-full px-1" link="true" (onClick)="onClick()">
+  <div class="flex" [ngClass]="{ 'font-semibold': notification().isUnread }">
+    <div class="flex-0 w-3rem">
+      @if (notification().imageUrl) {
+        <img [src]="notification().imageUrl" class="w-3rem h-3rem rounded-full" />
+      } @else {
+        <i [class]="notification().icon ?? 'pi pi-bell'"></i>
+      }
+    </div>
+    <div class="flex-1 flex flex-column align-items-start">
+      <div>{{ notification().title }}</div>
+      <div class="text-sm text-500">{{ notification().description }}</div>
+      <div class="text-sm text-500">{{ notification().timestamp | since | async }}</div>
+    </div>
+  </div>
+</p-button>

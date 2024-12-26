@@ -18,11 +18,9 @@
         <ng-template pTemplate="body" let-notification>
           <tr>
             <td>
-              <p-button link="true" (onClick)="notificationClicked(notification)">
-                <span [ngClass]="{ 'font-semibold': notification.isUnread }">
-                  {{ notification.title }}
-                </span>
-              </p-button>
+              <div class="w-30rem">
+                <notification-item [notification]="notification" />
+              </div>
             </td>
           </tr>
         </ng-template>
