@@ -5,7 +5,7 @@
         src="assets/layout/images/{{ layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white' }}.png"
         alt="LightNap Logo"
         style="height: 2.5rem"
-      /><span class="text-900 font-medium text-2xl line-height-3 ml-2">LightNap</span>
+      /><span class="text-900 font-medium text-2xl line-height-3 ml-2">{{layoutService.appName}}</span>
     </a>
     <div class="flex align-items-center justify-content-between gap-2">
       @if (loggedIn$ | async) {

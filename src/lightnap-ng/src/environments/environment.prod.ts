@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrlRoot: "/api/"
+  apiUrlRoot: "/api/",
+  appName: "LightNap"
 };

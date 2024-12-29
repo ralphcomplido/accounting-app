@@ -5,6 +5,7 @@ import { ProfileService } from "@profile/services/profile.service";
 import { Subject } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 import { LayoutState } from "../models/layout-state";
+import { APP_NAME } from "@core";
 
 @Injectable({
   providedIn: "root",
@@ -12,6 +13,7 @@ import { LayoutState } from "../models/layout-state";
 export class LayoutService {
   #identityService = inject(IdentityService);
   #profileService = inject(ProfileService);
+  appName = inject(APP_NAME);
 
   #styleSettings = this.#profileService.getDefaultStyleSettings();
 

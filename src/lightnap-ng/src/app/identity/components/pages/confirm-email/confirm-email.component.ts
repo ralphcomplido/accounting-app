@@ -34,7 +34,7 @@ export class ConfirmEmailComponent implements OnInit {
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: () => this.#routeAlias.navigate("user-home"),
+        next: () => this.#routeAlias.navigateWithReplace("user-home"),
         error: response => (this.errors = response.errorMessages),
       });
   }

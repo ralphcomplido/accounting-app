@@ -32,7 +32,7 @@ export class ConfirmEmailChangeComponent implements OnInit {
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: () => this.#routeAlias.navigate("profile"),
+        next: () => this.#routeAlias.navigateWithReplace("profile"),
         error: response => (this.errors = response.errorMessages),
       });
   }
