@@ -7,17 +7,16 @@ import { ButtonModule } from "primeng/button";
 
 @Component({
   selector: "notification-item",
-  standalone: true,
   templateUrl: "./notification-item.component.html",
   imports: [CommonModule, ButtonModule, SincePipe],
 })
 export class NotificationItemComponent {
-  readonly #notificationService = inject(NotificationService);
+  //readonly #notificationService = inject(NotificationService);
   readonly #router = inject(Router);
   readonly notification = input.required<NotificationItem>();
 
   onClick() {
-    this.#notificationService.markNotificationAsRead(this.notification().id).subscribe();
+    //  this.#notificationService.markNotificationAsRead(this.notification().id).subscribe();
     this.#router.navigate(this.notification().routerLink);
   }
 }

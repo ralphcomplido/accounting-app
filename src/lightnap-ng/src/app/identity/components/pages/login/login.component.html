@@ -2,9 +2,9 @@
   <span title>Welcome!</span>
   <span subtitle>Sign in to continue</span>
 
-  <div class="w-30rem">
+  <div class="w-[30rem]">
     <form [formGroup]="form" (ngSubmit)="logIn()" autocomplete="off">
-      <label for="login" class="block text-900 text-xl font-medium mb-2">Email/User Name</label>
+      <label for="login" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email/User Name</label>
 
       <p-inputGroup>
         <input
@@ -13,32 +13,32 @@
           placeholder="Email/User Name"
           pInputText
           formControlName="login"
-          class="w-full md:w-30rem mb-5"
+          class="w-full md:w-[30rem] mb-8"
           style="padding: 1rem"
         />
         <p-button
           icon="pi pi-sparkles"
           title="Send Magic Link"
-          styleClass="w-full p-3 text-xl mb-2"
+          styleClass="w-full p-4 text-xl mb-2"
           pRipple
           (onClick)="sendMagicLink()"
           [disabled]="!showMagicLink.valid"
         />
       </p-inputGroup>
 
-      <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+      <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
       <p-password
         formControlName="password"
-        styleClass="mb-5"
-        inputStyleClass="w-full p-3 md:w-30rem"
+        styleClass="mb-8"
+        inputStyleClass="w-full p-4 md:w-[30rem]"
         [inputStyle]="{ paddingLeft: '2.5rem' }"
         placeholder="Password"
         [toggleMask]="true"
         [feedback]="false"
       />
 
-      <div class="flex align-items-center justify-content-between mb-5 gap-5">
-        <div class="flex align-items-center">
+      <div class="flex items-center justify-between mb-8 gap-8">
+        <div class="flex items-center">
           <p-checkbox name="checkbox" formControlName="rememberMe" styleClass="mr-2" [binary]="true" label="Remember me" />
         </div>
         <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" [routerLink]="'reset-password' | route"
@@ -48,10 +48,10 @@
 
       <error-list [errors]="errors" />
 
-      <p-button type="submit" label="Sign In" styleClass="w-full p-3 text-xl" [disabled]="!form.valid" pRipple />
+      <p-button type="submit" label="Sign In" styleClass="w-full p-4 text-xl" [disabled]="!form.valid" pRipple />
     </form>
 
-    <div class="flex flex-column mt-4">
+    <div class="flex flex-col mt-6">
       <a [routerLink]="'register' | route">I need to create an account</a>
     </div>
   </div>

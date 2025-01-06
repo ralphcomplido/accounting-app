@@ -2,25 +2,25 @@
   <span title>Two-Factor Verification</span>
   <span subtitle>Please enter your security code to continue.</span>
 
-  <div class="w-30rem">
-    <div class="flex flex-column">
+  <div class="w-[30rem]">
+    <div class="flex flex-col">
       <form [formGroup]="form" (ngSubmit)="(form.valid)" autocomplete="off">
-        <div class="flex justify-content-between w-full align-items-center mb-4 gap-3">
-          <input pInputText formControlName="code1" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code2" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code3" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code4" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code5" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code6" pKeyFilter="num" class="w-3rem text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+        <div class="flex justify-between w-full items-center mb-6 gap-4">
+          <input pInputText formControlName="code1" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+          <input pInputText formControlName="code2" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+          <input pInputText formControlName="code3" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+          <input pInputText formControlName="code4" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+          <input pInputText formControlName="code5" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+          <input pInputText formControlName="code6" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
         </div>
-        <div class="mb-4">
+        <div class="mb-6">
           <input pInputText formControlName="paste" class="w-full" placeholder="Or paste here..." />
         </div>
-        <div class="mb-4 flex flex-wrap gap-3">
+        <div class="mb-6 flex flex-wrap gap-4">
           <p-checkbox name="checkbox" formControlName="rememberMe" styleClass="mr-2" [binary]="true" label="Remember me" />
         </div>
         <error-list [errors]="errors" />
-        <div class="mt-4 flex flex-wrap gap-3">
+        <div class="mt-6 flex flex-wrap gap-4">
           <a [routerLink]="'login' | route" class="ml-auto">Return to login</a>
         </div>
       </form>

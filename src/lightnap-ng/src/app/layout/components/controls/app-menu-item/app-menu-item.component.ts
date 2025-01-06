@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { Component, HostBinding, inject, Input, input, OnInit } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { MenuItem } from "primeng/api";
 import { RippleModule } from "primeng/ripple";
 import { filter } from "rxjs/operators";
 import { LayoutService } from "src/app/layout/services/layout.service";
@@ -11,7 +12,6 @@ import { MenuService } from "src/app/layout/services/menu.service";
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: "[app-menu-item]",
-  standalone: true,
   templateUrl: "./app-menu-item.component.html",
   animations: [
     trigger("children", [
@@ -37,7 +37,7 @@ export class AppMenuItemComponent implements OnInit {
   readonly layoutService = inject(LayoutService);
   readonly router = inject(Router);
 
-  readonly item = input.required<any>();
+  readonly item = input.required<MenuItem>();
   readonly index = input.required<number>();
   @Input() @HostBinding("class.layout-root-menuitem") root!: boolean;
   readonly parentKey = input<string>();

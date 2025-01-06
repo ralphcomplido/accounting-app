@@ -4,7 +4,6 @@ import { AppMenuComponent } from "../app-menu/app-menu.component";
 
 @Component({
   selector: "app-sidebar",
-  standalone: true,
   templateUrl: "./app-sidebar.component.html",
   imports: [AppMenuComponent],
 })

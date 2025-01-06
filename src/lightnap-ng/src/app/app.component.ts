@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { RouterOutlet } from "@angular/router";
 import { BlockUiService } from "@core";
-import { PrimeNGConfig } from "primeng/api";
 import { BlockUIModule } from "primeng/blockui";
+import { PrimeNG } from "primeng/config";
 import { ToastModule } from "primeng/toast";
 
 @Component({
@@ -13,7 +13,7 @@ import { ToastModule } from "primeng/toast";
   imports: [RouterOutlet, BlockUIModule, ToastModule]
 })
 export class AppComponent implements OnInit {
-  #primengConfig = inject(PrimeNGConfig);
+  #primengConfig = inject(PrimeNG);
   #blockUiService = inject(BlockUiService);
 
   showBlockUi = false;
@@ -33,6 +33,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.#primengConfig.ripple = true;
+    this.#primengConfig.ripple.set(true);
   }
 }

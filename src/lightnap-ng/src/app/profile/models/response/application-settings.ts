@@ -1,5 +1,5 @@
 import { ExtendedSettings, FeaturesSettings, PreferencesSettings } from "../settings";
-import { StyleSettings } from "../settings/style-settings";
+import { LayoutConfig } from "../settings/layout-config";
 
 /**
  * Represents the settings configuration for this app.
@@ -23,5 +23,5 @@ export interface ApplicationSettings {
     /**
      * Style-related settings for the app.
      */
-    style: StyleSettings;
+    style: LayoutConfig;
 }

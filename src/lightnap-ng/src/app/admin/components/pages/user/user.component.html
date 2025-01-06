@@ -2,8 +2,8 @@
   <ng-template #success let-userWithRoles>
     <p-card>
       <ng-template pTemplate="header">
-        <div class="p-card-body flex justify-content-between">
-          <div class="flex flex-column gap-1">
+        <div class="p-card-body flex justify-between">
+          <div class="flex flex-col gap-1">
             <div class="p-card-title">
               {{ userWithRoles.user.userName }}
               @if(userWithRoles.user.lockoutEnd) {
@@ -40,7 +40,7 @@
         </div>
       </ng-template>
 
-      <div class="flex flex-column gap-1">
+      <div class="flex flex-col gap-1">
         <p-table [value]="userWithRoles.roles">
           <ng-template pTemplate="header">
             <tr>
@@ -55,7 +55,7 @@
                 <p-button severity="danger" icon="pi pi-trash" title="Remove user from role" (onClick)="removeUserFromRole($event, role.name)" />
               </td>
               <td>
-                <div class="flex flex-column">
+                <div class="flex flex-col">
                   <a [routerLink]="'admin-role' | route : role.name"> {{ role.name }}</a>
                   <span>{{ role.description }}</span>
                 </div>

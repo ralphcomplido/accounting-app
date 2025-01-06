@@ -1,13 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { NotificationService } from "@profile/services";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { MenuItem } from "primeng/api";
 import { BadgeModule } from "primeng/badge";
 import { ButtonModule } from "primeng/button";
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { tap } from "rxjs";
+import { OverlayPanelModule } from "primeng/overlaypanel";
 import { NotificationItemComponent } from "../notification-item/notification-item.component";
 
 @Component({
@@ -19,7 +18,6 @@ import { NotificationItemComponent } from "../notification-item/notification-ite
 export class NotificationsButtonComponent {
   readonly #notificationService = inject(NotificationService);
   readonly #routeAlias = inject(RouteAliasService);
-  readonly #router = inject(Router);
   readonly latestNotifications$ = this.#notificationService.watchLatest$();
   readonly endMenuItems = new Array<MenuItem>(
     {

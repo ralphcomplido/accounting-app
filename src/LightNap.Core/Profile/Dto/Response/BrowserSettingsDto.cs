@@ -32,12 +32,10 @@
 
         public BrowserSettingsDto()
         {
-            this.Style["colorScheme"] = "light";
-            this.Style["ripple"] = true;
-            this.Style["inputStyle"] = "outlined";
+            this.Style["darkTheme"] = false;
             this.Style["menuMode"] = "static";
-            this.Style["theme"] = "lara-light-indigo";
-            this.Style["scale"] = 14;
+            this.Style["preset"] = "Aura";
+            this.Style["primary"] = "emerald";
         }
     }
 }

@@ -2,12 +2,12 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IdentityService } from "@identity";
 import {
-    ApplicationSettings,
-    ChangeEmailRequest,
-    ChangePasswordRequest,
-    ConfirmChangeEmailRequest,
-    StyleSettings,
-    UpdateProfileRequest
+  ApplicationSettings,
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  ConfirmChangeEmailRequest,
+  LayoutConfig,
+  UpdateProfileRequest,
 } from "@profile";
 import { filter, of, switchMap, tap } from "rxjs";
 import { DataService } from "./data.service";
@@ -29,12 +29,11 @@ export class ProfileService {
   // This should be kept in sync with the server-side BrowserSettings class.
   #defaultApplicationSettings: ApplicationSettings = {
     style: {
-      ripple: true,
-      inputStyle: "outlined",
+      preset: "Aura",
+      primary: "emerald",
+      surface: null,
+      darkTheme: false,
       menuMode: "static",
-      colorScheme: "light",
-      theme: "lara-light-indigo",
-      scale: 14,
     },
     extended: {},
     features: {},
@@ -157,10 +156,10 @@ export class ProfileService {
   /**
    * @method updateStyleSettings
    * @description Updates the style settings of the application.
-   * @param {StyleSettings} styleSettings - The new style settings to be updated.
+   * @param {LayoutConfig} styleSettings - The new style settings to be updated.
    * @returns {Observable<boolean>} An observable containing true if successful.
    */
-  updateStyleSettings(styleSettings: StyleSettings) {
+  updateStyleSettings(styleSettings: LayoutConfig) {
     return this.getSettings().pipe(
       switchMap(response => {
         if (!response || JSON.stringify(response.style) === JSON.stringify(styleSettings)) return of(response);
@@ -172,10 +171,10 @@ export class ProfileService {
   /**
    * @method getDefaultStyleSettings
    * @description Retrieves the default style settings.
-   * @returns {StyleSettings} The default style settings.
+   * @returns {LayoutConfig} The default style settings.
    */
   getDefaultStyleSettings() {
-    return JSON.parse(JSON.stringify(this.#defaultApplicationSettings.style)) as StyleSettings;
+    return JSON.parse(JSON.stringify(this.#defaultApplicationSettings.style)) as LayoutConfig;
   }
 
   /**

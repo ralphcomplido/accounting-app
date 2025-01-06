@@ -2,61 +2,61 @@
   <span title>Register</span>
   <span subtitle>Let's get started!</span>
 
-  <div class="w-30rem">
+  <div class="w-[30rem]">
     <form [formGroup]="form" (ngSubmit)="register()" autocomplete="off">
-      <label for="userName" class="block text-900 text-xl font-medium mb-2">User Name</label>
+      <label for="userName" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">User Name</label>
       <input
         id="userName"
         type="text"
         placeholder="User Name"
         pInputText
         formControlName="userName"
-        class="w-full md:w-30rem mb-5"
+        class="w-full md:w-[30rem] mb-8"
         style="padding: 1rem"
       />
 
-      <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+      <label for="email" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
       <input
         id="email"
         type="text"
         placeholder="Email address"
         pInputText
         formControlName="email"
-        class="w-full md:w-30rem mb-5"
+        class="w-full md:w-[30rem] mb-8"
         style="padding: 1rem"
       />
 
-      <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+      <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
       <p-password
         formControlName="password"
-        styleClass="mb-5"
-        inputStyleClass="w-full p-3 md:w-30rem"
+        styleClass="mb-8"
+        inputStyleClass="w-full p-4 md:w-[30rem]"
         [inputStyle]="{ paddingLeft: '2.5rem' }"
         placeholder="Password"
         [toggleMask]="true"
       />
 
-      <label for="confirmPassword" class="block text-900 font-medium text-xl mb-2">Confirm Password</label>
+      <label for="confirmPassword" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Confirm Password</label>
       <p-password
         formControlName="confirmPassword"
-        styleClass="mb-5"
-        inputStyleClass="w-full p-3 md:w-30rem"
+        styleClass="mb-8"
+        inputStyleClass="w-full p-4 md:w-[30rem]"
         [inputStyle]="{ paddingLeft: '2.5rem' }"
         placeholder="Confirm Password"
         [toggleMask]="true"
         [feedback]="false"
       />
 
-      <div class="flex align-items-center justify-content-between mb-5 gap-5">
-        <div class="flex align-items-center">
+      <div class="flex items-center justify-between mb-8 gap-8">
+        <div class="flex items-center">
           <p-checkbox name="checkbox" formControlName="rememberMe" styleClass="mr-2" [binary]="true" label="Remember me" />
         </div>
         <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" [routerLink]="'reset-password' | route"
           >Forgot password?</a
         >
       </div>
-      <div class="flex align-items-center justify-content-between mb-5 gap-5">
-        <div class="flex align-items-center gap-1">
+      <div class="flex items-center justify-between mb-8 gap-8">
+        <div class="flex items-center gap-1">
           <p-checkbox name="checkbox" formControlName="agreedToTerms" styleClass="mr-2" [binary]="true" label="I agree to the" />
           <a [routerLink]="'terms-and-conditions' | route" target="_blank">Terms and Conditions</a>
           <span>and</span>
@@ -66,10 +66,10 @@
 
       <error-list [errors]="errors" />
 
-      <p-button type="submit" label="Register" styleClass="w-full p-3 text-xl" [disabled]="!form.valid" pRipple />
+      <p-button type="submit" label="Register" styleClass="w-full p-4 text-xl" [disabled]="!form.valid" pRipple />
     </form>
 
-    <div class="flex flex-column mt-4">
+    <div class="flex flex-col mt-6">
       <a [routerLink]="'login' | route">I already have an account</a>
     </div>
   </div>

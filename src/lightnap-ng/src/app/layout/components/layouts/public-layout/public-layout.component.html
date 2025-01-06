@@ -1,13 +1,13 @@
-<div class="surface-ground min-h-screen">
-  <div class="surface-card p-2 mb-5 flex align-items-center justify-content-between mb-3 shadow-2 h-5rem">
-    <a class="flex align-items-center ml-4" href="#">
+<div class="bg-surface-50 dark:bg-surface-950 min-h-screen">
+  <div class="bg-surface-0 dark:bg-surface-900 p-2 flex items-center justify-between mb-4 shadow h-20">
+    <a class="flex items-center ml-6" href="#">
       <img
-        src="assets/layout/images/{{ layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white' }}.png"
+        src="assets/images/logos/logo-{{ layoutService.isDarkTheme() ? 'dark' : 'light' }}.png"
         alt="LightNap Logo"
         style="height: 2.5rem"
-      /><span class="text-900 font-medium text-2xl line-height-3 ml-2">{{layoutService.appName}}</span>
+      /><span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal ml-2">{{layoutService.appName}}</span>
     </a>
-    <div class="flex align-items-center justify-content-between gap-2">
+    <div class="flex items-center justify-between gap-2">
       @if (loggedIn$ | async) {
       <p-button pRipple label="App" [routerLink]="'user-home' | route" [rounded]="true" severity="primary" />
       <!-- Could not get (onClick) to work here. Revisit at some point. -->
@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <div class="px-5">
+  <div class="px-8">
     <router-outlet />
   </div>
 </div>

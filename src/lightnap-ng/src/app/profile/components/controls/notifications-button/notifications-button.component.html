@@ -2,23 +2,23 @@
   <p-button link="true" size="large" rounded="true" (onClick)="popover.toggle($event)">
     @if (latestNotifications.unreadCount > 0) {
       @if (latestNotifications.unreadCount > 9) {
-        <i class="pi pi-bell text-xl" pBadge value="9+" severity="info"></i>
+        <i class="pi pi-inbox text-xl" pBadge value="9+" severity="info"></i>
       } @else {
-        <i class="pi pi-bell text-xl" pBadge [value]="latestNotifications.unreadCount" severity="info"></i>
+        <i class="pi pi-inbox text-xl" pBadge [value]="latestNotifications.unreadCount" severity="info"></i>
       }
     } @else {
-      <i class="pi pi-bell text-xl" severity="info"></i>
+      <i class="pi pi-inbox text-xl" severity="info"></i>
     }
   </p-button>
   <p-overlayPanel #popover>
     <ng-template pTemplate="content">
-      <div class="w-20rem flex flex-column">
-        <div class="flex justify-content-between">
+      <div class="w-80 flex flex-col">
+        <div class="flex justify-between">
           <div class="font-semibold text-xl">Notifications</div>
           <div class="flex gap-1">
             <p-button icon="pi pi-folder-open" link="true" size="small" title="Mark all as read" (onClick)="markAllAsRead()" />
-            <p-button icon="pi pi-external-link" link="true" size="small" title="Notification Center" [routerLink]="'notifications' | route" />
-        </div>
+            <p-button icon="pi pi-inbox" link="true" size="small" title="Notification Center" [routerLink]="'notifications' | route" />
+          </div>
         </div>
         @for (notification of latestNotifications.notifications; track notification.id) {
           <notification-item [notification]="notification" />

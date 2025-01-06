@@ -2,11 +2,11 @@
   <api-response [apiResponse]="users$" errorMessage="Error loading users" loadingMessage="Loading users...">
     <ng-template #success let-users>
       <div [formGroup]="form" class="my-2">
-        <div class="flex align-items-center gap-1">
-          <div class="flex flex-column">
+        <div class="flex items-center gap-1">
+          <div class="flex flex-col">
             <input pInputText placeholder="User Name" formControlName="userName" />
           </div>
-          <div class="flex flex-column">
+          <div class="flex flex-col">
             <input pInputText placeholder="Email" formControlName="email" />
           </div>
         </div>

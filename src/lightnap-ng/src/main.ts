@@ -13,6 +13,8 @@ import { Routes } from "@routing/routes";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { AppComponent } from "./app/app.component";
 import { environment } from "./environments/environment";
+import { providePrimeNG } from "primeng/config";
+import Aura from "@primeng/themes/aura";
 
 if (environment.production) {
   enableProdMode();
@@ -34,6 +36,7 @@ bootstrapApplication(AppComponent, {
       multi: true,
     },
     provideAnimations(),
+    providePrimeNG({ theme: {preset: Aura, options: { darkModeSelector: '.app-dark'}}, ripple: false, inputStyle: 'outlined' }),
     { provide: API_URL_ROOT, useValue: environment.apiUrlRoot ?? (() => { throw new Error("Required setting 'environment.apiUrlRoot' root is not defined."); })() },
     { provide: APP_NAME, useValue: environment.appName },
     { provide: LocationStrategy, useClass: PathLocationStrategy },

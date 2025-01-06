@@ -1,21 +1,58 @@
 <div class="layout-topbar">
-  <a class="layout-topbar-logo" routerLink="">
-    <img src="assets/layout/images/{{ layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white' }}.png" alt="logo" />
-    <span>{{layoutService.appName}}</span>
-  </a>
+  <div class="layout-topbar-logo-container">
+    <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
+      <i class="pi pi-bars"></i>
+    </button>
+    <a class="layout-topbar-logo" routerLink="">
+      <img src="assets/images/logos/logo-{{ layoutService.isDarkTheme() ? 'dark' : 'light' }}.png" alt="logo" style="height: 2.5rem" />
+      <span>{{ layoutService.appName }}</span>
+    </a>
+  </div>
 
-  <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
-    <i class="pi pi-bars"></i>
-  </button>
+  <div class="layout-topbar-actions">
+    <div class="layout-config-menu">
+      <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
+        <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
+      </button>
+      <div class="relative">
+        <button
+          #menubutton
+          class="layout-topbar-action layout-topbar-action-highlight"
+          pStyleClass="@next"
+          enterFromClass="hidden"
+          enterActiveClass="animate-scalein"
+          leaveToClass="hidden"
+          leaveActiveClass="animate-fadeout"
+          [hideOnOutsideClick]="true"
+        >
+          <i class="pi pi-palette"></i>
+        </button>
+        <app-configurator />
+      </div>
+    </div>
 
-  <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
-    <i class="pi pi-ellipsis-v"></i>
-  </button>
+    <button
+      #topbarmenubutton
+      class="layout-topbar-menu-button layout-topbar-action"
+      pStyleClass="@next"
+      enterFromClass="hidden"
+      enterActiveClass="animate-scalein"
+      leaveToClass="hidden"
+      leaveActiveClass="animate-fadeout"
+      [hideOnOutsideClick]="true"
+    >
+      <i class="pi pi-ellipsis-v"></i>
+    </button>
 
-  <div #topbarmenu class="layout-topbar-menu" [ngClass]="{ 'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible }">
-    <div class="flex gap-2">
-      <notifications-button />
-      <p-button icon="pi pi-user" size="large" rounded="true" link="true" [routerLink]="'profile' | route" />
+    <div #topbarmenu class="layout-topbar-menu hidden lg:block">
+      <div class="layout-topbar-menu-content">
+        <notifications-button />
+
+        <button type="button" class="layout-topbar-action" [routerLink]="'profile' | route">
+          <i class="pi pi-user"></i>
+          <span>Profile</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
