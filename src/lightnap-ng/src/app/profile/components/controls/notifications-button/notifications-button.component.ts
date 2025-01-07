@@ -6,14 +6,14 @@ import { RouteAliasService, RoutePipe } from "@routing";
 import { MenuItem } from "primeng/api";
 import { BadgeModule } from "primeng/badge";
 import { ButtonModule } from "primeng/button";
-import { OverlayPanelModule } from "primeng/overlaypanel";
+import { PopoverModule } from "primeng/popover";
 import { NotificationItemComponent } from "../notification-item/notification-item.component";
 
 @Component({
   selector: "notifications-button",
   standalone: true,
   templateUrl: "./notifications-button.component.html",
-  imports: [CommonModule, ButtonModule, OverlayPanelModule, BadgeModule, NotificationItemComponent, RoutePipe, RouterLink],
+  imports: [CommonModule, ButtonModule, PopoverModule, BadgeModule, NotificationItemComponent, RoutePipe, RouterLink],
 })
 export class NotificationsButtonComponent {
   readonly #notificationService = inject(NotificationService);

@@ -10,13 +10,15 @@
       <i class="pi pi-inbox text-xl" severity="info"></i>
     }
   </p-button>
-  <p-overlayPanel #popover>
+  <p-popover #popover>
     <ng-template pTemplate="content">
       <div class="w-80 flex flex-col">
         <div class="flex justify-between">
           <div class="font-semibold text-xl">Notifications</div>
           <div class="flex gap-1">
-            <p-button icon="pi pi-folder-open" link="true" size="small" title="Mark all as read" (onClick)="markAllAsRead()" />
+            @if (latestNotifications.unreadCount > 0) {
+              <p-button icon="pi pi-eye" link="true" size="small" title="Mark all as read" (onClick)="markAllAsRead()" />
+            }
             <p-button icon="pi pi-inbox" link="true" size="small" title="Notification Center" [routerLink]="'notifications' | route" />
           </div>
         </div>
@@ -27,5 +29,5 @@
         }
       </div>
     </ng-template>
-  </p-overlayPanel>
+  </p-popover>
 }

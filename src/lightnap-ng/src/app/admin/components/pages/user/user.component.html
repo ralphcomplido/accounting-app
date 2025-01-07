@@ -73,7 +73,7 @@
           <ng-template #success let-roles>
             <form [formGroup]="addUserToRoleForm" (ngSubmit)="addUserToRole()">
               <div class="flex gap-1">
-                <p-dropdown
+                <p-select
                   formControlName="role"
                   [options]="roles"
                   optionLabel="displayName"

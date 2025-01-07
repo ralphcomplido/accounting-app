@@ -85,7 +85,7 @@ export class LayoutService {
       this.toggleDarkMode(config);
     });
 
-    transition.ready.then(() => this.#onTransitionEnd());
+    transition.ready.then(() => this.#onTransitionEnd()).catch(() => {});
   }
 
   toggleDarkMode(config?: LayoutConfig): void {

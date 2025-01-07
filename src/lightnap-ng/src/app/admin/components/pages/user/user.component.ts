@@ -11,7 +11,7 @@ import { RouteAliasService, RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { DropdownModule } from "primeng/dropdown";
+import { SelectModule } from "primeng/select";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { Observable } from "rxjs";
@@ -29,7 +29,7 @@ import { Observable } from "rxjs";
     RoutePipe,
     ErrorListComponent,
     ApiResponseComponent,
-    DropdownModule,
+    SelectModule,
     ConfirmPopupComponent,
     TagModule,
   ],

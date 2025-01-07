@@ -10,7 +10,6 @@ import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { DropdownModule } from "primeng/dropdown";
 import { InputTextModule } from "primeng/inputtext";
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
@@ -28,7 +27,6 @@ import { debounceTime, startWith, Subject, switchMap } from "rxjs";
     ButtonModule,
     RouterModule,
     RoutePipe,
-    DropdownModule,
     ErrorListComponent,
     InputTextModule,
     ConfirmPopupComponent,

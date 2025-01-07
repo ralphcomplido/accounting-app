@@ -1,17 +1,15 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, computed, inject, PLATFORM_ID } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { LayoutService } from '@layout/services/layout.service';
-import { MenuService } from '@layout/services/menu.service';
-import { $t, updatePreset, updateSurfacePalette } from '@primeng/themes';
-import Aura from '@primeng/themes/aura';
-import Lara from '@primeng/themes/lara';
-import { ButtonModule } from 'primeng/button';
-import { PrimeNG } from 'primeng/config';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { CommonModule, isPlatformBrowser } from "@angular/common";
+import { Component, computed, inject, PLATFORM_ID } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { LayoutService } from "@layout/services/layout.service";
+import { MenuService } from "@layout/services/menu.service";
+import { $t, updatePreset, updateSurfacePalette } from "@primeng/themes";
+import Aura from "@primeng/themes/aura";
+import Lara from "@primeng/themes/lara";
+import { ButtonModule } from "primeng/button";
+import { PrimeNG } from "primeng/config";
+import { InputSwitchModule } from "primeng/inputswitch";
+import { SelectButtonModule } from "primeng/selectbutton";
 
 const presets = {
   Aura,
@@ -21,9 +19,9 @@ const presets = {
 @Component({
   selector: "app-configurator",
   templateUrl: "./app-configurator.component.html",
-  imports: [CommonModule, FormsModule, InputSwitchModule, ButtonModule, RadioButtonModule, SelectButtonModule, ToggleSwitchModule],
+  imports: [CommonModule, FormsModule, InputSwitchModule, ButtonModule, SelectButtonModule],
   host: {
-    class: "config-panel hidden",
+    class: "hidden",
   },
 })
 export class AppConfiguratorComponent {

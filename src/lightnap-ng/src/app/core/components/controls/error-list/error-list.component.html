@@ -1,7 +1,7 @@
 @if (errorList().length) {
-<ul>
-  @for (error of errorList(); track error) {
-  <li class="text-surface-900 dark:text-surface-0 font-bold text-red-500">{{ error }}</li>
-  }
-</ul>
+  <ul>
+    @for (error of errorList(); track error) {
+      <li class="font-bold text-red-500">{{ error }}</li>
+    }
+  </ul>
 }

@@ -7,5 +7,4 @@ import { LayoutService } from "src/app/layout/services/layout.service";
   templateUrl: "./app-footer.component.html",
 })
 export class AppFooterComponent {
-  readonly layoutService = inject(LayoutService);
 }
