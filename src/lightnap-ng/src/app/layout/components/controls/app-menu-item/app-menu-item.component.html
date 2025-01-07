@@ -4,6 +4,7 @@
     *ngIf="(!item().routerLink || item().items) && item().visible !== false"
     [href]="item().url"
     (click)="itemClick($event)"
+    class="hover:no-underline"
     [ngClass]="item().styleClass"
     [target]="item().target"
     tabindex="0"
@@ -15,6 +16,7 @@
   </a>
   <a
     *ngIf="item().routerLink && !item().items && item().visible !== false"
+    class="hover:no-underline"
     (click)="itemClick($event)"
     [ngClass]="item().styleClass"
     [routerLink]="item().routerLink"

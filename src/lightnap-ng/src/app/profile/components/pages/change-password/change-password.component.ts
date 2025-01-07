@@ -8,13 +8,15 @@ import { ToastService } from "@core/services/toast.service";
 import { ProfileService } from "@profile/services/profile.service";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
+import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: "./change-password.component.html",
-  imports: [CommonModule, ButtonModule, ErrorListComponent, PasswordModule, ReactiveFormsModule, CardModule],
+  imports: [CommonModule, ButtonModule, ErrorListComponent, PasswordModule, ReactiveFormsModule, CardModule, InputGroupModule, InputGroupAddonModule],
 })
 export class ChangePasswordComponent {
   readonly #profileService = inject(ProfileService);
@@ -34,6 +36,7 @@ export class ChangePasswordComponent {
   );
 
   changePassword() {
+    this.errors = [];
     this.#blockUi.show({ message: "Changing password..." });
     this.#profileService
       .changePassword({
