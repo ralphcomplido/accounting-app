@@ -1,5 +1,5 @@
-<p-button styleClass="w-full px-1" link="true" (onClick)="onClick()">
-  <div class="flex" [ngClass]="{ 'font-semibold': notification().isUnread }">
+<p-button styleClass="w-full" link="true" (onClick)="onClick()">
+  <div class="flex w-full" [ngClass]="{ 'font-semibold': notification().isUnread }">
     <div class="flex-0 w-12">
       @if (notification().imageUrl) {
         <img [src]="notification().imageUrl" class="w-12 h-12 rounded-full" />

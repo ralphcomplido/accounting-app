@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { LayoutService } from "@layout/services/layout.service";
 import { MenuItem } from "primeng/api";
@@ -15,17 +15,10 @@ import { RoutePipe } from "@routing";
   imports: [RouterModule, CommonModule, StyleClassModule, AppConfiguratorComponent, NotificationsButtonComponent, RoutePipe],
 })
 export class AppTopBarComponent {
-    items!: MenuItem[];
+  layoutService = inject(LayoutService);
+  items!: MenuItem[];
 
-    @ViewChild('menubutton') menuButton!: ElementRef;
-
-    @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
-
-    @ViewChild('topbarmenu') menu!: ElementRef;
-
-    constructor(public layoutService: LayoutService) {}
-
-    toggleDarkMode() {
-        this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
-    }
+  toggleDarkMode() {
+    this.layoutService.layoutConfig.update(state => ({ ...state, darkTheme: !state.darkTheme }));
+  }
 }

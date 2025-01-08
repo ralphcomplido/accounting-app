@@ -30,7 +30,7 @@ export class ResetPasswordComponent {
   resetPassword() {
     this.#blockUi.show({ message: "Resetting password..." });
     this.#identityService
-      .resetPassword({ email: this.form.value.email })
+      .resetPassword({ email: this.form.value.email! })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#routeAlias.getRoute("reset-instructions-sent"),

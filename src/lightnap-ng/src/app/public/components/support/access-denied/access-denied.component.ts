@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { ToastService } from "@core";
+import { ErrorApiResponse, ToastService } from "@core";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { take } from "rxjs";
@@ -34,7 +34,7 @@ export class AccessDeniedComponent {
   logOut() {
     this.#identityService.logOut().subscribe({
       next: () => this.#routeAlias.navigate("login"),
-      error: response => response.errorMessages.forEach(error => this.#toast.error(error)),
+      error: (response: ErrorApiResponse<any>) => response.errorMessages.forEach(error => this.#toast.error(error)),
     });
   }
 }

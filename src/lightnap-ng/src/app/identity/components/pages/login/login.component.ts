@@ -47,7 +47,7 @@ export class LoginComponent {
 
   constructor() {
     this.form.controls.login.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-      next: (login: string) => this.showMagicLink.setValue(login),
+      next: (login) => this.showMagicLink.setValue(login),
     });
 
     this.form.markAsTouched();
@@ -58,9 +58,9 @@ export class LoginComponent {
 
     this.#identityService
       .logIn({
-        login: this.form.value.login,
-        password: this.form.value.password,
-        rememberMe: this.form.value.rememberMe,
+        login: this.form.value.login!,
+        password: this.form.value.password!,
+        rememberMe: this.form.value.rememberMe!,
         deviceDetails: navigator.userAgent,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
@@ -89,7 +89,7 @@ export class LoginComponent {
 
     this.#identityService
       .requestMagicLinkEmail({
-        email: this.form.value.login,
+        email: this.form.value.login!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

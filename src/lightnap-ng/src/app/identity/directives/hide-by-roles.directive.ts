@@ -15,13 +15,13 @@ export class HideByRolesDirective {
   #subscription?: Subscription;
   #originalDisplay = this.#el.nativeElement.style.display;
 
-  @Input({ required: true }) roles: Array<string> | string;
+  @Input({ required: true }) roles?: Array<string> | string;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["roles"]) {
       if (this.#subscription) this.#subscription.unsubscribe();
 
-      const roles = Array.isArray(this.roles) ? this.roles : [this.roles];
+      const roles = this.roles ? Array.isArray(this.roles) ? this.roles : [this.roles] : [];
 
       this.#subscription = this.#identityService
         .watchLoggedInToAnyRole$(roles)

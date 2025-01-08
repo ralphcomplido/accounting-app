@@ -89,7 +89,7 @@ export class VerifyCodeComponent {
         code,
         login: this.login(),
         deviceDetails: navigator.userAgent,
-        rememberMe: value.rememberMe,
+        rememberMe: value.rememberMe!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

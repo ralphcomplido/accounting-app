@@ -54,7 +54,7 @@ describe('TokenInterceptor', () => {
     });
 
     it('should not add Authorization header if token is not available', () => {
-        identityService.getBearerToken.and.returnValue(null);
+        identityService.getBearerToken.and.returnValue(undefined);
 
         httpClient.get('http://api.example.com/data').subscribe();
 

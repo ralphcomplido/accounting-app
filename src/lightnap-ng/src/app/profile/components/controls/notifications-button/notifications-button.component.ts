@@ -4,7 +4,7 @@ import { RouterLink } from "@angular/router";
 import { NotificationService } from "@profile/services";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { MenuItem } from "primeng/api";
-import { BadgeModule } from "primeng/badge";
+import { OverlayBadgeModule } from "primeng/overlaybadge";
 import { ButtonModule } from "primeng/button";
 import { PopoverModule } from "primeng/popover";
 import { NotificationItemComponent } from "../notification-item/notification-item.component";
@@ -13,7 +13,7 @@ import { NotificationItemComponent } from "../notification-item/notification-ite
   selector: "notifications-button",
   standalone: true,
   templateUrl: "./notifications-button.component.html",
-  imports: [CommonModule, ButtonModule, PopoverModule, BadgeModule, NotificationItemComponent, RoutePipe, RouterLink],
+  imports: [CommonModule, ButtonModule, PopoverModule, OverlayBadgeModule, NotificationItemComponent, RoutePipe, RouterLink],
 })
 export class NotificationsButtonComponent {
   readonly #notificationService = inject(NotificationService);

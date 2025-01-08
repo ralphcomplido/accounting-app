@@ -2,7 +2,17 @@ import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
-import { LoginRequest, LoginSuccessResult, NewPasswordRequest, RegisterRequest, ResetPasswordRequest, SendMagicLinkEmailRequest, SendVerificationEmailRequest, VerifyCodeRequest, VerifyEmailRequest } from "@identity/models";
+import {
+  LoginRequest,
+  LoginSuccessResult,
+  NewPasswordRequest,
+  RegisterRequest,
+  ResetPasswordRequest,
+  SendMagicLinkEmailRequest,
+  SendVerificationEmailRequest,
+  VerifyCodeRequest,
+  VerifyEmailRequest,
+} from "@identity/models";
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
@@ -122,7 +132,10 @@ export class IdentityService {
       .pipe(
         takeUntilDestroyed(),
         filter(
-          () => !this.#requestingRefreshToken && this.#token?.length > 0 && this.#expires - IdentityService.TokenExpirationWindowMillis < Date.now()
+          () =>
+            !this.#requestingRefreshToken &&
+            (this.#token?.length ?? 0) > 0 &&
+            this.#expires - IdentityService.TokenExpirationWindowMillis < Date.now()
         )
       )
       .subscribe({
@@ -166,7 +179,7 @@ export class IdentityService {
       this.#email = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
       this.#roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? [];
       if (!Array.isArray(this.#roles)) {
-        this.#roles = [this.#roles];
+        this.#roles = this.#roles ? [this.#roles] : [];
       }
     } else {
       this.#expires = 0;

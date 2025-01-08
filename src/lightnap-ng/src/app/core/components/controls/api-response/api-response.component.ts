@@ -32,7 +32,7 @@ export class ApiResponseComponent implements OnChanges {
             throw Error("ApiResponseComponent expects an ApiResponse object to have been thrown in throwError");
           }
 
-          if (error.errorMessages?.length > 0) {
+          if (error.errorMessages?.length ?? 0 > 0) {
             return of(error as ApiResponse<string>);
           }
 

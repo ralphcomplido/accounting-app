@@ -18,8 +18,8 @@ export class ConfirmEmailChangeComponent implements OnInit {
   readonly #profileService = inject(ProfileService);
   readonly #blockUi = inject(BlockUiService);
   readonly #routeAlias = inject(RouteAliasService);
-  readonly newEmail = input<string>();
-  readonly code = input<string>();
+  readonly newEmail = input.required<string>();
+  readonly code = input.required<string>();
 
   errors = new Array<string>();
 

@@ -2,33 +2,57 @@ import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { Component, computed, inject, PLATFORM_ID } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { LayoutService } from "@layout/services/layout.service";
-import { MenuService } from "@layout/services/menu.service";
 import { $t, updatePreset, updateSurfacePalette } from "@primeng/themes";
 import Aura from "@primeng/themes/aura";
 import Lara from "@primeng/themes/lara";
-import { ButtonModule } from "primeng/button";
+import Material from "@primeng/themes/material";
+import Nora from "@primeng/themes/nora";
 import { PrimeNG } from "primeng/config";
-import { InputSwitchModule } from "primeng/inputswitch";
 import { SelectButtonModule } from "primeng/selectbutton";
 
 const presets = {
   Aura,
+  Material,
   Lara,
+  Nora,
+} as const;
+
+declare type KeyOfType<T> = keyof T extends infer U ? U : never;
+
+declare type SurfacesType = {
+  name?: string;
+  palette?: {
+    0?: string;
+    50?: string;
+    100?: string;
+    200?: string;
+    300?: string;
+    400?: string;
+    500?: string;
+    600?: string;
+    700?: string;
+    800?: string;
+    900?: string;
+    950?: string;
+  };
 };
 
 @Component({
   selector: "app-configurator",
   templateUrl: "./app-configurator.component.html",
-  imports: [CommonModule, FormsModule, InputSwitchModule, ButtonModule, SelectButtonModule],
+  imports: [CommonModule, FormsModule, SelectButtonModule],
   host: {
-    class: "hidden",
+    class:
+      "hidden absolute top-[3.25rem] right-0 w-72 p-4 bg-surface-0 dark:bg-surface-900 border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]",
   },
 })
 export class AppConfiguratorComponent {
   readonly config: PrimeNG = inject(PrimeNG);
   readonly layoutService = inject(LayoutService);
-  readonly menuService = inject(MenuService);
+
   platformId = inject(PLATFORM_ID);
+
+  primeng = inject(PrimeNG);
 
   presets = Object.keys(presets);
 
@@ -43,7 +67,7 @@ export class AppConfiguratorComponent {
     }
   }
 
-  surfaces = [
+  surfaces: SurfacesType[] = [
     {
       name: "slate",
       palette: {
@@ -192,8 +216,8 @@ export class AppConfiguratorComponent {
 
   menuMode = computed(() => this.layoutService.layoutConfig().menuMode);
 
-  primaryColors = computed(() => {
-    const presetPalette = presets[this.layoutService.layoutConfig().preset].primitive;
+  primaryColors = computed<SurfacesType[]>(() => {
+    const presetPalette = presets[this.layoutService.layoutConfig().preset as KeyOfType<typeof presets>].primitive;
     const colors = [
       "emerald",
       "green",
@@ -212,12 +236,12 @@ export class AppConfiguratorComponent {
       "pink",
       "rose",
     ];
-    const palettes = [{ name: "noir", palette: {} }];
+    const palettes: SurfacesType[] = [{ name: "noir", palette: {} }];
 
     colors.forEach(color => {
       palettes.push({
         name: color,
-        palette: presetPalette[color],
+        palette: presetPalette?.[color as KeyOfType<typeof presetPalette>] as SurfacesType["palette"],
       });
     });
 
@@ -225,7 +249,15 @@ export class AppConfiguratorComponent {
   });
 
   getPresetExt() {
-    const color = this.primaryColors().find(c => c.name === this.selectedPrimaryColor());
+    const color: SurfacesType = this.primaryColors().find(c => c.name === this.selectedPrimaryColor()) || {};
+
+    const preset = this.layoutService.layoutConfig().preset;
+
+    if (preset === "Material") {
+      this.primeng.inputVariant.set("filled");
+    } else {
+      this.primeng.inputVariant.set("outlined");
+    }
 
     if (color.name === "noir") {
       return {
@@ -276,7 +308,7 @@ export class AppConfiguratorComponent {
         },
       };
     } else {
-      if (this.layoutService.layoutConfig().preset === "Nora") {
+      if (preset === "Nora") {
         return {
           semantic: {
             primary: color.palette,
@@ -312,7 +344,7 @@ export class AppConfiguratorComponent {
             },
           },
         };
-      } else if (this.layoutService.layoutConfig().preset === "Material") {
+      } else if (preset === "Material") {
         return {
           semantic: {
             primary: color.palette,
@@ -409,7 +441,7 @@ export class AppConfiguratorComponent {
 
   onPresetChange(event: any) {
     this.layoutService.layoutConfig.update(state => ({ ...state, preset: event }));
-    const preset = presets[event];
+    const preset = presets[event as KeyOfType<typeof presets>];
     const surfacePalette = this.surfaces.find(s => s.name === this.selectedSurfaceColor())?.palette;
     if (this.layoutService.layoutConfig().preset === "Material") {
       document.body.classList.add("material");

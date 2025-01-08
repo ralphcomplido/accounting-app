@@ -44,7 +44,7 @@ export class HttpErrorApiResponse<T> implements ApiResponse<T> {
     if (!environment.production) {
       if (response.error?.errors) {
         if (Array.isArray(response.error.errors)) {
-          this.errorMessages = response.error.errors.map(error => `DEBUG: ${JSON.stringify(error)}`);
+          this.errorMessages = response.error.errors.map((error: any) => `DEBUG: ${JSON.stringify(error)}`);
         } else {
           this.errorMessages = Object.values(response.error.errors);
         }

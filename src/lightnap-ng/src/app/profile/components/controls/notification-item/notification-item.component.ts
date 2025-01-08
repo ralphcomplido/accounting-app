@@ -2,7 +2,8 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, input } from "@angular/core";
 import { Router } from "@angular/router";
 import { SincePipe } from "@core";
-import { NotificationItem, NotificationService } from "@profile";
+import { NotificationItem } from "@profile";
+import { NotificationService } from "@profile/services/notification.service";
 import { ButtonModule } from "primeng/button";
 
 @Component({
@@ -11,12 +12,12 @@ import { ButtonModule } from "primeng/button";
   imports: [CommonModule, ButtonModule, SincePipe],
 })
 export class NotificationItemComponent {
-  //readonly #notificationService = inject(NotificationService);
+  readonly #notificationService = inject(NotificationService);
   readonly #router = inject(Router);
   readonly notification = input.required<NotificationItem>();
 
   onClick() {
-    //  this.#notificationService.markNotificationAsRead(this.notification().id).subscribe();
+    this.#notificationService.markNotificationAsRead(this.notification().id).subscribe();
     this.#router.navigate(this.notification().routerLink);
   }
 }

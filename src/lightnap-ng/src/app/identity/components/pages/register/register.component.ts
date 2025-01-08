@@ -53,12 +53,12 @@ export class RegisterComponent {
 
     this.#identityService
       .register({
-        email: this.form.value.email,
-        password: this.form.value.password,
-        confirmPassword: this.form.value.confirmPassword,
+        email: this.form.value.email!,
+        password: this.form.value.password!,
+        confirmPassword: this.form.value.confirmPassword!,
         deviceDetails: navigator.userAgent,
-        rememberMe: this.form.value.rememberMe,
-        userName: this.form.value.userName,
+        rememberMe: this.form.value.rememberMe!,
+        userName: this.form.value.userName!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

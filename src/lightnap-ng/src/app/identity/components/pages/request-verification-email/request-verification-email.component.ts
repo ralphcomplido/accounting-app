@@ -30,7 +30,7 @@ export class RequestVerificationEmailComponent {
   resendVerificationEmail() {
     this.#blockUi.show({ message: "Resending verification email..." });
     this.#identityService
-      .requestVerificationEmail({ email: this.form.value.email })
+      .requestVerificationEmail({ email: this.form.value.email! })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#routeAlias.navigate("email-verification-required"),

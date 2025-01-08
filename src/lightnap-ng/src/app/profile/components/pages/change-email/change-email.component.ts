@@ -32,7 +32,7 @@ export class ChangeEmailComponent {
     this.#blockUi.show({ message: "Changing email..." });
     this.#profileService
       .changeEmail({
-        newEmail: this.form.value.newEmail,
+        newEmail: this.form.value.newEmail!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

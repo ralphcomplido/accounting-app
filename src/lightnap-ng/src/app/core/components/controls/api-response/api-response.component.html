@@ -1,5 +1,5 @@
 @if(internalApiResponse$ | async; as response) { @if (response.result; as result) {
-<ng-container *ngTemplateOutlet="successTemplateRef(); context: { $implicit: result }" />
+<ng-container *ngTemplateOutlet="successTemplateRef()!; context: { $implicit: result }" />
 } @else {
 <ng-container *ngTemplateOutlet="errorTemplateRef() || defaultErrorTemplate; context: { $implicit: response }" />
 } } @else {

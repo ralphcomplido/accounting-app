@@ -9,9 +9,9 @@ import { ApiResponse } from "@core";
   imports: [CommonModule],
 })
 export class ErrorListComponent implements OnChanges {
-  readonly error = input<string>(undefined);
-  readonly errors = input<Array<string>>(undefined);
-  readonly apiResponse = input<ApiResponse<any>>(undefined);
+  readonly error = input<string | undefined>(undefined);
+  readonly errors = input<Array<string> | undefined>(undefined);
+  readonly apiResponse = input<ApiResponse<any> | undefined>(undefined);
 
   errorList = signal<Array<string>>([]);
 

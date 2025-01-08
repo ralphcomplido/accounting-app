@@ -55,9 +55,9 @@ export class UsersComponent {
         sortBy: (event.sortField as SearchAdminUsersSortBy) ?? "userName",
         reverseSort: event.sortOrder === -1,
         pageSize: this.pageSize,
-        pageNumber: event.first / this.pageSize + 1,
-        email: this.form.value.email?.length > 0 ? this.form.value.email : undefined,
-        userName: this.form.value.userName?.length > 0 ? this.form.value.userName : undefined,
+        pageNumber: event.first ?? 0 / this.pageSize + 1,
+        email: this.form.value.email?.length ?? 0 > 0 ? this.form.value.email! : undefined,
+        userName: this.form.value.userName?.length ?? 0 > 0 ? this.form.value.userName! : undefined,
       })
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to fake an empty response

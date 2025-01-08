@@ -1,15 +1,19 @@
 @if (latestNotifications$ | async; as latestNotifications) {
-  <p-button link="true" size="large" rounded="true" (onClick)="popover.toggle($event)">
+  <button type="button" class="layout-topbar-action" (click)="popover.toggle($event)">
     @if (latestNotifications.unreadCount > 0) {
       @if (latestNotifications.unreadCount > 9) {
-        <i class="pi pi-inbox text-xl" pBadge value="9+" severity="info"></i>
+        <p-overlaybadge value="9+" badgeSize="small">
+          <i class="pi pi-inbox text-xl" severity="info"></i>
+        </p-overlaybadge>
       } @else {
-        <i class="pi pi-inbox text-xl" pBadge [value]="latestNotifications.unreadCount" severity="info"></i>
+        <p-overlaybadge [value]="latestNotifications.unreadCount" badgeSize="small">
+          <i class="pi pi-inbox text-xl" severity="info"></i>
+        </p-overlaybadge>
       }
     } @else {
       <i class="pi pi-inbox text-xl" severity="info"></i>
     }
-  </p-button>
+  </button>
   <p-popover #popover>
     <ng-template pTemplate="content">
       <div class="w-80 flex flex-col">

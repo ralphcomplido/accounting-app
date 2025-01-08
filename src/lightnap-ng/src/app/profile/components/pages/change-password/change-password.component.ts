@@ -40,9 +40,9 @@ export class ChangePasswordComponent {
     this.#blockUi.show({ message: "Changing password..." });
     this.#profileService
       .changePassword({
-        confirmNewPassword: this.form.value.confirmNewPassword,
-        currentPassword: this.form.value.currentPassword,
-        newPassword: this.form.value.newPassword,
+        confirmNewPassword: this.form.value.confirmNewPassword!,
+        currentPassword: this.form.value.currentPassword!,
+        newPassword: this.form.value.newPassword!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

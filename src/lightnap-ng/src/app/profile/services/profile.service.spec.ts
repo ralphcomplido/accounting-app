@@ -5,7 +5,6 @@ import { ApplicationSettings, ChangePasswordRequest, LayoutConfig, UpdateProfile
 import { of } from 'rxjs';
 import { DataService } from './data.service';
 import { ProfileService } from './profile.service';
-import { ex } from '@fullcalendar/core/internal-common';
 
 describe('ProfileService', () => {
     let service: ProfileService;

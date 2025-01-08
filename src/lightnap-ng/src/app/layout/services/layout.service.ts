@@ -64,9 +64,9 @@ export class LayoutService {
       .pipe(takeUntilDestroyed())
       .subscribe(loggedIn => {
         if (loggedIn) {
-          this.#profileService.getSettings().subscribe(settings => this.layoutConfig.set(settings.style));
+          this.#profileService.getSettings().subscribe(settings => this.layoutConfig.update(state => ({ ...state, ...settings.style })));
         } else {
-          this.layoutConfig.set(this.#profileService.getDefaultStyleSettings());
+          this.layoutConfig.update(state => ({ ...state, ...this.#profileService.getDefaultStyleSettings() }));
         }
       });
   }
@@ -137,7 +137,7 @@ export class LayoutService {
     this.#configUpdate.next(this.layoutConfig());
 
     if (this.#profileService.hasLoadedStyleSettings()) {
-      this.#profileService.updateStyleSettings({ ...this.layoutConfig() }).subscribe({
+      this.#profileService.updateStyleSettings(this.#config).subscribe({
         error: response => console.error("Unable to save settings", response.errorMessages),
       });
     }

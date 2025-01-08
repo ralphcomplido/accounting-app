@@ -49,7 +49,7 @@ describe("IdentityService", () => {
     timerServiceSpy.watchTimer$.and.returnValue(of(0));
 
     dataServiceSpy = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
-    dataServiceSpy.getAccessToken.and.returnValue(of(undefined));
+    dataServiceSpy.getAccessToken.and.returnValue(of(""));
 
     service = TestBed.inject(IdentityService);
   });

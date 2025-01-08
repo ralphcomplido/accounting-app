@@ -84,7 +84,7 @@ export class UserComponent implements OnChanges {
     this.errors = [];
 
     this.#adminService
-      .addUserToRole(this.userId(), this.addUserToRoleForm.value.role)
+      .addUserToRole(this.userId(), this.addUserToRoleForm.value.role!)
       .subscribe({
         next: () => this.#refreshUser(),
         error: response => (this.errors = response.errorMessages),

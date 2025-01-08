@@ -42,10 +42,10 @@ export class NewPasswordComponent {
     this.#identityService
       .newPassword({
         email: this.email(),
-        password: this.form.value.password,
+        password: this.form.value.password!,
         token: this.token(),
         deviceDetails: navigator.userAgent,
-        rememberMe: this.form.value.rememberMe,
+        rememberMe: this.form.value.rememberMe!,
       })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({

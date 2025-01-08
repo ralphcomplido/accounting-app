@@ -95,9 +95,7 @@ export class AppMenuItemComponent implements OnInit {
     }
 
     // execute command
-    if (this.item().command) {
-      this.item().command({ originalEvent: event, item: this.item });
-    }
+    const command = this.item().command?.({ originalEvent: event, item: this.item });
 
     // toggle active state
     if (this.item().items) {
