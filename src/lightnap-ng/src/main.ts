@@ -27,10 +27,10 @@ bootstrapApplication(AppComponent, {
     InitializationService,
     provideAppInitializer(() => inject(InitializationService).initialize()),
     provideAnimations(),
-    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: ".app-dark" } }, ripple: false, inputStyle: "outlined" }),
+    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: ".app-dark" } } }),
     {
       provide: API_URL_ROOT,
-      useValue: environment.apiUrlRoot ?? throwInlineError("Required setting 'environment.apiUrlRoot' is not defined.")
+      useValue: environment.apiUrlRoot ?? throwInlineError("Required setting 'environment.apiUrlRoot' is not defined."),
     },
     { provide: APP_NAME, useValue: environment.appName },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
