@@ -55,7 +55,7 @@ export class UsersComponent {
         sortBy: (event.sortField as SearchAdminUsersSortBy) ?? "userName",
         reverseSort: event.sortOrder === -1,
         pageSize: this.pageSize,
-        pageNumber: event.first ?? 0 / this.pageSize + 1,
+        pageNumber: (event.first ?? 0) / this.pageSize + 1,
         email: this.form.value.email?.length ?? 0 > 0 ? this.form.value.email! : undefined,
         userName: this.form.value.userName?.length ?? 0 > 0 ? this.form.value.userName! : undefined,
       })

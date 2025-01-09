@@ -37,7 +37,7 @@ export class NotificationsComponent {
   #currentPage = 0;
 
   onLazyLoad(event: TableLazyLoadEvent) {
-    this.#currentPage = event.first ?? 0 / this.pageSize + 1
+    this.#currentPage = (event.first ?? 0) / this.pageSize + 1
     this.#lazyLoadEventSubject.next(event);
   }
 
