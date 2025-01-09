@@ -271,6 +271,12 @@ namespace LightNap.Core.Identity.Services
                 throw new UserFriendlyApiException("Unable to set new password.");
             }
 
+            if (!user.EmailConfirmed)
+            {
+                user.EmailConfirmed = true;
+                await db.SaveChangesAsync();
+            }
+
             return await this.HandleUserLoginAsync(user, requestDto.RememberMe, requestDto.DeviceDetails);
         }
 
