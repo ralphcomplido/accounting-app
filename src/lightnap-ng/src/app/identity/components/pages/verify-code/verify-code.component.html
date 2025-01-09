@@ -2,29 +2,28 @@
   <span title>Two-Factor Verification</span>
   <span subtitle>Please enter your security code to continue.</span>
 
-  <div class="w-[30rem]">
+  <div class="w-[20rem]">
     <div class="flex flex-col">
       <form [formGroup]="form" (ngSubmit)="(form.valid)" autocomplete="off">
-        <div class="flex justify-between w-full items-center mb-6 gap-4">
-          <input pInputText formControlName="code1" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code2" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code3" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code4" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code5" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
-          <input pInputText formControlName="code6" pKeyFilter="num" class="w-12 text-center" maxlength="1" (keyup)="onDigitInput($event)" />
+        <div class="flex flex-col gap-5">
+          <div class="flex justify-center">
+            <p-inputotp formControlName="code" [length]="6"></p-inputotp>
+          </div>
+
+          <div class="flex gap-1">
+            <p-checkbox inputId="rememberMe" formControlName="rememberMe" [binary]="true" />
+            <label for="rememberMe">Remember Me</label>
+          </div>
+
+          <error-list [errors]="errors" />
         </div>
-        <div class="mb-6">
-          <input pInputText formControlName="paste" class="w-full" placeholder="Or paste here..." />
-        </div>
-        <div class="mb-6 flex flex-wrap gap-4">
-          <p-checkbox inputId="rememberMe" formControlName="rememberMe" styleClass="mr-2" [binary]="true" />
-          <label for="rememberMe" class="ml-2">Remember Me</label>
-        </div>
-        <error-list [errors]="errors" />
-        <div class="mt-6 flex flex-wrap gap-4">
-          <a [routerLink]="'login' | route" class="ml-auto">Return to login</a>
-        </div>
+
+        <p-button type="submit" label="Verify" styleClass="w-full" [disabled]="!form.valid" pRipple (onClick)="onVerifyClicked()" />
       </form>
+
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a [routerLink]="'login' | route" class="ml-auto">Return to login</a>
+      </div>
     </div>
   </div>
 </identity-card>

@@ -4,55 +4,44 @@
 
   <div class="w-[30rem]">
     <form [formGroup]="form" (ngSubmit)="logIn()" autocomplete="off">
-      <label for="login" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email/User Name</label>
-
-      <p-inputGroup>
-        <input
-          id="login"
-          type="text"
-          placeholder="Email/User Name"
-          pInputText
-          formControlName="login"
-          class="w-full md:w-[30rem] mb-8"
-          style="padding: 1rem"
-        />
-        <p-button
-          icon="pi pi-sparkles"
-          title="Send Magic Link"
-          styleClass="w-full p-4 text-xl mb-2"
-          pRipple
-          (onClick)="sendMagicLink()"
-          [disabled]="!showMagicLink.valid"
-        />
-      </p-inputGroup>
-
-      <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-      <p-password
-        formControlName="password"
-        styleClass="mb-8"
-        inputStyleClass="w-full p-4 md:w-[30rem]"
-        [inputStyle]="{ paddingLeft: '2.5rem' }"
-        placeholder="Password"
-        [toggleMask]="true"
-        [feedback]="false"
-      />
-
-      <div class="flex items-center justify-between mb-8 gap-8">
-        <div class="flex items-center">
-          <p-checkbox inputId="rememberMe" formControlName="rememberMe" styleClass="mr-2" [binary]="true" />
-          <label for="rememberMe" class="ml-2">Remember Me</label>
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
+          <label for="login" class="text-xl font-medium">Email/User Name</label>
+          <p-inputGroup>
+            <input id="login" type="text" placeholder="Email/User Name" pInputText formControlName="login" />
+            <p-inputgroup-addon>
+              <p-button icon="pi pi-sparkles" title="Send Magic Link" pRipple (onClick)="sendMagicLink()" [disabled]="!showMagicLink.valid" />
+            </p-inputgroup-addon>
+          </p-inputGroup>
         </div>
-        <a [routerLink]="'reset-password' | route"
-          >Forgot password?</a
-        >
+
+        <div class="flex flex-col gap-2">
+          <label for="password" class="font-medium text-xl">Password</label>
+          <p-password
+            formControlName="password"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+            placeholder="Password"
+            [toggleMask]="true"
+            [feedback]="false"
+          />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex gap-2">
+            <p-checkbox inputId="rememberMe" formControlName="rememberMe" [binary]="true" />
+            <label for="rememberMe">Remember Me</label>
+          </div>
+          <a [routerLink]="'reset-password' | route">Forgot password?</a>
+        </div>
+
+        <error-list [errors]="errors" />
       </div>
 
-      <error-list [errors]="errors" />
-
-      <p-button type="submit" label="Sign In" styleClass="w-full p-4 text-xl" [disabled]="!form.valid" pRipple />
+      <p-button type="submit" label="Sign In" styleClass="w-full text-xl mt-2" [disabled]="!form.valid" pRipple />
     </form>
 
-    <div class="flex flex-col mt-6">
+    <div class="mt-4">
       <a [routerLink]="'register' | route">I need to create an account</a>
     </div>
   </div>

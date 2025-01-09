@@ -55,7 +55,7 @@ export class NewPasswordComponent {
               this.#routeAlias.navigate("user-home");
               break;
             case "TwoFactorRequired":
-              this.#routeAlias.navigate("verify-code", this.email);
+              this.#routeAlias.navigate("verify-code", this.email());
               break;
             case "EmailVerificationRequired":
               throw new Error("Email verification should not be required since email was used to set a new password.");

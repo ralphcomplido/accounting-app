@@ -8,6 +8,7 @@ import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { finalize } from "rxjs";
@@ -27,6 +28,7 @@ import { IdentityService } from "src/app/identity/services/identity.service";
     IdentityCardComponent,
     ErrorListComponent,
     InputGroupModule,
+    InputGroupAddonModule
   ],
 })
 export class LoginComponent {

@@ -33,7 +33,7 @@ export class ResetPasswordComponent {
       .resetPassword({ email: this.form.value.email! })
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
-        next: () => this.#routeAlias.getRoute("reset-instructions-sent"),
+        next: () => this.#routeAlias.navigate("reset-instructions-sent"),
         error: response => (this.errors = response.errorMessages),
       });
   }
