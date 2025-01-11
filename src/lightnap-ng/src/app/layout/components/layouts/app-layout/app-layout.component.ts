@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { Component, Renderer2, ViewChild } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { AppFooterComponent } from "@layout/components/controls/app-footer/app-footer.component";
 import { AppSidebarComponent } from "@layout/components/controls/app-sidebar/app-sidebar.component";
 import { AppTopBarComponent } from "@layout/components/controls/app-top-bar/app-top-bar.component";
 import { LayoutService } from "@layout/services/layout.service";
-import { filter, Subscription } from "rxjs";
+import { filter } from "rxjs";
 
 @Component({
   selector: "app-layout",
@@ -13,8 +14,6 @@ import { filter, Subscription } from "rxjs";
   imports: [CommonModule, AppTopBarComponent, AppSidebarComponent, RouterModule, AppFooterComponent],
 })
 export class AppLayoutComponent {
-  overlayMenuOpenSubscription: Subscription;
-
   menuOutsideClickListener: any;
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
@@ -26,7 +25,7 @@ export class AppLayoutComponent {
     public renderer: Renderer2,
     public router: Router
   ) {
-    this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
+    this.layoutService.overlayOpen$.pipe(takeUntilDestroyed()).subscribe(() => {
       if (!this.menuOutsideClickListener) {
         this.menuOutsideClickListener = this.renderer.listen("document", "click", event => {
           if (this.isOutsideClicked(event)) {
@@ -40,7 +39,7 @@ export class AppLayoutComponent {
       }
     });
 
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+    this.router.events.pipe(takeUntilDestroyed(), filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.hideMenu();
     });
   }
@@ -94,10 +93,6 @@ export class AppLayoutComponent {
   }
 
   ngOnDestroy() {
-    if (this.overlayMenuOpenSubscription) {
-      this.overlayMenuOpenSubscription.unsubscribe();
-    }
-
     if (this.menuOutsideClickListener) {
       this.menuOutsideClickListener();
     }
