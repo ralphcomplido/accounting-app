@@ -1,11 +1,10 @@
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
-using LightNap.Core.Data.Entities;
 using LightNap.WebApi.Configuration;
 using LightNap.WebApi.Extensions;
 using LightNap.WebApi.Middleware;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -58,10 +57,22 @@ app.UseCors(policy =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+var fileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.WebRootPath, "browser"));
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    DefaultFileNames = ["index.html"],
+    FileProvider = fileProvider
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = fileProvider
+});
 app.MapControllers();
-app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("index.html", new StaticFileOptions
+{
+    FileProvider = fileProvider,
+    RequestPath = ""
+});
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
