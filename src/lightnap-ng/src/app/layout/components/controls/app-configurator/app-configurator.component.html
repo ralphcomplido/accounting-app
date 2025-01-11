@@ -6,8 +6,8 @@
         <button
           type="button"
           [title]="primaryColor.name"
-          (click)="updateColors($event, 'primary', primaryColor)"
-          [ngClass]="{ 'outline-primary': primaryColor.name === selectedPrimaryColor() }"
+          (click)="onPrimaryColorChange(primaryColor.name ?? '')"
+          [ngClass]="{ 'outline-primary': primaryColor.name === layoutService.primaryPallette() }"
           class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1"
           [style]="{
             'background-color': primaryColor?.name === 'noir' ? 'var(--text-color)' : primaryColor?.palette?.['500'],
@@ -19,15 +19,15 @@
   <div>
     <span class="text-sm text-muted-color font-semibold">Surface</span>
     <div class="pt-2 flex gap-2 flex-wrap justify-start">
-      @for (surface of surfaces; track surface.name) {
+      @for (surface of layoutService.surfaces; track surface.name) {
         <button
           type="button"
           [title]="surface.name"
-          (click)="updateColors($event, 'surface', surface)"
+          (click)="onSurfaceColorChange(surface.name ?? '')"
           [ngClass]="{
-            'outline-primary': selectedSurfaceColor()
-              ? selectedSurfaceColor() === surface.name
-              : layoutService.layoutConfig().darkTheme
+            'outline-primary': layoutService.surfacePallette()
+              ? layoutService.surfacePallette() === surface.name
+              : layoutService.isDarkTheme()
                 ? surface.name === 'zinc'
                 : surface.name === 'slate',
           }"
@@ -41,15 +41,21 @@
   </div>
   <div class="flex flex-col gap-2">
     <span class="text-sm text-muted-color font-semibold">Presets</span>
-    <p-selectbutton [options]="presets" [ngModel]="selectedPreset()" (ngModelChange)="onPresetChange($event)" [allowEmpty]="false" size="small" />
+    <p-selectbutton
+      [options]="presets"
+      [ngModel]="layoutService.preset()"
+      (ngModelChange)="onPresetChange($event)"
+      [allowEmpty]="false"
+      size="small"
+    />
   </div>
   @if (showMenuModeButton()) {
     <div class="flex flex-col gap-2">
       <span class="text-sm text-muted-color font-semibold">Menu Mode</span>
       <p-selectbutton
-        [ngModel]="menuMode()"
+        [ngModel]="layoutService.menuMode()"
         (ngModelChange)="onMenuModeChange($event)"
-        [options]="menuModeOptions"
+        [options]="layoutService.menuModeOptions"
         [allowEmpty]="false"
         size="small"
       />

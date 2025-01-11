@@ -1,4 +1,4 @@
-export interface SurfacesType {
+export interface ColorPallette {
   name?: string;
   palette?: {
     0?: string;

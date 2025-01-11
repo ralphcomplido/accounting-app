@@ -3,11 +3,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { APP_NAME } from "@core";
 import { IdentityService } from "@identity";
 import { LayoutState } from "@layout/models/layout-state";
-import { SurfacesType } from "@layout/models/surfaces-type";
+import { ColorPallette } from "@layout/models/color-pallette";
 import { updatePreset, updateSurfacePalette } from "@primeng/themes";
 import Aura from "@primeng/themes/aura";
 import Lara from "@primeng/themes/lara";
 import Nora from "@primeng/themes/nora";
+import { Preset } from "@primeng/themes/types";
 import { LayoutConfig, ProfileService } from "@profile";
 import { Subject } from "rxjs";
 
@@ -31,17 +32,22 @@ export class LayoutService {
 
   layoutConfig = signal<LayoutConfig>(this.#config);
   layoutState = signal<LayoutState>(this.#state);
-  #configUpdate = new Subject<LayoutConfig>();
   #overlayOpen = new Subject<any>();
-  configUpdate$ = this.#configUpdate.asObservable();
   overlayOpen$ = this.#overlayOpen.asObservable();
   theme = computed(() => (this.layoutConfig()?.darkTheme ? "light" : "dark"));
   isSidebarActive = computed(() => this.layoutState().overlayMenuActive || this.layoutState().staticMenuMobileActive);
   isDarkTheme = computed(() => this.layoutConfig().darkTheme);
-  getPrimary = computed(() => this.layoutConfig().primary);
-  getSurface = computed(() => this.layoutConfig().surface);
+  primaryPallette = computed(() => this.layoutConfig().primary);
+  surfacePallette = computed(() => this.layoutConfig().surface);
+  preset = computed(() => this.layoutConfig().preset);
+  menuMode = computed(() => this.layoutConfig().menuMode);
   isOverlay = computed(() => this.layoutConfig().menuMode === "overlay");
   transitionComplete = signal<boolean>(false);
+
+  readonly menuModeOptions = [
+    { label: "Static", value: "static" },
+    { label: "Overlay", value: "overlay" },
+  ];
 
   readonly presets = {
     Aura,
@@ -49,7 +55,7 @@ export class LayoutService {
     Nora,
   } as const;
 
-  readonly surfaces: SurfacesType[] = [
+  readonly surfaces: ColorPallette[] = [
     {
       name: "slate",
       palette: {
@@ -207,14 +213,14 @@ export class LayoutService {
     "rose",
   ];
 
-  primaryColors = computed<SurfacesType[]>(() => {
-    const presetPalette = this.presets[this.layoutConfig().preset as keyof typeof this.presets].primitive;
-    const palettes: SurfacesType[] = [{ name: "noir", palette: {} }];
+  primaryColors = computed<ColorPallette[]>(() => {
+    const presetPalette = this.presets[this.preset() as keyof typeof this.presets].primitive;
+    const palettes: ColorPallette[] = [{ name: "noir", palette: {} }];
 
     this.colors.forEach(color => {
       palettes.push({
         name: color,
-        palette: presetPalette?.[color as keyof typeof presetPalette] as SurfacesType["palette"],
+        palette: presetPalette?.[color as keyof typeof presetPalette] as ColorPallette["palette"],
       });
     });
 
@@ -249,8 +255,6 @@ export class LayoutService {
         if (loggedIn) {
           this.#profileService.getSettings().subscribe(settings => {
             this.layoutConfig.update(state => ({ ...state, ...settings.style }));
-            this.updatePreset();
-            this.updateSurfacePalette(this.surfaces.find(s => s.name === settings.style.surface)?.palette);
           });
         } else {
           this.layoutConfig.update(state => ({ ...state, ...this.#profileService.getDefaultStyleSettings() }));
@@ -320,8 +324,20 @@ export class LayoutService {
   }
 
   onConfigUpdate() {
+    const presetChanged = this.#config.preset !== this.layoutConfig().preset;
+    if (presetChanged) {
+      this.updatePreset(this.presets[this.layoutConfig().preset as keyof typeof this.presets]);
+    }
+
+    if (presetChanged || this.#config.primary !== this.layoutConfig().primary) {
+        this.updatePreset(this.getPresetExt());
+      }
+
+    if (this.#config.surface !== this.layoutConfig().surface) {
+      this.updateSurfacePalette(this.surfaces.find(s => s.name === this.layoutConfig().surface)?.palette);
+    }
+
     this.#config = { ...this.layoutConfig() };
-    this.#configUpdate.next(this.layoutConfig());
 
     if (this.#profileService.hasLoadedStyleSettings()) {
       this.#profileService.updateStyleSettings(this.#config).subscribe({
@@ -331,7 +347,7 @@ export class LayoutService {
   }
 
   getPresetExt() {
-    const color: SurfacesType = this.primaryColors().find(c => c.name === this.layoutConfig().primary) || {};
+    const color: ColorPallette = this.primaryColors().find(c => c.name === this.layoutConfig().primary) || {};
 
     const preset = this.layoutConfig().preset;
 
@@ -460,11 +476,15 @@ export class LayoutService {
     }
   }
 
-  updatePreset() {
-    updatePreset(this.getPresetExt());
+  updatePallette(preset: any) {
+    updatePreset(preset);
   }
 
   updateSurfacePalette(palette: any) {
     updateSurfacePalette(palette);
+  }
+
+  updatePreset(preset: Preset<any>) {
+    updatePreset(preset);
   }
 }
