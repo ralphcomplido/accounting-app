@@ -30,7 +30,7 @@ export function apiResponseInterceptor(request: HttpRequest<unknown>, next: Http
         case "UnexpectedError":
           return throwError(() => apiHttpResponse.body);
         case "Success":
-          return of(apiHttpResponse.clone({ body: apiHttpResponse.body.result }));
+          return of(apiHttpResponse.clone({ body: apiHttpResponse.body.result ?? null }));
         default:
           break;
       }
