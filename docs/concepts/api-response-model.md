@@ -70,6 +70,9 @@ In most UI scenarios you will want to allow Angular to manage your RxJS subscrip
     <ng-template #success let-result>
       ...
     </ng-template>
+    <ng-template #null>
+      ...
+    </ng-template>
     <ng-template #error let-response>
       ...
     </ng-template>
@@ -85,5 +88,6 @@ The `apiResponse` parameter must be an observable of the type you want to use in
 `ApiResponseComponent` manages the different states of an API request via the user-provided templates.
 
 - `#success`: The template to render when the response is successful. The unwrapped result is provided as the implicit template variable (`result` in this case).
+- `#null`: The template to render when the response is successful but has a null result field. If you don't provide this template and the response's result is null, then your `#success` template will be used.
 - `#error`: The optional template to render when the response fails. The full response is provided as the implicit template variable (`response` in this case). Alternatively, you can provide an `errorMessage` string on `api-response` to be shown along with a list of the user-friendly responses in the caught `ApiResponse`.
 - `#loading`: The optional template to render when a response has not been received yet. Alternatively, you can provide a `loadingMessage` string on `api-response` to show alongside the default loading UI.

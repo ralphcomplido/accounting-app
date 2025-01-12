@@ -13,10 +13,12 @@ import { ErrorListComponent } from "../error-list/error-list.component";
 })
 export class ApiResponseComponent implements OnChanges {
   readonly apiResponse = input.required<Observable<any>>();
+  readonly undefinedMessage = input<string>("This item was not found");
   readonly errorMessage = input<string>("An error occurred");
   readonly loadingMessage = input<string>("Loading...");
 
   readonly successTemplateRef = contentChild<TemplateRef<any>>("success");
+  readonly nullTemplateRef = contentChild<TemplateRef<any>>("null");
   readonly errorTemplateRef = contentChild<TemplateRef<any>>("error");
   readonly loadingTemplateRef = contentChild<TemplateRef<any>>("loading");
 

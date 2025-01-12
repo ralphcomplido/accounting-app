@@ -1,9 +1,15 @@
-@if(internalApiResponse$ | async; as response) { @if (response.type === "Success") {
-<ng-container *ngTemplateOutlet="successTemplateRef()!; context: { $implicit: response.result }" />
+@if (internalApiResponse$ | async; as response) {
+  @if (response.type === "Success") {
+    @if (!response.result && nullTemplateRef()) {
+      <ng-container *ngTemplateOutlet="nullTemplateRef()!" />
+    } @else {
+      <ng-container *ngTemplateOutlet="successTemplateRef()!; context: { $implicit: response.result }" />
+    }
+  } @else {
+    <ng-container *ngTemplateOutlet="errorTemplateRef() || defaultErrorTemplate; context: { $implicit: response }" />
+  }
 } @else {
-<ng-container *ngTemplateOutlet="errorTemplateRef() || defaultErrorTemplate; context: { $implicit: response }" />
-} } @else {
-<ng-container *ngTemplateOutlet="loadingTemplateRef() || defaultLoadingTemplate"> </ng-container>
+  <ng-container *ngTemplateOutlet="loadingTemplateRef() || defaultLoadingTemplate"> </ng-container>
 }
 
 <ng-template #defaultErrorTemplate let-response>
