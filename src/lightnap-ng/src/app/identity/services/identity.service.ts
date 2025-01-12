@@ -16,6 +16,8 @@ import {
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
+import { Router } from "@angular/router";
+import { RouteAliasService } from "@routing";
 
 /**
  * Service responsible for managing user identity, including authentication and token management.
@@ -36,6 +38,8 @@ export class IdentityService {
   #initializationService = inject(InitializationService);
   #timer = inject(TimerService);
   #dataService = inject(DataService);
+  #routeAlias = inject(RouteAliasService);
+  #router = inject(Router);
 
   #loggedInSubject$ = new ReplaySubject<boolean>(1);
   #loggedInRolesSubject$ = new ReplaySubject<Array<string>>(1);
@@ -54,7 +58,7 @@ export class IdentityService {
    * @description Returns whether the user is currently logged in.
    * @returns {boolean} True if the user is logged in, false otherwise.
    * @readonly
-   * @remarks This property should only be used when the user is known to be logged in.
+   * @remarks This property should only be used after the initial login status of the user is known to have determined.
    * Prefer using watchLoggedIn$() to observe changes in the login status.
    */
   get loggedIn() {
@@ -108,21 +112,10 @@ export class IdentityService {
 
   /**
    * @property redirectUrl
-   * @description Gets URL the user should be redirected to after a successful login.
-   * @returns {string | undefined} The redirect URL if available, otherwise undefined.
-   */
-  get redirectUrl() {
-    const url = this.#redirectUrl;
-    this.#redirectUrl = undefined;
-    return url;
-  }
-
-  /**
-   * @property redirectUrl
    * @description Sets the redirect URL to navigate to after a successful login.
-   * @param {string | undefined} value - The originally requested URL.
+   * @param {string} value - The originally requested URL.
    */
-  set redirectUrl(value: string | undefined) {
+  setRedirectUrl(value: string) {
     this.#redirectUrl = value;
   }
 
@@ -250,6 +243,19 @@ export class IdentityService {
   getBearerToken() {
     if (!this.#token) return undefined;
     return `Bearer ${this.#token}`;
+  }
+
+  /**
+   * @method redirectLoggedInUser
+   * @description Redirects the user to the originally requested URL after a successful login or to their default landing page.
+   */
+  redirectLoggedInUser() {
+    if (this.#redirectUrl) {
+      this.#router.navigateByUrl(this.#redirectUrl);
+      this.#redirectUrl = undefined;
+    } else {
+      this.#routeAlias.navigate("user-home");
+    }
   }
 
   /**

@@ -14,7 +14,7 @@ export const authGuard = (next: ActivatedRouteSnapshot, state: RouterStateSnapsh
       take(1),
       map(isLoggedIn => {
         if (isLoggedIn) return true;
-        identityService.redirectUrl = state.url;
+        identityService.setRedirectUrl(state.url);
         return createUrlTreeFromSnapshot(next, routeAliasService.getRoute("login"));
       })
     );

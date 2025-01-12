@@ -28,7 +28,7 @@ import { IdentityService } from "src/app/identity/services/identity.service";
     IdentityCardComponent,
     ErrorListComponent,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
   ],
 })
 export class LoginComponent {
@@ -49,7 +49,7 @@ export class LoginComponent {
 
   constructor() {
     this.form.controls.login.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-      next: (login) => this.showMagicLink.setValue(login),
+      next: login => this.showMagicLink.setValue(login),
     });
 
     this.form.markAsTouched();
@@ -73,7 +73,7 @@ export class LoginComponent {
               this.#routeAlias.navigate("verify-code", this.form.value.login);
               break;
             case "AccessToken":
-              this.#routeAlias.navigate("user-home");
+              this.#identityService.redirectLoggedInUser();
               break;
             case "EmailVerificationRequired":
               this.#routeAlias.navigate("email-verification-required");

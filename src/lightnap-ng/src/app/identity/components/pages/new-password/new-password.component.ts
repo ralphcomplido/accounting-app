@@ -52,7 +52,7 @@ export class NewPasswordComponent {
         next: result => {
           switch (result.type) {
             case "AccessToken":
-              this.#routeAlias.navigate("user-home");
+                this.#identityService.redirectLoggedInUser();
               break;
             case "TwoFactorRequired":
               this.#routeAlias.navigate("verify-code", this.email());

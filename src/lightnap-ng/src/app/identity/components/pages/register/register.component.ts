@@ -68,7 +68,7 @@ export class RegisterComponent {
               this.#routeAlias.navigate("verify-code", this.form.value.email);
               break;
             case "AccessToken":
-              this.#routeAlias.navigate("user-home");
+                this.#identityService.redirectLoggedInUser();
               break;
             case "EmailVerificationRequired":
               this.#routeAlias.navigate("email-verification-required");
