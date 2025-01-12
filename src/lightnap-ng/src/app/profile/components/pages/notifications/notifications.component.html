@@ -18,10 +18,15 @@
         <ng-template pTemplate="body" let-notification>
           <tr>
             <td>
-              <div class="w-[30rem]">
+              <div class="w-96">
                 <notification-item [notification]="notification" />
               </div>
             </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td>You have no notifications.</td>
           </tr>
         </ng-template>
       </p-table>

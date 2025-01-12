@@ -2,13 +2,12 @@ import { computed, effect, inject, Injectable, signal } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { APP_NAME } from "@core";
 import { IdentityService } from "@identity";
-import { LayoutState } from "@layout/models/layout-state";
 import { ColorPallette } from "@layout/models/color-pallette";
+import { LayoutState } from "@layout/models/layout-state";
 import { updatePreset, updateSurfacePalette } from "@primeng/themes";
 import Aura from "@primeng/themes/aura";
 import Lara from "@primeng/themes/lara";
 import Nora from "@primeng/themes/nora";
-import { Preset } from "@primeng/themes/types";
 import { LayoutConfig, ProfileService } from "@profile";
 import { Subject } from "rxjs";
 
@@ -245,7 +244,7 @@ export class LayoutService {
         return;
       }
 
-      this.handleDarkModeTransition(config);
+      this.#handleDarkModeTransition(config);
     });
 
     this.#identityService
@@ -262,16 +261,16 @@ export class LayoutService {
       });
   }
 
-  private handleDarkModeTransition(config: LayoutConfig): void {
+  #handleDarkModeTransition(config: LayoutConfig): void {
     if ((document as any).startViewTransition) {
-      this.startViewTransition(config);
+      this.#startViewTransition(config);
     } else {
       this.toggleDarkMode(config);
       this.#onTransitionEnd();
     }
   }
 
-  private startViewTransition(config: LayoutConfig): void {
+  #startViewTransition(config: LayoutConfig): void {
     const transition = (document as any).startViewTransition(() => {
       this.toggleDarkMode(config);
     });
@@ -326,15 +325,15 @@ export class LayoutService {
   onConfigUpdate() {
     const presetChanged = this.#config.preset !== this.layoutConfig().preset;
     if (presetChanged) {
-      this.updatePreset(this.presets[this.layoutConfig().preset as keyof typeof this.presets]);
+      this.updatePreset();
     }
 
     if (presetChanged || this.#config.primary !== this.layoutConfig().primary) {
-        this.updatePreset(this.getPresetExt());
-      }
+      this.updatePallette();
+    }
 
     if (this.#config.surface !== this.layoutConfig().surface) {
-      this.updateSurfacePalette(this.surfaces.find(s => s.name === this.layoutConfig().surface)?.palette);
+      this.updateSurfacePalette();
     }
 
     this.#config = { ...this.layoutConfig() };
@@ -476,15 +475,15 @@ export class LayoutService {
     }
   }
 
-  updatePallette(preset: any) {
-    updatePreset(preset);
+  updatePallette() {
+    updatePreset(this.getPresetExt());
   }
 
-  updateSurfacePalette(palette: any) {
-    updateSurfacePalette(palette);
+  updateSurfacePalette() {
+    updateSurfacePalette(this.surfaces.find(s => s.name === this.layoutConfig().surface)?.palette);
   }
 
-  updatePreset(preset: Preset<any>) {
-    updatePreset(preset);
+  updatePreset() {
+    updatePreset(this.presets[this.layoutConfig().preset as keyof typeof this.presets]);
   }
 }

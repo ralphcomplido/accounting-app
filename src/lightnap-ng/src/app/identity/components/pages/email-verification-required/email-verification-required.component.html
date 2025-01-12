@@ -2,10 +2,8 @@
   <span title>Check Your Inbox</span>
   <span subtitle>You must verify your email before you can log in</span>
 
-  <div class="w-[30rem]">
-    <div class="flex justify-between mt-6">
-      <a [routerLink]="'login' | route">Return to login</a>
-      <a [routerLink]="'request-verification-email' | route" class="ml-auto">Resend</a>
-    </div>
+  <div class="flex justify-between w-96">
+    <a [routerLink]="'login' | route">Return to login</a>
+    <a [routerLink]="'request-verification-email' | route" class="ml-auto">Resend</a>
   </div>
 </identity-card>

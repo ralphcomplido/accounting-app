@@ -1,11 +1,9 @@
 <identity-card>
-    <span title>Check Your Inbox</span>
-    <span subtitle>Password reset instructions have been sent to your email</span>
+  <span title>Check Your Inbox</span>
+  <span subtitle>Password reset instructions have been sent to your email</span>
 
-    <div class="w-[30rem]">
-        <div class="flex justify-between mt-6">
-            <a [routerLink]="'login' | route">Return to login</a>
-            <a [routerLink]="'reset-password' | route" class="ml-auto">Try again</a>
-        </div>
-    </div>
+  <div class="flex justify-between w-96">
+    <a [routerLink]="'login' | route">Return to login</a>
+    <a [routerLink]="'reset-password' | route" class="ml-auto">Try again</a>
+  </div>
 </identity-card>
