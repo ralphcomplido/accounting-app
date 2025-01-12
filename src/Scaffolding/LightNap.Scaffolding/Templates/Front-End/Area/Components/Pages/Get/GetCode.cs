@@ -30,7 +30,7 @@ namespace LightNap.Scaffolding.Templates
         {
             this.Write(@"
 import { CommonModule } from ""@angular/common"";
-import { Component, inject, input, OnInit } from ""@angular/core"";
+import { Component, effect, inject, input } from ""@angular/core"";
 import { RouterLink } from ""@angular/router"";
 import { ApiResponseComponent } from ""@core"";
 import { ButtonModule } from ""primeng/button"";
@@ -80,7 +80,7 @@ import { ");
             #line hidden
             this.Write(".service\";\r\n\r\n@Component({\r\n  standalone: true,\r\n  templateUrl: \"./get.component." +
                     "html\",\r\n  imports: [CommonModule, CardModule, RouterLink, ApiResponseComponent, " +
-                    "ButtonModule],\r\n})\r\nexport class GetComponent implements OnInit {\r\n  #");
+                    "ButtonModule],\r\n})\r\nexport class GetComponent {\r\n  #");
             
             #line 23 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
@@ -94,28 +94,28 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  readonly id = input<");
+            this.Write("Service);\r\n  errors = new Array<string>();\r\n\r\n  readonly id = input.required<");
             
             #line 26 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden
-            this.Write(">(undefined);\r\n  ");
+            this.Write(">();\r\n  ");
             
             #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
             
             #line default
             #line hidden
-            this.Write("$?: Observable<");
+            this.Write("$ = new Observable<");
             
             #line 27 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
             
             #line default
             #line hidden
-            this.Write(">;\r\n\r\n  ngOnInit() {\r\n    this.");
+            this.Write(">();\r\n\r\n  constructor() {\r\n    effect(() => this.");
             
             #line 30 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));
@@ -136,7 +136,7 @@ import { ");
             
             #line default
             #line hidden
-            this.Write("(this.id());\r\n  }\r\n}\r\n");
+            this.Write("(this.id()));\r\n  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

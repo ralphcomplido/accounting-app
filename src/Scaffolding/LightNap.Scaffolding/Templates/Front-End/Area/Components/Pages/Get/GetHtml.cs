@@ -48,9 +48,9 @@ namespace LightNap.Scaffolding.Templates
         <p-button [routerLink]=""['..']"" icon=""pi pi-arrow-up"" label=""See all"" />
         <p-button [routerLink]=""['..', id(), 'edit']"" icon=""pi pi-pencil"" label=""Edit"" />
       </div>
-      <div class=""w-30rem flex flex-column gap-4"">
-        <div>
-          <label class=""block text-900 font-medium mb-2"">");
+      <div class=""w-[30rem] flex flex-col gap-5"">
+        <div class=""flex flex-col gap-2"">
+          <label class=""font-semibold"">");
             
             #line 16 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.Name));
@@ -78,7 +78,8 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("        <div>\r\n          <label class=\"block text-900 font-medium mb-2\">");
+            this.Write("        <div class=\"flex flex-col gap-2\">\r\n          <label class=\"font-semibold\"" +
+                    ">");
             
             #line 21 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Get\GetHtml.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
@@ -106,7 +107,9 @@ namespace LightNap.Scaffolding.Templates
             
             #line default
             #line hidden
-            this.Write("      </div>\r\n    </ng-template>\r\n  </api-response>\r\n</p-card>");
+            this.Write("      </div>\r\n    </ng-template>\r\n    <ng-template #null>\r\n      <p class=\"text-r" +
+                    "ed-500\">This item was not found</p>\r\n    </ng-template>\r\n  </api-response>\r\n</p-" +
+                    "card>");
             return this.GenerationEnvironment.ToString();
         }
     }

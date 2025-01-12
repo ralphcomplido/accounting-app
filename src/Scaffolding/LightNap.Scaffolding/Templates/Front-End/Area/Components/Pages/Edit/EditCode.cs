@@ -340,14 +340,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write("  });\r\n\r\n  readonly id = input<");
+            this.Write("  });\r\n\r\n  readonly id = input.required<");
             
             #line 87 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.IdProperty.FrontEndType));
             
             #line default
             #line hidden
-            this.Write(">(undefined);\r\n  ");
+            this.Write(">();\r\n  ");
             
             #line 88 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.CamelName));

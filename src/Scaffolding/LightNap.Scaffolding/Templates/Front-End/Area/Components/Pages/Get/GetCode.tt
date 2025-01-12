@@ -5,7 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 import { CommonModule } from "@angular/common";
-import { Component, inject, input, OnInit } from "@angular/core";
+import { Component, effect, inject, input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { ApiResponseComponent } from "@core";
 import { ButtonModule } from "primeng/button";
@@ -19,14 +19,14 @@ import { <#= Parameters.PascalName #>Service } from "src/app/<#= Parameters.Keba
   templateUrl: "./get.component.html",
   imports: [CommonModule, CardModule, RouterLink, ApiResponseComponent, ButtonModule],
 })
-export class GetComponent implements OnInit {
+export class GetComponent {
   #<#= Parameters.CamelName #>Service = inject(<#= Parameters.PascalName #>Service);
   errors = new Array<string>();
 
-  readonly id = input<<#= Parameters.IdProperty.FrontEndType #>>(undefined);
-  <#= Parameters.CamelName #>$?: Observable<<#= Parameters.PascalName #>>;
+  readonly id = input.required<<#= Parameters.IdProperty.FrontEndType #>>();
+  <#= Parameters.CamelName #>$ = new Observable<<#= Parameters.PascalName #>>();
 
-  ngOnInit() {
-    this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id());
+  constructor() {
+    effect(() => this.<#= Parameters.CamelName #>$ = this.#<#= Parameters.CamelName #>Service.get<#= Parameters.PascalName #>(this.id()));
   }
 }

@@ -42,7 +42,7 @@ import { InputNumberModule } from ""primeng/inputnumber"";
 import { InputTextModule } from ""primeng/inputtext"";
 import { PanelModule } from ""primeng/panel"";
 import { TableLazyLoadEvent, TableModule } from ""primeng/table"";
-import { TriStateCheckboxModule } from ""primeng/tristatecheckbox"";
+import { CheckboxModule } from ""primeng/checkbox"";
 import { debounceTime, startWith, Subject, switchMap } from ""rxjs"";
 import { ");
             
@@ -98,7 +98,7 @@ import { ");
     InputTextModule,
     InputNumberModule,
     CalendarModule,
-    TriStateCheckboxModule,
+    CheckboxModule,
     ApiResponseComponent,
     PanelModule,
     TableModule,
@@ -136,14 +136,14 @@ export class IndexComponent {
             
             #line default
             #line hidden
-            this.Write(": this.#fb.control<");
+            this.Write(": this.#fb.nonNullable.control<");
             
             #line 50 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexCode.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.FrontEndType));
             
             #line default
             #line hidden
-            this.Write(">(undefined),\r\n");
+            this.Write(" | undefined>(undefined),\r\n");
             
             #line 51 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Index\IndexCode.tt"
   }
@@ -168,7 +168,7 @@ export class IndexComponent {
             this.Write(@"({
         ...this.form.value,
         pageSize: this.pageSize,
-        pageNumber: event.first / this.pageSize + 1,
+        pageNumber: (event.first ?? 0) / this.pageSize + 1,
       })
     ),
     // We need to bootstrap the p-table with a response to get the whole process running. We do it this way to

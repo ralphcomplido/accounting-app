@@ -8,6 +8,8 @@ import { <#= Parameters.PascalName #> } from "../models/response/<#= Parameters.
 
 export class <#= Parameters.PascalName #>Helper {
   static rehydrate(<#= Parameters.CamelName #>: <#= Parameters.PascalName #>) {
+    if (!<#= Parameters.CamelName #>) return;
+
 <#  foreach (var property in Parameters.GetProperties) {
         if (property.FrontEndType == "Date") { #>
     if (<#= Parameters.CamelName #>.<#= property.CamelName #>) {

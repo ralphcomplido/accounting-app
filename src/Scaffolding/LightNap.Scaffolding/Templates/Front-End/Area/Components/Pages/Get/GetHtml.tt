@@ -11,18 +11,21 @@
         <p-button [routerLink]="['..']" icon="pi pi-arrow-up" label="See all" />
         <p-button [routerLink]="['..', id(), 'edit']" icon="pi pi-pencil" label="Edit" />
       </div>
-      <div class="w-30rem flex flex-column gap-4">
-        <div>
-          <label class="block text-900 font-medium mb-2"><#= Parameters.IdProperty.Name #></label>
+      <div class="w-[30rem] flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
+          <label class="font-semibold"><#= Parameters.IdProperty.Name #></label>
           <div>{{ <#= Parameters.CamelName #>.<#= Parameters.IdProperty.CamelName #> }}</div>
         </div>
 <# foreach (var property in Parameters.GetProperties) { #>
-        <div>
-          <label class="block text-900 font-medium mb-2"><#= property.Name #></label>
+        <div class="flex flex-col gap-2">
+          <label class="font-semibold"><#= property.Name #></label>
           <div>{{ <#= Parameters.CamelName #>.<#= property.CamelName #> }}</div>
         </div>
 <# } #>
       </div>
+    </ng-template>
+    <ng-template #null>
+      <p class="text-red-500">This item was not found</p>
     </ng-template>
   </api-response>
 </p-card>

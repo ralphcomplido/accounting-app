@@ -84,7 +84,7 @@ export class EditComponent implements OnInit {
     }#>
   });
 
-  readonly id = input<<#= Parameters.IdProperty.FrontEndType #>>(undefined);
+  readonly id = input.required<<#= Parameters.IdProperty.FrontEndType #>>();
   <#= Parameters.CamelName #>$ = new Observable<<#= Parameters.PascalName #>>();
 
   ngOnInit() {
