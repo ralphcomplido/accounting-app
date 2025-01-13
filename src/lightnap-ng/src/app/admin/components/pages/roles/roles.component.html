@@ -12,7 +12,7 @@
         <ng-template pTemplate="body" let-role>
           <tr>
             <td>
-              <a [routerLink]="'admin-role' | route : role.name"> {{ role.displayName }}</a>
+              <a [routerLink]="'admin-role' | route: role.name"> {{ role.displayName }}</a>
             </td>
             <td>{{ role.name }}</td>
             <td>
@@ -21,10 +21,10 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="100%">There are no roles.</td>
-            </tr>
-          </ng-template>
+          <tr>
+            <td colspan="100%">There are no roles.</td>
+          </tr>
+        </ng-template>
       </p-table>
     </ng-template>
   </api-response>

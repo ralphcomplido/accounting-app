@@ -1,5 +1,4 @@
-import { Component, ElementRef, inject } from "@angular/core";
-import { LayoutService } from "src/app/layout/services/layout.service";
+import { Component } from "@angular/core";
 import { AppMenuComponent } from "../app-menu/app-menu.component";
 
 @Component({
@@ -7,7 +6,4 @@ import { AppMenuComponent } from "../app-menu/app-menu.component";
   templateUrl: "./app-sidebar.component.html",
   imports: [AppMenuComponent],
 })
-export class AppSidebarComponent {
-  readonly layoutService = inject(LayoutService);
-  readonly el = inject(ElementRef);
-}
+export class AppSidebarComponent {}

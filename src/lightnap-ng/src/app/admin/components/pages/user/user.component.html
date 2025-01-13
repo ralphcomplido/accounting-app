@@ -6,8 +6,8 @@
           <div class="flex flex-col gap-1">
             <div class="p-card-title">
               {{ userWithRoles.user.userName }}
-              @if(userWithRoles.user.lockoutEnd) {
-              <p-tag class="ml-1" severity="danger" value="Locked" />
+              @if (userWithRoles.user.lockoutEnd) {
+                <p-tag class="ml-1" severity="danger" value="Locked" />
               }
             </div>
             <div class="p-card-subtitle">{{ userWithRoles.user.email }}</div>
@@ -30,12 +30,7 @@
               [hidden]="!userWithRoles.user.lockoutEnd"
             />
             <confirm-popup key="delete" />
-            <p-button
-              severity="danger"
-              title="Delete user"
-              (onClick)="deleteUser($event)"
-              icon="pi pi-trash"
-            />
+            <p-button severity="danger" title="Delete user" (onClick)="deleteUser($event)" icon="pi pi-trash" />
           </div>
         </div>
       </ng-template>
@@ -56,7 +51,7 @@
               </td>
               <td>
                 <div class="flex flex-col">
-                  <a [routerLink]="'admin-role' | route : role.name"> {{ role.name }}</a>
+                  <a [routerLink]="'admin-role' | route: role.name"> {{ role.name }}</a>
                   <span>{{ role.description }}</span>
                 </div>
               </td>

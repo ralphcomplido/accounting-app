@@ -1,13 +1,13 @@
 <div class="layout-wrapper" [ngClass]="containerClass">
-    <app-top-bar />
-    <div class="layout-sidebar">
-        <app-sidebar />
+  <app-top-bar />
+  <div class="layout-sidebar">
+    <app-sidebar />
+  </div>
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <router-outlet />
     </div>
-    <div class="layout-main-container">
-        <div class="layout-main">
-            <router-outlet />
-        </div>
-        <app-footer />
-    </div>
-    <div class="layout-mask animate-fadein"></div>
+    <app-footer />
+  </div>
+  <div class="layout-mask animate-fadein"></div>
 </div>
