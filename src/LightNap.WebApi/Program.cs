@@ -57,22 +57,27 @@ app.UseCors(policy =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-var fileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.WebRootPath, "browser"));
-app.UseDefaultFiles(new DefaultFilesOptions
-{
-    DefaultFileNames = ["index.html"],
-    FileProvider = fileProvider
-});
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = fileProvider
-});
 app.MapControllers();
-app.MapFallbackToFile("index.html", new StaticFileOptions
+
+string angularAppPath = Path.Combine(app.Environment.WebRootPath, "browser");
+if (Directory.Exists(angularAppPath))
 {
-    FileProvider = fileProvider,
-    RequestPath = ""
-});
+    var fileProvider = new PhysicalFileProvider(angularAppPath);
+    app.UseDefaultFiles(new DefaultFilesOptions
+    {
+        DefaultFileNames = ["index.html"],
+        FileProvider = fileProvider
+    });
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = fileProvider
+    });
+    app.MapFallbackToFile("index.html", new StaticFileOptions
+    {
+        FileProvider = fileProvider,
+        RequestPath = ""
+    });
+}
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
