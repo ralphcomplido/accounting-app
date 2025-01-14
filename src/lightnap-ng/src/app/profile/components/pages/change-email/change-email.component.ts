@@ -5,14 +5,14 @@ import { BlockUiService, ErrorListComponent } from "@core";
 import { ProfileService } from "@profile/services/profile.service";
 import { RouteAliasService } from "@routing";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from "primeng/inputtext";
 import { finalize } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: './change-email.component.html',
-  imports: [CommonModule, ButtonModule, ErrorListComponent, InputTextModule, ReactiveFormsModule, CardModule],
+  imports: [CommonModule, ButtonModule, ErrorListComponent, InputTextModule, ReactiveFormsModule, PanelModule],
 })
 export class ChangeEmailComponent {
   readonly #profileService = inject(ProfileService);

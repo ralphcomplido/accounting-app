@@ -8,7 +8,7 @@ import { ErrorListComponent } from "@core/components/controls/error-list/error-l
 import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { TableModule } from "primeng/table";
 import { Observable, tap } from "rxjs";
 import { RoleWithAdminUsers } from "@admin/models";
@@ -18,7 +18,7 @@ import { RoleWithAdminUsers } from "@admin/models";
   templateUrl: "./role.component.html",
   imports: [
     CommonModule,
-    CardModule,
+    PanelModule,
     TableModule,
     ButtonModule,
     RouterLink,
@@ -34,8 +34,6 @@ export class RoleComponent implements OnInit {
 
   readonly role = input.required<string>();
 
-  header = "Loading role...";
-  subHeader = "";
   errors: string[] = [];
 
   roleWithUsers$ = new Observable<RoleWithAdminUsers>();
@@ -45,12 +43,7 @@ export class RoleComponent implements OnInit {
   }
 
   #refreshRole() {
-    this.roleWithUsers$ = this.#adminService.getRoleWithUsers(this.role()).pipe(
-      tap(roleWithAdminUsers => {
-        this.header = `Manage Users In Role: ${roleWithAdminUsers.role.displayName}`;
-        this.subHeader = roleWithAdminUsers.role.description;
-      })
-    );
+    this.roleWithUsers$ = this.#adminService.getRoleWithUsers(this.role());
   }
 
   removeUserFromRole(event: any, userId: string) {

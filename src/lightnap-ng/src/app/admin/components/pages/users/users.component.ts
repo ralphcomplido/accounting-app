@@ -9,7 +9,7 @@ import { ApiResponseComponent, ConfirmPopupComponent, EmptyPagedResponse, ErrorL
 import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from "primeng/inputtext";
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
@@ -21,7 +21,7 @@ import { debounceTime, startWith, Subject, switchMap } from "rxjs";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
+    PanelModule,
     ApiResponseComponent,
     TableModule,
     ButtonModule,

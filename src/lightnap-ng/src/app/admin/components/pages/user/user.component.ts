@@ -10,7 +10,7 @@ import { ErrorListComponent } from "@core/components/controls/error-list/error-l
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { SelectModule } from "primeng/select";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
@@ -22,7 +22,7 @@ import { Observable } from "rxjs";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
+    PanelModule,
     TableModule,
     ButtonModule,
     RouterLink,

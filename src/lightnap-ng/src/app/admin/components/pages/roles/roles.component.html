@@ -1,6 +1,6 @@
-<p-card header="Manage Roles">
-  <api-response [apiResponse]="roles$" errorMessage="Error loading roles" loadingMessage="Loading roles...">
-    <ng-template #success let-roles>
+<api-response [apiResponse]="roles$" errorMessage="Error loading roles" loadingMessage="Loading roles...">
+  <ng-template #success let-roles>
+    <p-panel header="Manage Roles">
       <p-table [value]="roles">
         <ng-template pTemplate="header">
           <tr>
@@ -26,6 +26,6 @@
           </tr>
         </ng-template>
       </p-table>
-    </ng-template>
-  </api-response>
-</p-card>
+    </p-panel>
+  </ng-template>
+</api-response>

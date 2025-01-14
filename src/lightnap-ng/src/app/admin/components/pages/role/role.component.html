@@ -1,6 +1,6 @@
-<p-card [header]="header" [subheader]="subHeader">
-  <api-response [apiResponse]="roleWithUsers$" errorMessage="Error loading role" loadingMessage="Loading role...">
-    <ng-template #success let-roleWithUsers>
+<api-response [apiResponse]="roleWithUsers$" errorMessage="Error loading role" loadingMessage="Loading role...">
+  <ng-template #success let-roleWithUsers>
+    <p-panel header="Manage Users In Role: {{ roleWithUsers.role.displayName }}">
       <p-table [value]="roleWithUsers.users">
         <ng-template pTemplate="header">
           <tr>
@@ -30,6 +30,6 @@
         </ng-template>
       </p-table>
       <error-list [errors]="errors" />
-    </ng-template>
-  </api-response>
-</p-card>
+    </p-panel>
+  </ng-template>
+</api-response>

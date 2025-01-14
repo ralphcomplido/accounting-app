@@ -6,13 +6,13 @@ import { ErrorListComponent } from "@core/components/controls/error-list/error-l
 import { ProfileService } from "@profile/services/profile.service";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { TableModule } from "primeng/table";
 
 @Component({
   standalone: true,
   templateUrl: "./devices.component.html",
-  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent, ConfirmDialogComponent],
+  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, PanelModule, ApiResponseComponent, ConfirmDialogComponent],
 })
 export class DevicesComponent {
   readonly #profileService = inject(ProfileService);

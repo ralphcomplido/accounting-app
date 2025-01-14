@@ -7,14 +7,14 @@ import { ApiResponseComponent } from "@core/components/controls/api-response/api
 import { ProfileService } from "@profile/services/profile.service";
 import { RouteAliasService, RoutePipe } from "@routing";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from "primeng/panel";
 import { finalize, tap } from "rxjs";
 import { IdentityService } from "src/app/identity/services/identity.service";
 
 @Component({
   standalone: true,
   templateUrl: "./index.component.html",
-  imports: [CommonModule, ErrorListComponent, ReactiveFormsModule, ButtonModule, CardModule, RouterLink, RoutePipe, ApiResponseComponent],
+  imports: [CommonModule, ErrorListComponent, ReactiveFormsModule, ButtonModule, PanelModule, RouterLink, RoutePipe, ApiResponseComponent],
 })
 export class IndexComponent {
   readonly #identityService = inject(IdentityService);

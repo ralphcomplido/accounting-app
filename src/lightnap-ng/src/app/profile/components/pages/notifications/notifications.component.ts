@@ -4,14 +4,14 @@ import { Router } from "@angular/router";
 import { ApiResponseComponent, EmptyPagedResponse, ErrorListComponent, ToastService } from "@core";
 import { NotificationItem, NotificationItemComponent, NotificationService } from "@profile";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import { PanelModule } from 'primeng/panel';
 import { TableLazyLoadEvent, TableModule } from "primeng/table";
 import { startWith, Subject, switchMap } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: "./notifications.component.html",
-  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, CardModule, ApiResponseComponent, NotificationItemComponent],
+  imports: [CommonModule, TableModule, ButtonModule, ErrorListComponent, PanelModule, ApiResponseComponent, NotificationItemComponent],
 })
 export class NotificationsComponent {
   readonly pageSize = 10;

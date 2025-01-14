@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
     standalone: true,
     templateUrl: './index.component.html',
-    imports: [CardModule]
+    imports: [PanelModule]
 })
 export class IndexComponent {
 }

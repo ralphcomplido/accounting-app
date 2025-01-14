@@ -1,6 +1,9 @@
-<p-card header="Manage Your Profile">
-  <api-response [apiResponse]="profile$" errorMessage="Error loading profile" loadingMessage="Loading profile...">
-    <ng-template #success let-profile>
+<api-response [apiResponse]="profile$" errorMessage="Error loading profile" loadingMessage="Loading profile...">
+  <ng-template #success let-profile>
+    <p-panel header="Manage Your Profile">
+      <ng-template #icons>
+        <p-button (onClick)="logOut()" label="Log Out" styleClass="w-full" severity="danger" size="small" icon="pi pi-sign-out" />
+      </ng-template>
       <div class="flex flex-col gap-2">
         <div class="flex flex-col gap-1">
           <label for="userName" class="font-semibold">User Name</label>
@@ -13,17 +16,12 @@
         </div>
 
         <form [formGroup]="form" (ngSubmit)="updateProfile()" autocomplete="off">
-            <div class="flex flex-col w-80 gap-4">
-
+          <div class="flex flex-col w-80 gap-5">
             <error-list [errors]="errors" />
             <p-button type="submit" label="Update Profile" styleClass="w-full" [disabled]="!form.valid || !form.dirty" />
           </div>
         </form>
-
-        <div class="mt-1 w-80">
-          <p-button (onClick)="logOut()" label="Log Out" styleClass="w-full" severity="danger" />
-        </div>
       </div>
-    </ng-template>
-  </api-response>
-</p-card>
+    </p-panel>
+  </ng-template>
+</api-response>
