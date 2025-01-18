@@ -1,4 +1,4 @@
-export interface ColorPallette {
+export interface ColorPalette {
   name?: string;
   palette?: {
     0?: string;

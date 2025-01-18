@@ -7,7 +7,7 @@
           type="button"
           [title]="primaryColor.name"
           (click)="onPrimaryColorChange(primaryColor.name ?? '')"
-          [ngClass]="{ 'outline-primary': primaryColor.name === layoutService.primaryPallette() }"
+          [ngClass]="{ 'outline-primary': primaryColor.name === layoutService.primaryPalette() }"
           class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1"
           [style]="{
             'background-color': primaryColor?.name === 'noir' ? 'var(--text-color)' : primaryColor?.palette?.['500'],
@@ -25,8 +25,8 @@
           [title]="surface.name"
           (click)="onSurfaceColorChange(surface.name ?? '')"
           [ngClass]="{
-            'outline-primary': layoutService.surfacePallette()
-              ? layoutService.surfacePallette() === surface.name
+            'outline-primary': layoutService.surfacePalette()
+              ? layoutService.surfacePalette() === surface.name
               : layoutService.isDarkTheme()
                 ? surface.name === 'zinc'
                 : surface.name === 'slate',

@@ -2,7 +2,7 @@ import { computed, effect, inject, Injectable, signal } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { APP_NAME } from "@core";
 import { IdentityService } from "@identity";
-import { ColorPallette } from "@layout/models/color-pallette";
+import { ColorPalette } from "@layout/models/color-palette";
 import { LayoutState } from "@layout/models/layout-state";
 import { updatePreset, updateSurfacePalette } from "@primeng/themes";
 import Aura from "@primeng/themes/aura";
@@ -36,8 +36,8 @@ export class LayoutService {
   theme = computed(() => (this.layoutConfig()?.darkTheme ? "light" : "dark"));
   isSidebarActive = computed(() => this.layoutState().overlayMenuActive || this.layoutState().staticMenuMobileActive);
   isDarkTheme = computed(() => this.layoutConfig().darkTheme);
-  primaryPallette = computed(() => this.layoutConfig().primary);
-  surfacePallette = computed(() => this.layoutConfig().surface);
+  primaryPalette = computed(() => this.layoutConfig().primary);
+  surfacePalette = computed(() => this.layoutConfig().surface);
   preset = computed(() => this.layoutConfig().preset);
   menuMode = computed(() => this.layoutConfig().menuMode);
   isOverlay = computed(() => this.layoutConfig().menuMode === "overlay");
@@ -54,7 +54,7 @@ export class LayoutService {
     Nora,
   } as const;
 
-  readonly surfaces: ColorPallette[] = [
+  readonly surfaces: ColorPalette[] = [
     {
       name: "slate",
       palette: {
@@ -212,14 +212,14 @@ export class LayoutService {
     "rose",
   ];
 
-  primaryColors = computed<ColorPallette[]>(() => {
+  primaryColors = computed<ColorPalette[]>(() => {
     const presetPalette = this.presets[this.preset() as keyof typeof this.presets].primitive;
-    const palettes: ColorPallette[] = [{ name: "noir", palette: {} }];
+    const palettes: ColorPalette[] = [{ name: "noir", palette: {} }];
 
     this.colors.forEach(color => {
       palettes.push({
         name: color,
-        palette: presetPalette?.[color as keyof typeof presetPalette] as ColorPallette["palette"],
+        palette: presetPalette?.[color as keyof typeof presetPalette] as ColorPalette["palette"],
       });
     });
 
@@ -329,7 +329,7 @@ export class LayoutService {
     }
 
     if (presetChanged || this.#config.primary !== this.layoutConfig().primary) {
-      this.updatePallette();
+      this.updatePalette();
     }
 
     if (this.#config.surface !== this.layoutConfig().surface) {
@@ -346,7 +346,7 @@ export class LayoutService {
   }
 
   getPresetExt() {
-    const color: ColorPallette = this.primaryColors().find(c => c.name === this.layoutConfig().primary) || {};
+    const color: ColorPalette = this.primaryColors().find(c => c.name === this.layoutConfig().primary) || {};
 
     const preset = this.layoutConfig().preset;
 
@@ -475,7 +475,7 @@ export class LayoutService {
     }
   }
 
-  updatePallette() {
+  updatePalette() {
     updatePreset(this.getPresetExt());
   }
 
