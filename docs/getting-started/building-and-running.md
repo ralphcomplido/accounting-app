@@ -67,3 +67,6 @@ nav_order: 100
   - **Email**: `admin@admin.com`
   - **UserName**: `admin`
   - **Password**: `A2m!nPassword`
+
+  {: .note }
+  If you are debugging the back-end in Visual Studio you may see an **Exception User-Unhandled** dialog in the `IdentityService.LogInAsync` method for a `UserFriendlyApiException`. It is recommended that you disable this behavior by unchecking the `Break when this exception type is user-unhandled` since those exceptions are thrown regularly.
