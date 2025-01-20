@@ -59,7 +59,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-string angularAppPath = Path.Combine(app.Environment.WebRootPath, "browser");
+// We need the wwwroot folder so we can append the "browser" folder the Angular app deploys to. We then need to configure the app to serve the Angular deployment,
+// which includes appropriate deep links. However, if you're using a fresh clone then you won't have a wwwroot folder until you build the Angular app and WebRootPath
+// will be null. We then need to check if the folder exists before we try to use it. If it doesn't, then we don't need to bother with the configuration.
+string wwwRootPath = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+string angularAppPath = Path.Combine(wwwRootPath, "browser");
 if (Directory.Exists(angularAppPath))
 {
     var fileProvider = new PhysicalFileProvider(angularAppPath);
