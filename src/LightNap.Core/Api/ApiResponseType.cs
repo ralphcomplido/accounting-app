@@ -1,4 +1,4 @@
-﻿namespace LightNap.WebApi.Api
+﻿namespace LightNap.Core.Api
 {
     /// <summary>
     /// Represents the response types for an API.

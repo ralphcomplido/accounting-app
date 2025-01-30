@@ -4,7 +4,6 @@ using LightNap.Core.Administrator.Interfaces;
 using LightNap.Core.Api;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Identity.Dto.Response;
-using LightNap.WebApi.Api;
 using LightNap.WebApi.Configuration;
 using LightNap.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;

@@ -1,4 +1,4 @@
-﻿namespace LightNap.WebApi.Api
+﻿namespace LightNap.Core.Api
 {
     /// <summary>
     /// Represents the response of an API call.
@@ -32,8 +32,8 @@
         /// <param name="result">The result to return.</param>
         public ApiResponseDto(T? result)
         {
-            Result = result;
-            Type = ApiResponseType.Success;
+            this.Result = result;
+            this.Type = ApiResponseType.Success;
         }
     }
 }

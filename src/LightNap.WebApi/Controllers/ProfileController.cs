@@ -1,9 +1,9 @@
+using LightNap.Core.Api;
 using LightNap.Core.Notifications.Dto.Request;
 using LightNap.Core.Notifications.Dto.Response;
 using LightNap.Core.Profile.Dto.Request;
 using LightNap.Core.Profile.Dto.Response;
 using LightNap.Core.Profile.Interfaces;
-using LightNap.WebApi.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
