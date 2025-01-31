@@ -1,10 +1,10 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest, HttpResponse } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { ApiResponse, HttpErrorApiResponse } from "@core";
-import { IdentityService } from "src/app/identity/services/identity.service";
-import { Observable, catchError, map, of, switchMap, tap, throwError } from "rxjs";
-import { environment } from "src/environments/environment";
 import { RouteAliasService } from "@routing";
+import { Observable, catchError, of, switchMap, throwError } from "rxjs";
+import { IdentityService } from "src/app/identity/services/identity.service";
+import { environment } from "src/environments/environment";
 
 /**
  * Intercepts HTTP responses to unwrap successful results and throw errors via the RxJS pipeline.
