@@ -20,7 +20,7 @@ Here's an example of how a new `Moderator` role can be added:
 ``` csharp
 public static class ApplicationRoles
 {
-    public static readonly ApplicationRole Administrator = new("Administrator", "Administrator", "Access to all administrative features");
+    public static readonly ApplicationRole Administrator = new(Constants.Roles.Administrator, "Administrator", "Access to all administrative features");
     public static readonly ApplicationRole Moderator = new("Moderator", "Moderator", "Moderates content");
 
     public static IReadOnlyList<ApplicationRole> All =>
@@ -31,52 +31,48 @@ public static class ApplicationRoles
 }
 ```
 
-## Adding a Role Policy
+{: .note}
+The "Moderator" name is defined in line here for simplicity, but you may prefer to add it to `Constants.Roles` as a constant string in `Configuration/Constants.cs` in the `LightNap.Core` project.
 
-The names of role policies are defined in `Configuration/Policies.cs` in the `LightNap.WebApi` project. Follow the `RequireAdministratorRole` policy name as a reference for adding more policies.
+## Applying a Role Authorization
 
-Here's how a policy name for requiring the `Moderator` role can be defined:
-
-``` csharp
-public static class Policies
-{
-    public const string RequireAdministratorRole = "RequireAdministratorRole";
-    public const string RequireModeratorRole = "RequireModeratorRole";
-}
-```
-
-Next, the policy itself can be defined in the `AddIdentityServices` method of `Extensions\ApplicationServiceExtensions.cs`. Once again, the `RequireAdministratorRole` policy can be used as a reference.
-
-Here's how the new `RequireModeratorRole` policy can be defined to restrict access to users in either the `Administrator` or `Moderator` roles:
+Suppose you wanted to update the application so that `Moderator` users were able to hide comments via a hypothetical `ChatController.HideComment()` endpoint. You can do this by specifying the authorized roles via the `Authorize` attribute.
 
 ``` csharp
-public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
+public class ChatController(IChatController chatService) : ControllerBase
 {
   ...
-  services.AddAuthorizationBuilder()
-    .AddPolicy(Policies.RequireModeratorRole, policy => policy.RequireRole(ApplicationRoles.Administrator.Name!, ApplicationRoles.Moderator.Name!))
-    .AddPolicy(Policies.RequireAdministratorRole, policy => policy.RequireRole(ApplicationRoles.Administrator.Name!));
-  ...
-```
-
-## Applying a Role Policy
-
-Suppose you wanted to update the application so that `Moderator` users were able to lock user accounts. This can be accomplished by adding that policy to the `LockUserAccount` endpoint in `Controllers/AdministratorController.cs`.
-
-``` csharp
-public class AdministratorController(IAdministratorService administratorService) : ControllerBase
-{
-  ...
-  [HttpPost("users/{userId}/lock")]
-  [ProducesResponseType(typeof(ApiResponseDto<bool>), 200)]
-  [ProducesResponseType(400)]
-  [Authorize(Policy = Policies.RequireModeratorRole)]
-  public async Task<ActionResult<ApiResponseDto<bool>>> LockUserAccount(string userId)
+  [HttpPost("chat/{commentId}/hide")]
+  [Authorize(Roles = ["Moderator"])]
+  public async Task<ApiResponseDto<bool>> HideComment(string commentId)
   {
     ...
 ```
 
 That's it. The role has been added and the REST endpoint now allows `Moderator` access.
+
+### Allowing Any Of A List Of Roles
+
+Sometimes you'll want to allow users who are a member of _any_ specified role to access an endpoint. This can be done by providing a list of roles in a single `Authorize` attribute, such as:
+
+```csharp
+[Authorize(Roles = ["Administrator,Moderator"])]
+```
+
+This will allow any user who is an `Administrator` or `Moderator` (or both) to access the endpoint.
+
+### Requiring All Of A List Of Roles
+
+If your endpoint needs a user to be a member of _all_ roles, add each as its own attribute, such as:
+
+``` csharp
+[Authorize(Roles = ["Administrator"])]
+[Authorize(Roles = ["Moderator"])]
+```
+
+This will require a user to be both an `Administrator` and a `Moderator` to access the endpoint.
+
+Learn more about role-based authorization in ASP.NET [here](https://learn.microsoft.com/aspnet/core/security/authorization/roles).
 
 ## Roles and JSON Web Tokens (JWTs)
 

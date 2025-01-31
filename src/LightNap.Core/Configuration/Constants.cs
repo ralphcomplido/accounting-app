@@ -17,6 +17,17 @@
         }
 
         /// <summary>
+        /// Role names used in the application.
+        /// </summary>
+        public static class Roles
+        {
+            /// <summary>
+            /// The name of the administrator role.
+            /// </summary>
+            public const string Administrator = "Administrator";
+        }
+
+        /// <summary>
         /// Contains constant values related to DTO lengths.
         /// </summary>
         internal static class Dto

@@ -2,10 +2,8 @@ using LightNap.Core.Administrator.Dto.Request;
 using LightNap.Core.Administrator.Dto.Response;
 using LightNap.Core.Administrator.Interfaces;
 using LightNap.Core.Api;
-using LightNap.Core.Data.Entities;
+using LightNap.Core.Configuration;
 using LightNap.Core.Identity.Dto.Response;
-using LightNap.WebApi.Configuration;
-using LightNap.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +13,7 @@ namespace LightNap.WebApi.Controllers
     /// Controller for managing administrative tasks.
     /// </summary>
     [ApiController]
-    [Authorize(Policy = Policies.RequireAdministratorRole)]
+    [Authorize(Roles = Constants.Roles.Administrator)]
     [Route("api/[controller]")]
     public class AdministratorController(IAdministratorService administratorService) : ControllerBase
     {

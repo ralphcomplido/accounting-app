@@ -1,6 +1,5 @@
 ﻿using LightNap.Core.Administrator.Interfaces;
 using LightNap.Core.Administrator.Services;
-using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Email.Interfaces;
@@ -20,7 +19,6 @@ using LightNap.Core.User.Interfaces;
 using LightNap.Core.User.Services;
 using LightNap.DataProviders.Sqlite.Extensions;
 using LightNap.DataProviders.SqlServer.Extensions;
-using LightNap.WebApi.Configuration;
 using LightNap.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -142,9 +140,6 @@ namespace LightNap.WebApi.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetRequiredSetting("Jwt:Key")))
                 };
             });
-
-            services.AddAuthorizationBuilder()
-                .AddPolicy(Policies.RequireAdministratorRole, policy => policy.RequireRole(ApplicationRoles.Administrator.Name!));
 
             return services;
         }
