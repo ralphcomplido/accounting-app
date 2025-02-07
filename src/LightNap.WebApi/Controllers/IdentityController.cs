@@ -97,7 +97,7 @@ namespace LightNap.WebApi.Controllers
         /// <returns>The API response containing the new access token.</returns>
         [HttpGet("access-token")]
         [ProducesResponseType(typeof(ApiResponseDto<string>), 200)]
-        public async Task<ApiResponseDto<string>> RefreshToken()
+        public async Task<ApiResponseDto<string>> AccessToken()
         {
             return new ApiResponseDto<string>(await identityService.GetAccessTokenAsync());
         }
