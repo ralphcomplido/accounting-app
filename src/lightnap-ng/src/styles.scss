@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-@use "./assets/layout/layout";
-@use "primeicons/primeicons.css";
+@use "./assets/layout/layout" as *;
+@use "primeicons/primeicons.css" as *;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.js";
+@plugin 'tailwindcss-primeui';
+@layer tailwind, primeng;
+
+@layer tailwind {
+  @import "tailwindcss";
+}
 
 /*
  * Add style customization here if you want to use Tailwind CSS.
