@@ -1,6 +1,6 @@
 <div class="min-h-screen">
   <div class="bg-surface-0 dark:bg-surface-900 p-2 flex items-center justify-between mb-4 shadow h-20">
-    <a class="flex items-center ml-6 h-10 hover:no-underline" href="#">
+    <a class="flex items-center ml-6 h-10 hover:no-underline" [routerLink]="'landing' | route">
       <img
         src="assets/images/logos/logo-{{ layoutService.isDarkTheme() ? 'dark' : 'light' }}.png"
         alt="LightNap Logo"
