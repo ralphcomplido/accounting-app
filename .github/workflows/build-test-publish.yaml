@@ -52,7 +52,7 @@ jobs:
       - name: Run front-end tests
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
         #run: npm test -- --watch=false --browsers=ChromeHeadless
-        run: echo "Front-end tests disabled see 21"
+        run: echo 'Front-end tests disabled: see #21'
 
       - name: Build front-end app and deploy into back-end site
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
