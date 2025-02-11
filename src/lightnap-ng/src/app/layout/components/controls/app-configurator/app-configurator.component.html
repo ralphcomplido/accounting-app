@@ -31,9 +31,9 @@
                 ? surface.name === 'zinc'
                 : surface.name === 'slate',
           }"
-          class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1"
+          class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-1 outline-stone-500 outline-offset-1"
           [style]="{
-            'background-color': surface?.name === 'noir' ? 'var(--text-color)' : surface?.palette?.['500'],
+            'background-color': surface?.name === 'noir' ? 'var(--text-color)' : layoutService.isDarkTheme() ? surface?.palette?.['800'] : surface?.palette?.['200']
           }"
         ></button>
       }
