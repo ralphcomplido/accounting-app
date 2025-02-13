@@ -1,12 +1,13 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnChanges, SimpleChanges, input, signal } from "@angular/core";
+import { MessageModule } from "primeng/message";
 import { ApiResponse } from "@core";
 
 @Component({
   selector: "error-list",
   standalone: true,
   templateUrl: "./error-list.component.html",
-  imports: [CommonModule],
+  imports: [CommonModule, MessageModule],
 })
 export class ErrorListComponent implements OnChanges {
   readonly error = input<string | undefined>(undefined);

@@ -1,7 +1,7 @@
 @if (errorList().length) {
-  <ul>
+  <div>
     @for (error of errorList(); track error) {
-      <li class="font-bold text-red-500">{{ error }}</li>
+      <p-message severity="error" closable>{{ error }}</p-message>
     }
-  </ul>
+  </div>
 }
