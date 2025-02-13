@@ -76,7 +76,7 @@ export class AdminService {
    */
   getUserRoles(userId: string) {
     return forkJoin([this.getRoles(), this.#dataService.getUserRoles(userId)]).pipe(
-      map(([rolesResponse, userRolesResponse]) => userRolesResponse.map(userRole => rolesResponse.find(role => role.name === userRole)))
+      map(([rolesResponse, userRolesResponse]) => userRolesResponse.map(userRole => rolesResponse.find(role => role.name === userRole)!))
     );
   }
 

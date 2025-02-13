@@ -1,33 +1,27 @@
-<api-response [apiResponse]="userWithRoles$" errorMessage="Error loading user" loadingMessage="Loading user...">
-  <ng-template #success let-userWithRoles>
+<api-response [apiResponse]="user$" errorMessage="Error loading user" loadingMessage="Loading user...">
+  <ng-template #success let-user>
     <p-panel>
       <ng-template pTemplate="header">
         <div class="p-panel-body flex justify-between w-full">
           <div class="flex flex-col gap-1">
             <div class="p-panel-title">
-              {{ userWithRoles.user.userName }}
-              @if (userWithRoles.user.lockoutEnd) {
+              {{ user.userName }}
+              @if (user.lockoutEnd) {
                 <p-tag class="ml-1" severity="danger" value="Locked" />
               }
             </div>
-            <div class="p-panel-subtitle">{{ userWithRoles.user.email }}</div>
+            <div class="p-panel-subtitle">{{ user.email }}</div>
           </div>
           <div class="flex gap-1">
             <confirm-popup key="lock" confirmSeverity="danger" confirmIcon="pi pi-lock" />
-            <p-button
-              severity="danger"
-              title="Lock user account"
-              (onClick)="lockUserAccount($event)"
-              icon="pi pi-lock"
-              [hidden]="userWithRoles.user.lockoutEnd"
-            />
+            <p-button severity="danger" title="Lock user account" (onClick)="lockUserAccount($event)" icon="pi pi-lock" [hidden]="user.lockoutEnd" />
             <confirm-popup key="unlock" confirmSeverity="success" confirmIcon="pi pi-unlock" />
             <p-button
               severity="success"
               title="Unlock user account"
               (onClick)="unlockUserAccount($event)"
               icon="pi pi-unlock"
-              [hidden]="!userWithRoles.user.lockoutEnd"
+              [hidden]="!user.lockoutEnd"
             />
             <confirm-popup key="delete" />
             <p-button severity="danger" title="Delete user" (onClick)="deleteUser($event)" icon="pi pi-trash" />
@@ -35,57 +29,22 @@
         </div>
       </ng-template>
 
-      <div class="flex flex-col gap-1">
-        <p-table [value]="userWithRoles.roles">
-          <ng-template pTemplate="header">
-            <tr>
-              <th><i class="pi pi-trash"></i></th>
-              <th>Role</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-role>
-            <tr>
-              <td>
-                <confirm-popup [key]="role.name" />
-                <p-button severity="danger" icon="pi pi-trash" title="Remove user from role" (onClick)="removeUserFromRole($event, role.name)" />
-              </td>
-              <td>
-                <div class="flex flex-col">
-                  <a [routerLink]="'admin-role' | route: role.name"> {{ role.name }}</a>
-                  <span>{{ role.description }}</span>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="100%">User is not a member of any roles.</td>
-            </tr>
-          </ng-template>
-        </p-table>
+      <p-tabs value="roles">
+        <p-tablist>
+          <p-tab value="profile">Profile</p-tab>
+          <p-tab value="roles">Roles</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="profile">
+            <user-profile [user]="user" />
+          </p-tabpanel>
+          <p-tabpanel value="roles">
+            <user-roles [userRoles]="(userRoles$ | async)!" (addRole)="addRole($event)" (removeRole)="removeRole($event)" />
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
 
-        <api-response [apiResponse]="roles$" errorMessage="Error loading roles" loadingMessage="Loading roles...">
-          <ng-template #success let-roles>
-            <form [formGroup]="addUserToRoleForm" (ngSubmit)="addUserToRole()">
-              <div class="flex gap-1">
-                <p-select
-                  formControlName="role"
-                  [options]="roles"
-                  optionLabel="displayName"
-                  optionValue="name"
-                  placeholder="Select a role"
-                  [showClear]="true"
-                  emptyFilterMessage="No roles found"
-                />
-
-                <p-button severity="success" label="Add user to role" (onClick)="addUserToRole()" [disabled]="!addUserToRoleForm.valid" />
-              </div>
-            </form>
-          </ng-template>
-        </api-response>
-
-        <error-list [errors]="errors" />
-      </div>
+      <error-list [errors]="errors" />
     </p-panel>
   </ng-template>
 </api-response>

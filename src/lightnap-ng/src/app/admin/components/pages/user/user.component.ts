@@ -1,20 +1,20 @@
-import { AdminUserWithRoles } from "@admin/models";
+import { AdminUser, Role } from "@admin/models";
 import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
-import { Component, inject, input, OnChanges, OnInit } from "@angular/core";
+import { Component, inject, input, OnChanges } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RouterLink } from "@angular/router";
 import { ConfirmPopupComponent, ToastService } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
-import { RouteAliasService, RoutePipe } from "@routing";
+import { RouteAliasService } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { PanelModule } from 'primeng/panel';
-import { SelectModule } from "primeng/select";
-import { TableModule } from "primeng/table";
+import { PanelModule } from "primeng/panel";
+import { TabsModule } from "primeng/tabs";
 import { TagModule } from "primeng/tag";
 import { Observable } from "rxjs";
+import { UserProfileComponent } from "./user-profile/user-profile.component";
+import { UserRolesComponent } from "./user-roles/user-roles.component";
 
 @Component({
   standalone: true,
@@ -23,19 +23,18 @@ import { Observable } from "rxjs";
     CommonModule,
     ReactiveFormsModule,
     PanelModule,
-    TableModule,
     ButtonModule,
-    RouterLink,
-    RoutePipe,
     ErrorListComponent,
     ApiResponseComponent,
-    SelectModule,
     ConfirmPopupComponent,
     TagModule,
+    TabsModule,
+    UserRolesComponent,
+    UserProfileComponent,
   ],
 })
 export class UserComponent implements OnChanges {
-  #adminService = inject(AdminService);
+  adminService = inject(AdminService);
   #confirmationService = inject(ConfirmationService);
   #toast = inject(ToastService);
   #routeAlias = inject(RouteAliasService);
@@ -49,46 +48,20 @@ export class UserComponent implements OnChanges {
     role: this.#fb.control("", [Validators.required]),
   });
 
-  userWithRoles$ = new Observable<AdminUserWithRoles>();
-
-  roles$ = this.#adminService.getRoles();
+  user$ = new Observable<AdminUser>();
+  userRoles$ = new Observable<Array<Role>>();
 
   ngOnChanges() {
     this.#refreshUser();
+    this.#refreshRoles();
   }
 
   #refreshUser() {
-    this.userWithRoles$ = this.#adminService.getUserWithRoles(this.userId());
+    this.user$ = this.adminService.getUser(this.userId());
   }
 
-  removeUserFromRole(event: any, role: string) {
-    this.errors = [];
-
-    this.#confirmationService.confirm({
-      header: "Confirm Role Removal",
-      message: `Are you sure that you want to remove this role membership?`,
-      target: event.target,
-      key: role,
-      accept: () => {
-        this.#adminService
-          .removeUserFromRole(this.userId(), role)
-          .subscribe({
-            next: () => this.#refreshUser(),
-            error: response => (this.errors = response.errorMessages),
-          });
-      },
-    });
-  }
-
-  addUserToRole() {
-    this.errors = [];
-
-    this.#adminService
-      .addUserToRole(this.userId(), this.addUserToRoleForm.value.role!)
-      .subscribe({
-        next: () => this.#refreshUser(),
-        error: response => (this.errors = response.errorMessages),
-      });
+  #refreshRoles() {
+    this.userRoles$ = this.adminService.getUserRoles(this.userId());
   }
 
   lockUserAccount(event: any) {
@@ -100,12 +73,10 @@ export class UserComponent implements OnChanges {
       target: event.target,
       key: "lock",
       accept: () => {
-        this.#adminService
-          .lockUserAccount(this.userId())
-          .subscribe({
-            next: () => this.#refreshUser(),
-            error: response => (this.errors = response.errorMessages),
-          });
+        this.adminService.lockUserAccount(this.userId()).subscribe({
+          next: () => this.#refreshUser(),
+          error: response => (this.errors = response.errorMessages),
+        });
       },
     });
   }
@@ -119,7 +90,7 @@ export class UserComponent implements OnChanges {
       target: event.target,
       key: "unlock",
       accept: () => {
-        this.#adminService.unlockUserAccount(this.userId()).subscribe({
+        this.adminService.unlockUserAccount(this.userId()).subscribe({
           next: () => this.#refreshUser(),
           error: response => (this.errors = response.errorMessages),
         });
@@ -136,7 +107,7 @@ export class UserComponent implements OnChanges {
       target: event.target,
       key: "delete",
       accept: () => {
-        this.#adminService.deleteUser(this.userId()).subscribe({
+        this.adminService.deleteUser(this.userId()).subscribe({
           next: () => {
             this.#toast.success("User deleted successfully.");
             this.#routeAlias.navigate("admin-users");
@@ -144,6 +115,24 @@ export class UserComponent implements OnChanges {
           error: response => (this.errors = response.errorMessages),
         });
       },
+    });
+  }
+
+  removeRole(role: string) {
+    this.errors = [];
+
+    this.adminService.removeUserFromRole(this.userId(), role).subscribe({
+      next: () => this.#refreshRoles(),
+      error: response => (this.errors = response.errorMessages),
+    });
+  }
+
+  addRole(role: string) {
+    this.errors = [];
+
+    this.adminService.addUserToRole(this.userId(), role).subscribe({
+      next: () => this.#refreshRoles(),
+      error: response => (this.errors = response.errorMessages),
     });
   }
 }
