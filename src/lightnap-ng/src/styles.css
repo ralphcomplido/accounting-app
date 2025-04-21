@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-@use "./assets/layout/layout" as *;
-@use "primeicons/primeicons.css" as *;
+@import "./assets/layout/layout.css";
+@import "primeicons/primeicons.css";
 
 @config "../tailwind.config.js";
+
 @plugin 'tailwindcss-primeui';
 @layer tailwind, primeng;
 
@@ -14,7 +15,7 @@
  * Add style customization here if you want to use Tailwind CSS.
  */
 a {
-  @apply no-underline text-primary;
+  @apply no-underline;
 }
 
 a:hover {

@@ -9,10 +9,15 @@ h6 {
     font-weight: 700;
     line-height: 1.5;
     color: var(--text-color);
+}
 
-    &:first-child {
-        margin-top: 0;
-    }
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: 0;
 }
 
 h1 {
@@ -61,8 +66,8 @@ hr {
 p {
     margin: 0 0 1rem 0;
     line-height: 1.5;
+}
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+p:last-child {
+    margin-bottom: 0;
 }
