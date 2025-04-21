@@ -1,15 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./assets/layout/layout.css";
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
 @import "primeicons/primeicons.css";
-
-@config "../tailwind.config.js";
-
-@plugin 'tailwindcss-primeui';
-@layer tailwind, primeng;
-
-@layer tailwind {
-  @import "tailwindcss";
-}
+@import "./assets/layout/layout.css";
 
 /*
  * Add style customization here if you want to use Tailwind CSS.
