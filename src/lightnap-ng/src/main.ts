@@ -31,11 +31,7 @@ bootstrapApplication(AppComponent, {
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: ".app-dark",
-          cssLayer: {
-            name: "primeng",
-            order: "tailwind, primeng",
-          },
+          darkModeSelector: ".app-dark"
         },
       },
     }),

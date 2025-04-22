@@ -1,4 +1,5 @@
-@mixin focused() {
+/* Focused styles */
+.focused {
     outline-width: var(--focus-ring-width);
     outline-style: var(--focus-ring-style);
     outline-color: var(--focus-ring-color);
@@ -9,7 +10,8 @@
         outline-color var(--transition-duration);
 }
 
-@mixin focused-inset() {
+/* Focused inset styles */
+.focused-inset {
     outline-offset: -1px;
     box-shadow: inset var(--focus-ring-shadow);
 }
