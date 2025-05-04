@@ -100,7 +100,7 @@ export class EditComponent implements OnInit {
 
     this.#blockUi.show({ message: "Saving..." });
     this.#<#= Parameters.CamelName #>Service
-      .updateTestEntity(this.id(), request)
+      .update<#= Parameters.PascalName #>(this.id(), request)
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#toast.success("Updated successfully"),

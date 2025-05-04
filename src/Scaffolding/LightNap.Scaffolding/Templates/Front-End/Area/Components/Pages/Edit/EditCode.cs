@@ -419,8 +419,14 @@ export class EditComponent implements OnInit {
             
             #line default
             #line hidden
-            this.Write(@"Service
-      .updateTestEntity(this.id(), request)
+            this.Write("Service\r\n      .update");
+            
+            #line 103 "C:\Users\edkai\source\repos\SharpLogic\LightNap\src\Scaffolding\LightNap.Scaffolding\Templates\Front-End\Area\Components\Pages\Edit\EditCode.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Parameters.PascalName));
+            
+            #line default
+            #line hidden
+            this.Write(@"(this.id(), request)
       .pipe(finalize(() => this.#blockUi.hide()))
       .subscribe({
         next: () => this.#toast.success(""Updated successfully""),
