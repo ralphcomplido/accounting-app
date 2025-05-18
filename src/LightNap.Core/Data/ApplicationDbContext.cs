@@ -1,9 +1,9 @@
-﻿using LightNap.Core.Data.Converters;
+﻿using LightNap.Core.Data.Comparers;
+using LightNap.Core.Data.Converters;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Profile.Dto.Response;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace LightNap.Core.Data
 {
@@ -35,15 +35,6 @@ namespace LightNap.Core.Data
         /// </summary>
         public ApplicationDbContext() { }
 
-        ///// <inheritdoc />
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseLazyLoadingProxies();
-        //    }
-        //}
-
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,15 +42,13 @@ namespace LightNap.Core.Data
 
             builder.Entity<Notification>()
                 .Property(n => n.Data)
-                    .HasConversion(
-                        v => JsonSerializer.Serialize(v, null as JsonSerializerOptions),
-                        v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, null as JsonSerializerOptions) ?? new Dictionary<string, object>()
-                    );
+                    .HasConversion(new DictionaryStringObjectConverter())
+                    .Metadata.SetValueComparer(new DictionaryStringObjectValueComparer());
 
             builder.Entity<Notification>()
-                .HasOne(rt => rt.User)
+                .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)
-                .HasForeignKey(rt => rt.UserId)
+                .HasForeignKey(n => n.UserId)
                 .IsRequired();
 
             builder.Entity<RefreshToken>()
@@ -67,6 +56,10 @@ namespace LightNap.Core.Data
                 .WithMany(u => u.RefreshTokens)
                 .HasForeignKey(rt => rt.UserId)
                 .IsRequired();
+
+            builder.Entity<ApplicationUser>()
+                .Property(u => u.BrowserSettings)
+                .Metadata.SetValueComparer(new BrowserSettingsValueComparer());
         }
 
         /// <inheritdoc />
@@ -76,7 +69,8 @@ namespace LightNap.Core.Data
             configurationBuilder.Properties<DateTime>().HaveConversion<UtcValueConverter>();
 
             // Storing this as a JSON string.
-            configurationBuilder.Properties<BrowserSettingsDto>().HaveConversion<BrowserSettingsValueConverter>();
+            configurationBuilder.Properties<BrowserSettingsDto>()
+                .HaveConversion<BrowserSettingsValueConverter>();
         }
     }
 }
