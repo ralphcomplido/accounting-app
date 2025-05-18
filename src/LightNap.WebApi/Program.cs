@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
-builder.Services.Configure<List<AdministratorConfiguration>>(builder.Configuration.GetSection("Administrators"));
+builder.Services.Configure<Dictionary<string, List<SeededUserConfiguration>>>(builder.Configuration.GetSection("SeededUsers"));
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions((options) =>

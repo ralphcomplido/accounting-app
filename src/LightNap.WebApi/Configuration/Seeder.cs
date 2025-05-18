@@ -19,7 +19,7 @@ namespace LightNap.WebApi.Configuration
         private readonly UserManager<ApplicationUser> UserManager;
         private readonly ApplicationDbContext Db;
         private readonly IServiceProvider ServiceProvider;
-        private readonly IOptions<List<AdministratorConfiguration>> AdministratorConfigurations;
+        private readonly IOptions<Dictionary<string, List<SeededUserConfiguration>>> SeededUserConfigurations;
         private readonly IOptions<ApplicationSettings> ApplicationSettings;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace LightNap.WebApi.Configuration
             this.Logger = serviceProvider.GetRequiredService<ILogger<Seeder>>();
             this.UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             this.Db = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            this.AdministratorConfigurations = serviceProvider.GetRequiredService<IOptions<List<AdministratorConfiguration>>>();
+            this.SeededUserConfigurations = serviceProvider.GetRequiredService<IOptions<Dictionary<string, List<SeededUserConfiguration>>>>();
             this.ApplicationSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
         }
 
@@ -44,7 +44,7 @@ namespace LightNap.WebApi.Configuration
         public async Task SeedAsync()
         {
             await this.SeedRolesAsync();
-            await this.SeedAdministratorsAsync();
+            await this.SeedUsersAsync();
             await this.SeedApplicationContentAsync();
             await this.SeedEnvironmentContentAsync();
         }
@@ -82,17 +82,32 @@ namespace LightNap.WebApi.Configuration
         }
 
         /// <summary>
-        /// Seeds the administrators in the application.
+        /// Seeds the users in the application and adds them to their respective roles.
         /// </summary>
         /// <returns>A task representing the asynchronous operation.</returns>
-        private async Task SeedAdministratorsAsync()
+        private async Task SeedUsersAsync()
         {
-            if (this.AdministratorConfigurations.Value is null) { return; }
+            if (this.SeededUserConfigurations.Value is null) { return; }
 
-            foreach (var administrator in this.AdministratorConfigurations.Value)
+            // Loop through the dictionary keys (roles) and add/get each user and add them to the role. Note that we sort the roles alphabetically,
+            // so the "earliest" alphabetic instance of a new user will use that email/password.
+            foreach (var roleToUsers in this.SeededUserConfigurations.Value.OrderBy(roleToUser => roleToUser.Key)
+                .Select(roleToUser => new { Role = roleToUser.Key, Users = roleToUser.Value }))
             {
-                ApplicationUser user = await this.GetOrCreateUserAsync(administrator.UserName, administrator.Email, administrator.Password);
-                await this.AddUserToRole(user, ApplicationRoles.Administrator.Name!);
+                if (!string.IsNullOrWhiteSpace(roleToUsers.Role))
+                {
+                    if (!await this.RoleManager.RoleExistsAsync(roleToUsers.Role)) { throw new ArgumentException($"Unable to find role '{roleToUsers.Role}' to seed users."); }
+                }
+
+                foreach (var seededUser in roleToUsers.Users)
+                {
+                    ApplicationUser user = await this.GetOrCreateUserAsync(seededUser.UserName, seededUser.Email, seededUser.Password);
+
+                    if (!string.IsNullOrWhiteSpace(roleToUsers.Role))
+                    {
+                        await this.AddUserToRole(user, roleToUsers.Role);
+                    }
+                }
             }
         }
 
