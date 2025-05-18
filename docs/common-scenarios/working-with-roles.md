@@ -74,6 +74,10 @@ This will require a user to be both an `Administrator` and a `Moderator` to acce
 
 Learn more about role-based authorization in ASP.NET [here](https://learn.microsoft.com/aspnet/core/security/authorization/roles).
 
+## Seeding Role Users
+
+Learn about [seeding users in a role](../getting-started/seeding-users).
+
 ## Roles and JSON Web Tokens (JWTs)
 
 Roles are automatically embedded in access tokens by the back-end to authorize future requests. As a result, tokens issued before a role assignment has changed will not reflect the latest role behavior until they are replaced. The maximum theoretical time for this is based on how long the access token is [configured to expire in the application settings](../getting-started/configuring-jwt). Users can speed this up by logging out and in again.

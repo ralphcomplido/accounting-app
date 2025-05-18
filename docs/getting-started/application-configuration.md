@@ -29,6 +29,6 @@ See the options for configuring the [email provider](./email-providers) to use.
 
 See the options for configuring the [JSON Web Tokens](./configuring-jwt) used for site authentication.
 
-## Seeding Administrators
+## Seeding Administrators and other users
 
-See the options for [seeding Administrator accounts](./seeding-administrators).
+See the options for [seeding user accounts](./seeding-users).
