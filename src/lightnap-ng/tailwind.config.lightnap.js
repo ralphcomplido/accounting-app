@@ -1,3 +1,6 @@
+// Note: This file uses a name other than "tailwind.config.js" so that both the build and tests will run without other workarounds.
+// See https://github.com/SharpLogic/LightNap/issues/21.
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["selector", '[class="app-dark"]'],

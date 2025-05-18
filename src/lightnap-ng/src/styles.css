@@ -4,7 +4,7 @@
 @import "primeicons/primeicons.css";
 @import "./assets/layout/layout.css";
 
-@config "../tailwind.config.js";
+@config "../tailwind.config.lightnap.js";
 
 /*
  * Add style customization here if you want to use Tailwind CSS.
