@@ -33,8 +33,8 @@ For example, the default configuration looks like this:
 
 The seeder will loop through the keys of the `SeededUsers` dictionary in alphabetic order. For each it will confirm the role exists (if not empty) and then loop through the list of provided users.
 
-  {: note }
-  The roles used as keys in the seeded user list must exactly match the name of the role in the app. For example `Administrator` and not `Administrators`.
+{: .note }
+The roles used as keys in the seeded user list must exactly match the name of the role in the app. For example `Administrator` and not `Administrators`.
 
 For each user it will check for an existing user with the specified email address and then create it if it does not yet exist. If the user already exists it will not confirm the provided user name matches or change the password.
 
