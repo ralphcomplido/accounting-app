@@ -49,10 +49,12 @@ jobs:
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
         run: npm install
 
-      - name: Run front-end tests
+      - name: Run front-end tests (temporarily hiding tailwind.config.js)
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
-        #run: npm test -- --watch=false --browsers=ChromeHeadless
-        run: echo "Front-end tests disabled (see \#21)"
+        run: |
+          node tailwind.config.mover.js hide
+          npm test -- --watch=false --browsers=ChromeHeadless
+          node tailwind.config.mover.js restore
 
       - name: Build front-end app and deploy into back-end site
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
