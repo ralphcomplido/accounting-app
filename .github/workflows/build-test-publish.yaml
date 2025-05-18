@@ -51,10 +51,7 @@ jobs:
 
       - name: Run front-end tests (temporarily hiding tailwind.config.js)
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
-        run: |
-          node tailwind.config.mover.js hide
-          npm test -- --watch=false --browsers=ChromeHeadless
-          node tailwind.config.mover.js restore
+        run: npm test -- --watch=false --browsers=ChromeHeadless
 
       - name: Build front-end app and deploy into back-end site
         working-directory: src/${{ env.ANGULAR_PROJECT_NAME }}
