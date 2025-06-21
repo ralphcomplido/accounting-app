@@ -5,8 +5,8 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 using <#= Parameters.CoreNamespace #>.Api;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Request;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Response;
 
 namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces
 {

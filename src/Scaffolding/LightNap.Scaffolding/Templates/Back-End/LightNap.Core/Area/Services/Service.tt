@@ -6,11 +6,11 @@
 
 using <#= Parameters.CoreNamespace #>.Api;
 using <#= Parameters.CoreNamespace #>.Data;
-using <#= Parameters.CoreNamespace #>.Data.Entities;
+using <#= Parameters.EntityNamespace #>;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Extensions;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Request;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Response;
 using Microsoft.EntityFrameworkCore;
 
 namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Services

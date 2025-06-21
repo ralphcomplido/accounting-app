@@ -52,7 +52,7 @@ var rootCommand = new RootCommand()
 rootCommand.SetHandler((className, namespaceValue, srcPath, coreProjectName, webApiProjectName, angularProjectName, skipComponents, overwrite) =>
 {
     ServiceRunner runner = new(new ProjectManager(), new AssemblyManager());
-    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, coreProjectName, webApiProjectName, angularProjectName, skipComponents, overwrite));
+    runner.Run(new ServiceParameters($"{namespaceValue}.{className}", srcPath, namespaceValue, coreProjectName, webApiProjectName, angularProjectName, skipComponents, overwrite));
 },
 classNameArgument, namespaceOption, srcPathOption, coreProjectNameOption, webApiProjectNameOption, angularProjectNameOption, skipComponentsOption, overwriteOption);
 

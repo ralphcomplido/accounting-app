@@ -8,7 +8,7 @@
 using <#= ns #>;
 <# } #>
 
-namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto
+namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Response
 {
     public class <#= Parameters.PascalName #>Dto
     {

@@ -48,6 +48,11 @@ namespace LightNap.Scaffolding.ServiceRunner
         public readonly string CoreProjectPath;
 
         /// <summary>
+        /// The entity's namespace.
+        /// </summary>
+        public readonly string EntityNamespace;
+
+        /// <summary>
         /// The core project file path.
         /// </summary>
         public readonly string CoreProjectFilePath;
@@ -79,11 +84,12 @@ namespace LightNap.Scaffolding.ServiceRunner
         /// <param name="skipComponents">True to skip [re]generating Angular components.</param>
         /// <param name="overwrite">True to overwrite existing files.</param>
         [SetsRequiredMembers]
-        public ServiceParameters(string className, string sourcePath, string coreProjectName, string webApiProjectName,
+        public ServiceParameters(string className, string sourcePath, string entityNamespace, string coreProjectName, string webApiProjectName,
             string angularProjectName, bool skipComponents, bool overwrite)
         {
             this.ClassName = className;
             this.SourcePath = Path.GetFullPath(sourcePath);
+            this.EntityNamespace = entityNamespace;
             this.CoreProjectName = coreProjectName;
             this.WebApiProjectName = webApiProjectName;
             this.AngularProjectName = angularProjectName;

@@ -6,8 +6,8 @@
 
 using <#= Parameters.CoreNamespace #>.Api;
 using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Interfaces;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto;
-using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Response.Dto;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Request;
+using <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace <#= Parameters.WebApiNamespace #>.Controllers

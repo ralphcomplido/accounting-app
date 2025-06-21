@@ -9,7 +9,7 @@ using <#= Parameters.CoreNamespace #>.Api;
 using <#= ns #>;
 <# } #>
 
-namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Request.Dto
+namespace <#= Parameters.CoreNamespace #>.<#= Parameters.NameForNamespace #>.Dto.Request
 {
     public class Search<#= Parameters.PascalNamePlural #>Dto : PaginationRequestDtoBase
     {

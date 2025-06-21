@@ -13,6 +13,7 @@ namespace LightNap.Scaffolding.TemplateManager
     {
         public readonly string PascalName;
         public readonly string PascalNamePlural;
+        public readonly string EntityNamespace;
         public readonly string NameForNamespace;
         public readonly string CamelName;
         public readonly string CamelNamePlural;
@@ -37,6 +38,7 @@ namespace LightNap.Scaffolding.TemplateManager
         {
             this.PascalName = pascalName;
             this.PascalNamePlural = pascalName.Pluralize();
+            this.EntityNamespace = serviceParameters.EntityNamespace;
 
             // If the pluralized name is the same as the singular name, add an underscore to the name so that we don't get ambiguity errors in the generated code due to
             // the namespace and type being identical. This seemed like the least impactful way to fix the issue.
