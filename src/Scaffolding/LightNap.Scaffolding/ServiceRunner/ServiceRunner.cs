@@ -75,7 +75,7 @@ namespace LightNap.Scaffolding.ServiceRunner
                     new(new Dto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Response/{type.Name}Dto.cs"),
                     new(new Extensions() { Parameters = templateParameters },$"{parameters.CoreProjectPath}/{pascalNamePlural}/Extensions/{type.Name}Extensions.cs"),
                     new(new Interface() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Interfaces/I{type.Name}Service.cs"),
-                    new(new SearchDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Search{type.Name}Dto.cs"),
+                    new(new SearchDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Search{pascalNamePlural}Dto.cs"),
                     new(new Service() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Services/{type.Name}Service.cs"),
                     new(new UpdateDto() { Parameters = templateParameters }, $"{parameters.CoreProjectPath}/{pascalNamePlural}/Dto/Request/Update{type.Name}Dto.cs"),
                     new(new Controller() { Parameters = templateParameters }, $"{parameters.WebApiProjectPath}/Controllers/{pascalNamePlural}Controller.cs"),
