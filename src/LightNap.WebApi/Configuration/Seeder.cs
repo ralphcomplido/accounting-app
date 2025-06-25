@@ -12,30 +12,19 @@ namespace LightNap.WebApi.Configuration
     /// <summary>
     /// Class responsible for seeding content in the application upon load.
     /// </summary>
-    public partial class Seeder
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="Seeder"/> class.
+    /// </remarks>
+    /// <param name="serviceProvider">Service provider to pull dependencies from.</param>
+    public partial class Seeder(IServiceProvider serviceProvider)
     {
-        private readonly RoleManager<ApplicationRole> RoleManager;
-        private readonly ILogger<Seeder> Logger;
-        private readonly UserManager<ApplicationUser> UserManager;
-        private readonly ApplicationDbContext Db;
-        private readonly IServiceProvider ServiceProvider;
-        private readonly IOptions<Dictionary<string, List<SeededUserConfiguration>>> SeededUserConfigurations;
-        private readonly IOptions<ApplicationSettings> ApplicationSettings;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Seeder"/> class.
-        /// </summary>
-        /// <param name="serviceProvider">Service provider to pull dependencies from.</param>
-        public Seeder(IServiceProvider serviceProvider)
-        {
-            this.ServiceProvider = serviceProvider;
-            this.RoleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            this.Logger = serviceProvider.GetRequiredService<ILogger<Seeder>>();
-            this.UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            this.Db = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            this.SeededUserConfigurations = serviceProvider.GetRequiredService<IOptions<Dictionary<string, List<SeededUserConfiguration>>>>();
-            this.ApplicationSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
-        }
+        private readonly RoleManager<ApplicationRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+        private readonly ILogger<Seeder> _logger = serviceProvider.GetRequiredService<ILogger<Seeder>>();
+        private readonly UserManager<ApplicationUser> _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        private readonly ApplicationDbContext _db = serviceProvider.GetRequiredService<ApplicationDbContext>();
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IOptions<Dictionary<string, List<SeededUserConfiguration>>> _seededUserConfigurations = serviceProvider.GetRequiredService<IOptions<Dictionary<string, List<SeededUserConfiguration>>>>();
+        private readonly IOptions<ApplicationSettings> _applicationSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
 
         /// <summary>
         /// Run seeding functionality necessary every time an application loads, regardless of environment.
@@ -57,27 +46,27 @@ namespace LightNap.WebApi.Configuration
         {
             foreach (ApplicationRole role in ApplicationRoles.All)
             {
-                if (!await this.RoleManager.RoleExistsAsync(role.Name!))
+                if (!await this._roleManager.RoleExistsAsync(role.Name!))
                 {
-                    var result = await this.RoleManager.CreateAsync(role);
+                    var result = await this._roleManager.CreateAsync(role);
                     if (!result.Succeeded)
                     {
                         throw new ArgumentException($"Unable to create role '{role.Name}': {string.Join("; ", result.Errors.Select(error => error.Description))}");
                     }
-                    this.Logger.LogInformation("Added role '{roleName}'", role.Name);
+                    this._logger.LogInformation("Added role '{roleName}'", role.Name);
                 }
             }
 
             var roleSet = new HashSet<string>(ApplicationRoles.All.Select(role => role.Name!), StringComparer.OrdinalIgnoreCase);
 
-            foreach (var role in this.RoleManager.Roles.Where(role => role.Name != null && !roleSet.Contains(role.Name)))
+            foreach (var role in this._roleManager.Roles.Where(role => role.Name != null && !roleSet.Contains(role.Name)))
             {
-                var result = await this.RoleManager.DeleteAsync(role);
+                var result = await this._roleManager.DeleteAsync(role);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException($"Unable to remove role '{role.Name}': {string.Join("; ", result.Errors.Select(error => error.Description))}");
                 }
-                this.Logger.LogInformation("Removed role '{roleName}'", role.Name);
+                this._logger.LogInformation("Removed role '{roleName}'", role.Name);
             }
         }
 
@@ -87,16 +76,16 @@ namespace LightNap.WebApi.Configuration
         /// <returns>A task representing the asynchronous operation.</returns>
         private async Task SeedUsersAsync()
         {
-            if (this.SeededUserConfigurations.Value is null) { return; }
+            if (this._seededUserConfigurations.Value is null) { return; }
 
             // Loop through the dictionary keys (roles) and add/get each user and add them to the role. Note that we sort the roles alphabetically,
             // so the "earliest" alphabetic instance of a new user will use that email/password.
-            foreach (var roleToUsers in this.SeededUserConfigurations.Value.OrderBy(roleToUser => roleToUser.Key)
+            foreach (var roleToUsers in this._seededUserConfigurations.Value.OrderBy(roleToUser => roleToUser.Key)
                 .Select(roleToUser => new { Role = roleToUser.Key, Users = roleToUser.Value }))
             {
                 if (!string.IsNullOrWhiteSpace(roleToUsers.Role))
                 {
-                    if (!await this.RoleManager.RoleExistsAsync(roleToUsers.Role)) { throw new ArgumentException($"Unable to find role '{roleToUsers.Role}' to seed users."); }
+                    if (!await this._roleManager.RoleExistsAsync(roleToUsers.Role)) { throw new ArgumentException($"Unable to find role '{roleToUsers.Role}' to seed users."); }
                 }
 
                 foreach (var seededUser in roleToUsers.Users)
@@ -120,7 +109,7 @@ namespace LightNap.WebApi.Configuration
         /// <returns>A task representing the asynchronous operation.</returns>
         private async Task<ApplicationUser> GetOrCreateUserAsync(string userName, string email, string? password = null)
         {
-            ApplicationUser? user = await this.UserManager.FindByEmailAsync(email);
+            ApplicationUser? user = await this._userManager.FindByEmailAsync(email);
 
             if (user is null)
             {
@@ -136,15 +125,15 @@ namespace LightNap.WebApi.Configuration
                     UserName = userName
                 };
 
-                user = registerRequestDto.ToCreate(this.ApplicationSettings.Value.RequireTwoFactorForNewUsers);
+                user = registerRequestDto.ToCreate(this._applicationSettings.Value.RequireTwoFactorForNewUsers);
 
-                var result = await this.UserManager.CreateAsync(user, passwordToSet);
+                var result = await this._userManager.CreateAsync(user, passwordToSet);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException($"Unable to create user '{userName}' ('{email}'): {string.Join("; ", result.Errors.Select(error => error.Description))}");
                 }
 
-                this.Logger.LogInformation("Created user '{userName}' ('{email}')", userName, email);
+                this._logger.LogInformation("Created user '{userName}' ('{email}')", userName, email);
             }
 
             return user;
@@ -158,9 +147,9 @@ namespace LightNap.WebApi.Configuration
         /// <returns>A task representing the asynchronous operation.</returns>
         private async Task AddUserToRole(ApplicationUser user, string role)
         {
-            if (!await this.UserManager.IsInRoleAsync(user, role))
+            if (!await this._userManager.IsInRoleAsync(user, role))
             {
-                var result = await this.UserManager.AddToRoleAsync(user, role);
+                var result = await this._userManager.AddToRoleAsync(user, role);
                 if (!result.Succeeded)
                 {
                     throw new ArgumentException(
@@ -168,7 +157,7 @@ namespace LightNap.WebApi.Configuration
                 }
             }
 
-            this.Logger.LogInformation("Added user '{userName}' ('{email}') to role '{roleName}'", user.UserName, user.Email, role);
+            this._logger.LogInformation("Added user '{userName}' ('{email}') to role '{roleName}'", user.UserName, user.Email, role);
         }
 
         /// <summary>
