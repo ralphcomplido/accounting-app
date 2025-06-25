@@ -2,6 +2,7 @@ import { AdminUser, Role, SearchAdminUsersRequest, UpdateAdminUserRequest } from
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { API_URL_ROOT, ApiResponse, PagedResponse } from "@core";
+import { Claim } from "@identity";
 
 @Injectable({
   providedIn: "root",
@@ -44,6 +45,22 @@ export class DataService {
 
   removeUserFromRole(userId: string, role: string) {
     return this.#http.delete<boolean>(`${this.#apiUrlRoot}roles/${role}/${userId}`);
+  }
+
+  getUserClaims(userId: string) {
+    return this.#http.get<Array<Claim>>(`${this.#apiUrlRoot}users/${userId}/claims`);
+  }
+
+  getUsersForClaim(claim: Claim) {
+    return this.#http.get<Array<AdminUser>>(`${this.#apiUrlRoot}claims/${claim.type}/${claim.value}`);
+  }
+
+  addClaimToUser(userId: string, claim: Claim) {
+    return this.#http.post<boolean>(`${this.#apiUrlRoot}users/${userId}/claims/${claim.type}/${claim.value}`, null);
+  }
+
+  removeClaimFromUser(userId: string, claim: Claim) {
+    return this.#http.delete<boolean>(`${this.#apiUrlRoot}users/${userId}/claims/${claim.type}/${claim.value}`);
   }
 
   lockUserAccount(userId: string) {

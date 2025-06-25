@@ -3,6 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { ErrorApiResponse, SuccessApiResponse } from "@core";
 import { forkJoin, map, Observable, of, switchMap, tap, throwError } from "rxjs";
 import { DataService } from "./data.service";
+import { Claim } from "@identity";
 
 /**
  * Service for Administrator management of users, roles, and other data.
@@ -121,6 +122,44 @@ export class AdminService {
    */
   removeUserFromRole(userId: string, role: string) {
     return this.#dataService.removeUserFromRole(userId, role);
+  }
+
+  /**
+   * Gets the claims for a user.
+   * @param {string} userId - The user to retrieve claims for.
+   * @returns {Observable<Array<Claim>>} An observable containing the user's claims.
+   */
+  getUserClaims(userId: string) {
+    return this.#dataService.getUserClaims(userId);
+  }
+
+  /**
+   * Gets the users for a claim.
+   * @param {Claim} claim - The claim to retrieve users for.
+   * @returns {Observable<Array<AdminUser>>} An observable containing the users with the specified claim.
+   */
+  getUsersForClaim(claim: Claim) {
+    return this.#dataService.getUsersForClaim(claim);
+  }
+
+  /**
+   * Adds a claim to a user.
+   * @param {string} userId - The user to add the claim to.
+   * @param {Claim} claim - The claim to add.
+   * @returns {Observable<boolean>} An observable with a result of true if successful.
+   */
+  addClaimToUser(userId: string, claim: Claim) {
+    return this.#dataService.addClaimToUser(userId, claim);
+  }
+
+  /**
+   * Removes a claim from a user.
+   * @param {string} userId - The user to remove the claim from.
+   * @param {Claim} claim - The claim to remove.
+   * @returns {Observable<boolean>} An observable with a result of true if successful.
+   */
+  removeClaimFromUser(userId: string, claim: Claim) {
+    return this.#dataService.removeClaimFromUser(userId, claim);
   }
 
   /**

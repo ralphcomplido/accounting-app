@@ -15,6 +15,8 @@ import { TagModule } from "primeng/tag";
 import { Observable } from "rxjs";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { UserRolesComponent } from "./user-roles/user-roles.component";
+import { UserClaimsComponent } from "./user-claims/user-claims.component";
+import { Claim } from "@identity";
 
 @Component({
   standalone: true,
@@ -29,6 +31,7 @@ import { UserRolesComponent } from "./user-roles/user-roles.component";
     ConfirmPopupComponent,
     TagModule,
     TabsModule,
+    UserClaimsComponent,
     UserRolesComponent,
     UserProfileComponent,
   ],
@@ -44,16 +47,14 @@ export class UserComponent implements OnChanges {
 
   errors: string[] = [];
 
-  addUserToRoleForm = this.#fb.group({
-    role: this.#fb.control("", [Validators.required]),
-  });
-
   user$ = new Observable<AdminUser>();
+  userClaims$ = new Observable<Array<Claim>>();
   userRoles$ = new Observable<Array<Role>>();
 
   ngOnChanges() {
     this.#refreshUser();
     this.#refreshRoles();
+    this.#refreshClaims();
   }
 
   #refreshUser() {
@@ -62,6 +63,10 @@ export class UserComponent implements OnChanges {
 
   #refreshRoles() {
     this.userRoles$ = this.adminService.getUserRoles(this.userId());
+  }
+
+  #refreshClaims() {
+    this.userClaims$ = this.adminService.getUserClaims(this.userId());
   }
 
   lockUserAccount(event: any) {
@@ -135,4 +140,14 @@ export class UserComponent implements OnChanges {
       error: response => (this.errors = response.errorMessages),
     });
   }
+
+  removeClaim(claim: Claim) {
+    this.errors = [];
+
+    this.adminService.removeClaimFromUser(this.userId(), claim).subscribe({
+      next: () => this.#refreshClaims(),
+      error: response => (this.errors = response.errorMessages),
+    });
+  }
+
 }

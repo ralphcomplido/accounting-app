@@ -33,6 +33,7 @@
         <p-tablist>
           <p-tab value="profile">Profile</p-tab>
           <p-tab value="roles">Roles</p-tab>
+          <p-tab value="claims">Claims</p-tab>
         </p-tablist>
         <p-tabpanels>
           <p-tabpanel value="profile">
@@ -40,6 +41,9 @@
           </p-tabpanel>
           <p-tabpanel value="roles">
             <user-roles [userRoles]="(userRoles$ | async)!" (addRole)="addRole($event)" (removeRole)="removeRole($event)" />
+          </p-tabpanel>
+          <p-tabpanel value="claims">
+            <user-claims [userClaims]="(userClaims$ | async)!" (removeClaim)="removeClaim($event)" />
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>

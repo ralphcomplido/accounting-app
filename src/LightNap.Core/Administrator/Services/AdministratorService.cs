@@ -8,6 +8,7 @@ using LightNap.Core.Data;
 using LightNap.Core.Data.Entities;
 using LightNap.Core.Data.Extensions;
 using LightNap.Core.Identity.Dto.Response;
+using LightNap.Core.Identity.Extensions;
 using LightNap.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -187,10 +188,70 @@ namespace LightNap.Core.Administrator.Services
 
             if ((userId == userContext.GetUserId()) && (role == ApplicationRoles.Administrator.Name)) { throw new UserFriendlyApiException("You may not remove yourself from the Administrator role."); }
 
-            var user = await db.Users.FindAsync(userId);
-            if (user is null) { throw new UserFriendlyApiException("The specified user was not found."); }
-
+            var user = await db.Users.FindAsync(userId) ?? throw new UserFriendlyApiException("The specified user was not found.");
             var result = await userManager.RemoveFromRoleAsync(user, role);
+            if (!result.Succeeded) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
+        }
+
+        /// <summary>
+        /// Retrieves the claims for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>The list of claims for the user.</returns>
+        public async Task<IList<ClaimDto>> GetClaimsForUserAsync(string userId)
+        {
+            this.AssertUserIsAdministrator();
+
+            var user = await db.Users.FindAsync(userId) ?? throw new UserFriendlyApiException("The specified user was not found.");
+
+            var claims = await userManager.GetClaimsAsync(user);
+
+            return claims.ToDtoList();
+        }
+
+        /// <summary>
+        /// Retrieves the users with a specific claim.
+        /// </summary>
+        /// <param name="claim">The claim to search for.</param>
+        /// <returns>The list of users with the specified claim.</returns>
+        public async Task<IList<AdminUserDto>> GetUsersForClaimAsync(ClaimDto claim)
+        {
+            this.AssertUserIsAdministrator();
+
+            var users = await userManager.GetUsersForClaimAsync(claim.ToClaim());
+            return users.ToAdminUserDtoList();
+        }
+
+        /// <summary>
+        /// Adds a claim to the specified user asynchronously.
+        /// </summary>
+        /// <remarks>This method associates the provided claim with the specified user. Ensure that the
+        /// user exists and that the claim is valid before calling this method. The operation is performed
+        /// asynchronously.</remarks>
+        /// <param name="userId">The unique identifier of the user to whom the claim will be added. Cannot be null or empty.</param>
+        /// <param name="claim">The claim to add to the user. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task AddClaimToUserAsync(string userId, ClaimDto claim)
+        {
+            this.AssertUserIsAdministrator();
+            var user = await db.Users.FindAsync(userId) ?? throw new UserFriendlyApiException("The specified user was not found.");
+            var result = await userManager.AddClaimAsync(user, claim.ToClaim());
+            if (!result.Succeeded) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
+        }
+
+        /// <summary>
+        /// Removes a specific claim from the specified user.
+        /// </summary>
+        /// <remarks>This method removes the specified claim from the user's claim collection.  If the
+        /// user does not have the specified claim, the operation will complete without making changes.</remarks>
+        /// <param name="userId">The unique identifier of the user from whom the claim will be removed. Cannot be null or empty.</param>
+        /// <param name="claim">The claim to be removed from the user. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task RemoveClaimFromUserAsync(string userId, ClaimDto claim)
+        {
+            this.AssertUserIsAdministrator();
+            var user = await db.Users.FindAsync(userId) ?? throw new UserFriendlyApiException("The specified user was not found.");
+            var result = await userManager.RemoveClaimAsync(user, claim.ToClaim());
             if (!result.Succeeded) { throw new UserFriendlyApiException(result.Errors.Select(error => error.Description)); }
         }
 
