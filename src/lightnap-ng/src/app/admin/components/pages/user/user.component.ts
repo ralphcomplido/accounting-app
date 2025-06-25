@@ -2,10 +2,11 @@ import { AdminUser, Role } from "@admin/models";
 import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
 import { Component, inject, input, OnChanges } from "@angular/core";
-import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { ConfirmPopupComponent, ToastService } from "@core";
 import { ApiResponseComponent } from "@core/components/controls/api-response/api-response.component";
 import { ErrorListComponent } from "@core/components/controls/error-list/error-list.component";
+import { Claim } from "@identity";
 import { RouteAliasService } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -13,10 +14,9 @@ import { PanelModule } from "primeng/panel";
 import { TabsModule } from "primeng/tabs";
 import { TagModule } from "primeng/tag";
 import { Observable } from "rxjs";
+import { UserClaimsComponent } from "./user-claims/user-claims.component";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { UserRolesComponent } from "./user-roles/user-roles.component";
-import { UserClaimsComponent } from "./user-claims/user-claims.component";
-import { Claim } from "@identity";
 
 @Component({
   standalone: true,
@@ -41,7 +41,6 @@ export class UserComponent implements OnChanges {
   #confirmationService = inject(ConfirmationService);
   #toast = inject(ToastService);
   #routeAlias = inject(RouteAliasService);
-  #fb = inject(FormBuilder);
 
   userId = input.required<string>();
 
