@@ -1,4 +1,5 @@
-﻿using LightNap.Core.Data.Entities;
+﻿using LightNap.Core.Configuration;
+using LightNap.Core.Data.Entities;
 using LightNap.Core.Extensions;
 using LightNap.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,7 @@ namespace LightNap.Core.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SigningCredentials _signingCredentials;
         private readonly string _issuer;
@@ -27,9 +29,11 @@ namespace LightNap.Core.Services
         /// </summary>
         /// <param name="configuration">The configuration settings.</param>
         /// <param name="userManager">The user manager.</param>
-        public TokenService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        /// <param name="roleManager">The role manager.</param>
+        public TokenService(IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this._roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             this._userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
             var tokenKey = this._configuration.GetRequiredSetting("Jwt:Key");
@@ -61,10 +65,25 @@ namespace LightNap.Core.Services
                 [ClaimTypes.Name] = user.UserName!,
             };
 
-            IList<string>? roles = await this._userManager.GetRolesAsync(user);
-            if (roles != null && roles.Any())
+            List<Claim> customClaims = [];
+
+            IList<string> roles = await this._userManager.GetRolesAsync(user);
+            if (roles.Any())
             {
                 claims.Add(ClaimTypes.Role, roles);
+
+                foreach (var role in roles)
+                {
+                    var roleClaims = await this._roleManager.GetClaimsAsync(ApplicationRoles.All.First(r => r.Name == role));
+                    customClaims.AddRange(roleClaims);
+                }
+            }
+
+            customClaims.AddRange(await this._userManager.GetClaimsAsync(user));
+
+            foreach (var claimGroup in customClaims.GroupBy(c => c.Type))
+            {
+                claims.Add(claimGroup.Key, claimGroup.Select(c => c.Value).Distinct().ToArray());
             }
 
             var token = new SecurityTokenDescriptor()

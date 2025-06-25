@@ -4,10 +4,10 @@ import { IdentityService } from "@identity";
 import { Subscription } from "rxjs";
 
 @Directive({
-  selector: "[hideByRoles]",
+  selector: "[hideByClaims]",
   standalone: true,
 })
-export class HideByRolesDirective {
+export class HideByClaimsDirective {
   #identityService = inject(IdentityService);
   #el = inject(ElementRef);
   #destroyRef = inject(DestroyRef);
@@ -15,20 +15,25 @@ export class HideByRolesDirective {
   #subscription?: Subscription;
   #originalDisplay = this.#el.nativeElement.style.display;
 
-  @Input({ required: true }) roles?: Array<string> | string;
+  @Input({ required: true }) claims?: Array<[string, string]> | [string, string];
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["roles"]) {
+    if (changes["claims"]) {
       if (this.#subscription) this.#subscription.unsubscribe();
 
-      const roles = this.roles ? (Array.isArray(this.roles) ? this.roles : [this.roles]) : [];
+      if (!this.claims || this.claims.length === 0) {
+        console.warn("HideByClaimsDirective: No claims provided or empty array. Element will not be hidden.");
+        return;
+      }
+
+      const claims = Array.isArray(this.claims[0]) ? this.claims as Array<[string, string]> : [this.claims] as Array<[string, string]>;
 
       this.#subscription = this.#identityService
-        .watchLoggedInToAnyRole$(roles)
+        .watchLoggedInWithAnyClaim$(claims)
         .pipe(takeUntilDestroyed(this.#destroyRef))
         .subscribe({
-          next: isInRole => {
-            if (isInRole) {
+          next: isInClaim => {
+            if (isInClaim) {
               this.#renderer.setStyle(this.#el.nativeElement, "display", "none");
             } else if (this.#originalDisplay?.length) {
               this.#renderer.setStyle(this.#el.nativeElement, "display", this.#originalDisplay);

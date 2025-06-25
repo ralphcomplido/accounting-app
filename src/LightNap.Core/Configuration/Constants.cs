@@ -28,6 +28,13 @@
         }
 
         /// <summary>
+        /// Claim types used in the application.
+        /// </summary>
+        public static class Claims
+        {
+        }
+
+        /// <summary>
         /// Contains constant values related to DTO lengths.
         /// </summary>
         internal static class Dto

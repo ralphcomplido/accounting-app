@@ -1,23 +1,22 @@
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { Router } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
 import {
-  LoginRequest,
-  LoginSuccessResult,
-  NewPasswordRequest,
-  RegisterRequest,
-  ResetPasswordRequest,
-  SendMagicLinkEmailRequest,
-  SendVerificationEmailRequest,
-  VerifyCodeRequest,
-  VerifyEmailRequest,
+    LoginRequest,
+    NewPasswordRequest,
+    RegisterRequest,
+    ResetPasswordRequest,
+    SendMagicLinkEmailRequest,
+    SendVerificationEmailRequest,
+    VerifyCodeRequest,
+    VerifyEmailRequest,
 } from "@identity/models";
+import { RouteAliasService } from "@routing";
 import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
-import { Router } from "@angular/router";
-import { RouteAliasService } from "@routing";
 
 /**
  * Service responsible for managing user identity, including authentication and token management.
@@ -43,6 +42,7 @@ export class IdentityService {
 
   #loggedInSubject$ = new ReplaySubject<boolean>(1);
   #loggedInRolesSubject$ = new ReplaySubject<Array<string>>(1);
+  #loggedInClaimsSubject$ = new ReplaySubject<Map<string, Array<string>>>(1);
 
   #token?: string;
   #expires = 0;
@@ -51,6 +51,7 @@ export class IdentityService {
   #userName?: string;
   #email?: string;
   #roles?: Array<string>;
+  #claims?: Map<string, Array<string>>;
   #redirectUrl?: string;
 
   /**
@@ -161,25 +162,54 @@ export class IdentityService {
 
   #onTokenReceived(token?: string) {
     this.#token = token;
+    this.#claims = new Map<string, Array<string>>();
     this.#loggedInSubject$.next(!!this.#token);
 
     if (this.#token) {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(this.#token);
-      this.#expires = decodedToken.exp * 1000;
-      this.#userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      this.#userName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-      this.#email = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
-      this.#roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? [];
-      if (!Array.isArray(this.#roles)) {
-        this.#roles = this.#roles ? [this.#roles] : [];
-      }
+      if (!decodedToken) throw new Error("Invalid token received");
+
+      Object.entries(decodedToken).forEach(([key, value]) => {
+        switch (key) {
+          case "exp":
+            this.#expires = decodedToken.exp * 1000;
+            break;
+          case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":
+            this.#userId = value as string;
+            break;
+          case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":
+            this.#userName = value as string;
+            break;
+          case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress":
+            this.#email = value as string;
+            break;
+          case "http://schemas.microsoft.com/ws/2008/06/identity/claims/role":
+            this.#roles = this.#ensureArray(value);
+            break;
+          case "aud":
+          case "iat":
+          case "iss":
+          case "nbf":
+            // Ignoring these properties for the time being.
+            break;
+          default:
+            // Assume anything else present is a custom claim.
+            this.#claims!.set(key, this.#ensureArray(value));
+            break;
+        }
+      });
     } else {
       this.#expires = 0;
       this.#roles = [];
     }
 
-    this.#loggedInRolesSubject$.next(this.#roles);
+    this.#loggedInRolesSubject$.next(this.#roles!);
+    this.#loggedInClaimsSubject$.next(this.#claims!);
+  }
+
+  #ensureArray(value: any): Array<string> {
+    return Array.isArray(value) ? value : value ? [value] : [];
   }
 
   /**
@@ -233,6 +263,47 @@ export class IdentityService {
    */
   watchLoggedInToAnyRole$(allowedRoles: Array<string>) {
     return this.#loggedInRolesSubject$.pipe(map(roles => this.isUserInAnyRole(allowedRoles)));
+  }
+
+   /**
+   * @method watchLoggedInWithAnyClaim$
+   * @description Watches for changes in the login status and checks if the user has the specified claim.
+   * @param {[string, string]} allowedClaim - The claim to check for.
+   * @returns {Observable<boolean>} Emits true when the user is logged in with the specified claim, otherwise false.
+   */
+  watchLoggedInWithClaim$(allowedClaim: [string, string]) {
+    return this.watchLoggedInWithAnyClaim$([allowedClaim]);
+  }
+  /**
+   * @method watchLoggedInWithAnyClaim$
+   * @description Watches for changes in the login status and checks if the user has any of the specified claims.
+   * @param {Array<[string, string]>} allowedClaims - The claims to check for.
+   * @returns {Observable<boolean>} Emits true when the user is logged into any of the claims, otherwise false.
+   */
+  watchLoggedInWithAnyClaim$(allowedClaims: Array<[string, string]>) {
+    return this.#loggedInClaimsSubject$.pipe(map(claims => this.doesUserHaveAnyClaim(allowedClaims)));
+  }
+
+    /**
+   * @method doesUserHaveClaim
+   * @description Checks if the user has the specified claim.
+   * @param {[string, string]} allowedClaim - The claim to check for, represented as a tuple of [claimType, claimValue].
+   * @returns {boolean} True if the user has the claim, false otherwise.
+   * @remarks This method is suitable for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
+   */
+  doesUserHaveClaim(allowedClaim: [string, string]): any {
+    return this.doesUserHaveAnyClaim([allowedClaim]);
+  }
+
+  /**
+   * @method doesUserHaveAnyClaim
+   * @description Checks if the user has any of the specified claims.
+   * @param {Array<[string, string]>} allowedClaims - The claims to check for, each represented as a tuple of [claimType, claimValue].
+   * @returns {boolean} True if the user has any of the claims, false otherwise.
+   * @remarks This method is suitable for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
+   */
+  doesUserHaveAnyClaim(allowedClaims: Array<[string, string]>): any {
+    return allowedClaims.some(claim => this.#claims?.get(claim[0])?.includes(claim[1]));
   }
 
   /**
