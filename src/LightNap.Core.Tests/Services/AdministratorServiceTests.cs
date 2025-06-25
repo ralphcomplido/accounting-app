@@ -38,6 +38,7 @@ namespace LightNap.Core.Tests.Services
             this._userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             this._roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             this._userContext = new TestUserContext();
+            this._userContext.Roles.Add(Constants.Roles.Administrator); // Set the user context to be an administrator for testing purposes.
             this._administratorService = new AdministratorService(this._userManager, this._dbContext, this._userContext);
         }
 
