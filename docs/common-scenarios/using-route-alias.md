@@ -2,7 +2,7 @@
 title: Working With Angular Routes
 layout: home
 parent: Common Scenarios
-nav_order: 500
+nav_order: 600
 ---
 
 # {{ page.title }}

@@ -2,7 +2,7 @@
 title: Adding Profile Fields
 layout: home
 parent: Common Scenarios
-nav_order: 400
+nav_order: 500
 ---
 
 # {{ page.title }}

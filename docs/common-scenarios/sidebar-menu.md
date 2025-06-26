@@ -2,7 +2,7 @@
 title: Updating the Sidebar Menu
 layout: home
 parent: Common Scenarios
-nav_order: 600
+nav_order: 700
 ---
 
 # {{ page.title }}
