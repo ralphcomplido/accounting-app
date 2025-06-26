@@ -26,6 +26,6 @@ Out of the box, users can't get to a view that includes the menu unless they're 
 
 Most menu scenarios can be covered by just adding additional menu items following the pattern used in the codebase.
 
-To add additional sections for new roles (like for a "moderator" scenario) the admin implementation should be followed. There is an `identityService.watchLoggedInToAnyRole$` method that accepts an array of allowed roles so that a list of roles (like `["Administrator", "Moderator"]`) can be checked.
+To add additional sections for new roles (like for a "moderator" scenario) the admin implementation should be followed. There is an `identityService.watchAnyUserRole$` method that accepts an array of allowed roles so that a list of roles (like `["Administrator", "Moderator"]`) can be checked.
 
 Adding specific menu items within a section based on circumstances (like based on role) is a little more complicated because you'll need to do the legwork in `#refreshMenuItems`, but it's not overly difficult. It's also possible to watch navigation events to show certain menu sections or items based on where the user is in the app.

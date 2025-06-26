@@ -72,7 +72,7 @@ If your endpoint needs a user to be a member of _all_ roles, add each as its own
 
 This will require a user to be both an `Administrator` and a `Moderator` to access the endpoint.
 
-Learn more about role-based authorization in ASP.NET [here](https://learn.microsoft.com/aspnet/core/security/authorization/roles).
+Learn more about [role-based authorization in ASP.NET](https://learn.microsoft.com/aspnet/core/security/authorization/roles).
 
 ## Seeding Role Users
 
@@ -88,7 +88,7 @@ Roles are automatically extracted from JWTs on the front-end, so there's no addi
 
 ### Accessing the Logged-In User's Roles
 
-The best way to access their roles is via `IdentityService.watchLoggedInToRole$()` or `IdentityService.watchLoggedInToAnyRole$()`. These return hot observables that publish every time the user's roles have been updated from a new JWT. They're backed by `ReplaySubject`, so the response will be immediate if the roles have been set at least once.
+The best way to access their roles is via `IdentityService.watchUserRole$()` or `IdentityService.watchAnyUserRole$()`. These return hot observables that publish every time the user's roles have been updated from a new JWT. They're backed by `ReplaySubject`, so the response will be immediate if the roles have been set at least once.
 
 ### Applying the Logged-In User's Roles
 
@@ -107,28 +107,28 @@ Front-end work to restrict access to functionality is superficial. While it prov
 
 Route directives make it easy to show or hide elements based on the logged-in user's role membership.
 
-The `showByRoles` directive only shows the element if the user is logged in and belongs to at least one of the roles listed.
+The `showByPermissions` directive only shows the element if the user is logged in and belongs to at least one of the roles listed.
 
 ``` html
-<p-button showByRoles roles="Administrator" ...
+<p-button showByPermissions roles="Administrator" ...
 ```
 
 or
 
 ``` html
-<p-button showByRoles [roles]="['Administrator', 'Moderator']" ...
+<p-button showByPermissions [roles]="['Administrator', 'Moderator']" ...
 ```
 
-Similarly, the `hideByRoles` directive only hides the element if the user is logged in and belongs to at least one of the roles listed.
+Similarly, the `hideByPermissions` directive only hides the element if the user is logged in and belongs to at least one of the roles listed.
 
 ``` html
-<p-button hideByRoles roles="Administrator" ...
+<p-button hideByPermissions roles="Administrator" ...
 ```
 
 or
 
 ``` html
-<p-button hideByRoles [roles]="['Administrator', 'Moderator']" ...
+<p-button hideByPermissions [roles]="['Administrator', 'Moderator']" ...
 ```
 
 #### Menus

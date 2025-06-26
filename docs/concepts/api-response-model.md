@@ -39,7 +39,7 @@ The main exceptions are:
 
 - `400 Bad Request` typically means there is an API access error, such as a required field not being provided in a POST object. These are viewed as design-time errors that the developer must address before deploying.
 - `401 Unauthorized` is automatically sent when a user is trying to request an endpoint protected by `[Authorize]` but is not logged in.
-- `403 Forbidden` is automatically sent when the user is logged in but does not meet the role policy requirement for the endpoint.
+- `403 Forbidden` is automatically sent when the user is logged in but does not meet the role and/or claim policy requirement for the endpoint.
 - `404 Not Found` is automatically sent when the API URL requested does not exist.
 
   {: .note }
