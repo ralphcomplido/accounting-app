@@ -33,7 +33,6 @@ namespace LightNap.WebApi.Authorization
 #if DEBUG
                 throw new InvalidOperationException($"No ClaimAuthorizeAttribute found for endpoint {endpoint?.DisplayName}.");
 #else
-                _logger?.LogWarning("Authorization failed: No ClaimAuthorizeAttribute found for endpoint {Endpoint}.", endpoint?.DisplayName);
                 context.Fail();
                 return Task.CompletedTask;
 #endif
