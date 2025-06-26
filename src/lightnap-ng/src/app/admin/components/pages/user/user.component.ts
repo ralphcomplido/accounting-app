@@ -149,4 +149,12 @@ export class UserComponent implements OnChanges {
     });
   }
 
+  addClaim(claim: Claim) {
+    this.errors = [];
+
+    this.adminService.addClaimToUser(this.userId(), claim).subscribe({
+      next: () => this.#refreshClaims(),
+      error: response => (this.errors = response.errorMessages),
+    });
+  }
 }

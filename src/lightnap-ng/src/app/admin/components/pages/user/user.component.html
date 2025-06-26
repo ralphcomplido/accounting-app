@@ -43,7 +43,7 @@
             <user-roles [userRoles]="(userRoles$ | async)!" (addRole)="addRole($event)" (removeRole)="removeRole($event)" />
           </p-tabpanel>
           <p-tabpanel value="claims">
-            <user-claims [userClaims]="(userClaims$ | async)!" (removeClaim)="removeClaim($event)" />
+            <user-claims [userClaims]="(userClaims$ | async)!" (addClaim)="addClaim($event)" (removeClaim)="removeClaim($event)" />
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>

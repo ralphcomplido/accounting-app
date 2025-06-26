@@ -1,11 +1,13 @@
-import { AdminService } from "@admin/services/admin.service";
 import { CommonModule } from "@angular/common";
 import { Component, inject, input, output } from "@angular/core";
-import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { ConfirmPopupComponent } from "@core";
 import { Claim } from "@identity";
+import { RoutePipe } from "@routing";
 import { ConfirmationService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
 import { TableModule } from "primeng/table";
 
@@ -13,14 +15,19 @@ import { TableModule } from "primeng/table";
   standalone: true,
   selector: "user-claims",
   templateUrl: "./user-claims.component.html",
-  imports: [CommonModule, ReactiveFormsModule, TableModule, ButtonModule, SelectModule, ConfirmPopupComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, TableModule, ButtonModule, SelectModule, ConfirmPopupComponent, RoutePipe, RouterModule],
 })
 export class UserClaimsComponent {
-  #adminService = inject(AdminService);
   #confirmationService = inject(ConfirmationService);
   #fb = inject(FormBuilder);
 
+  addUserClaimForm = this.#fb.group({
+    type: this.#fb.control("", [Validators.required]),
+    value: this.#fb.control("", [Validators.required]),
+  });
+
   userClaims = input.required<Array<Claim>>();
+  addClaim = output<Claim>();
   removeClaim = output<Claim>();
 
   removeClaimClicked(event: any, claim: Claim) {
@@ -31,5 +38,12 @@ export class UserClaimsComponent {
       key: claim.type + ":" + claim.value,
       accept: () => this.removeClaim.emit(claim),
     });
+  }
+
+  addClaimClicked() {
+    if (!this.addUserClaimForm.valid) return;
+
+    this.addClaim.emit(this.addUserClaimForm.value as Claim);
+    this.addUserClaimForm.reset();
   }
 }
