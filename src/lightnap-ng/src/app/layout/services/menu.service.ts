@@ -47,7 +47,7 @@ export class MenuService {
   constructor() {
     combineLatest([
       this.#identityService.watchLoggedIn$().pipe(tap(isLoggedIn => (this.#isLoggedIn = isLoggedIn))),
-      this.#identityService.watchLoggedInToRole$("Administrator").pipe(tap(isAdminLoggedIn => (this.#isAdminLoggedIn = isAdminLoggedIn))),
+      this.#identityService.watchUserRole$("Administrator").pipe(tap(isAdminLoggedIn => (this.#isAdminLoggedIn = isAdminLoggedIn))),
     ])
       .pipe(takeUntilDestroyed(), debounceTime(100))
       .subscribe(() => this.#refreshMenuItems());

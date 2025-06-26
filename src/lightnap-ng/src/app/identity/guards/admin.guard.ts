@@ -9,6 +9,6 @@ export const adminGuard = (next: ActivatedRouteSnapshot) => {
   const routeAliasService = inject(RouteAliasService);
 
   return identityService
-    .watchLoggedInToRole$("Administrator")
+    .watchUserRole$("Administrator")
     .pipe(take(1), map(isAdmin => (isAdmin ? true : createUrlTreeFromSnapshot(next, routeAliasService.getRoute("access-denied")))));
 };

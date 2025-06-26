@@ -3,10 +3,10 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IdentityService } from "@identity";
 
 @Directive({
-  selector: "[hideLoggedIn]",
+  selector: "[hideIfLoggedIn]",
   standalone: true,
 })
-export class HideLoggedInDirective implements OnInit {
+export class HideIfLoggedInDirective implements OnInit {
   #identityService = inject(IdentityService);
   #el = inject(ElementRef);
   #destroyRef = inject(DestroyRef);

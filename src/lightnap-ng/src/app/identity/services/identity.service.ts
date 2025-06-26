@@ -4,17 +4,18 @@ import { Router } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { InitializationService } from "@core/services/initialization.service";
 import {
-    LoginRequest,
-    NewPasswordRequest,
-    RegisterRequest,
-    ResetPasswordRequest,
-    SendMagicLinkEmailRequest,
-    SendVerificationEmailRequest,
-    VerifyCodeRequest,
-    VerifyEmailRequest,
+  Claim,
+  LoginRequest,
+  NewPasswordRequest,
+  RegisterRequest,
+  ResetPasswordRequest,
+  SendMagicLinkEmailRequest,
+  SendVerificationEmailRequest,
+  VerifyCodeRequest,
+  VerifyEmailRequest,
 } from "@identity/models";
 import { RouteAliasService } from "@routing";
-import { distinctUntilChanged, filter, finalize, map, ReplaySubject, take, tap } from "rxjs";
+import { distinctUntilChanged, filter, finalize, map, of, ReplaySubject, switchMap, take, tap } from "rxjs";
 import { TimerService } from "../../core/services/timer.service";
 import { DataService } from "./data.service";
 
@@ -105,7 +106,7 @@ export class IdentityService {
    * @returns {Array<string> | undefined} The roles if available, otherwise undefined.
    * @readonly
    * @remarks This property should only be used when the user is known to be logged in.
-   * Prefer using watchLoggedInToAnyRole$() to observe changes in the login status and roles.
+   * Prefer using watchAnyRole$() to observe changes in the login status and roles.
    */
   get roles() {
     return this.#roles;
@@ -226,7 +227,7 @@ export class IdentityService {
    * @description Checks if the user has a specific role.
    * @param {string} role - The role to check for.
    * @returns {boolean} True if the user has the role, false otherwise.
-   * @remarks Prefer using watchLoggedInToRole$() to observe changes in the login status and role. This method is
+   * @remarks Prefer using watchRole$() to observe changes in the login status and role. This method is
    * suitable only for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
    */
   isUserInRole(role: string) {
@@ -238,7 +239,7 @@ export class IdentityService {
    * @description Checks if the user has any of the specified roles.
    * @param {Array<string>} roles - The roles to check for.
    * @returns {boolean} True if the user has any of the roles, false otherwise.
-   * @remarks Prefer using watchLoggedInToAnyRole$() to observe changes in the login status and roles. This method is
+   * @remarks Prefer using watchAnyRole$() to observe changes in the login status and roles. This method is
    * suitable only for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
    */
   isUserInAnyRole(roles: Array<string>) {
@@ -246,64 +247,105 @@ export class IdentityService {
   }
 
   /**
-   * @method watchLoggedInToRole$
+   * @method watchUserRole$
    * @description Watches for changes in the login status and checks if the user has a specific role.
    * @param {string} allowedRole - The role to check for.
    * @returns {Observable<boolean>} Emits true when the user is logged into the role, otherwise false.
    */
-  watchLoggedInToRole$(allowedRole: string) {
-    return this.watchLoggedInToAnyRole$([allowedRole]);
+  watchUserRole$(allowedRole: string) {
+    return this.watchAnyUserRole$([allowedRole]);
   }
 
   /**
-   * @method watchLoggedInToAnyRole$
+   * @method watchAnyUserRole$
    * @description Watches for changes in the login status and checks if the user has any of the specified roles.
    * @param {Array<string>} allowedRoles - The roles to check for.
    * @returns {Observable<boolean>} Emits true when the user is logged into any of the roles, otherwise false.
    */
-  watchLoggedInToAnyRole$(allowedRoles: Array<string>) {
+  watchAnyUserRole$(allowedRoles: Array<string>) {
     return this.#loggedInRolesSubject$.pipe(map(roles => this.isUserInAnyRole(allowedRoles)));
   }
 
-   /**
-   * @method watchLoggedInWithAnyClaim$
+  /**
+   * @method watchUserClaim$
    * @description Watches for changes in the login status and checks if the user has the specified claim.
-   * @param {[string, string]} allowedClaim - The claim to check for.
+   * @param {Claim} allowedClaim - The claim to check for.
    * @returns {Observable<boolean>} Emits true when the user is logged in with the specified claim, otherwise false.
    */
-  watchLoggedInWithClaim$(allowedClaim: [string, string]) {
-    return this.watchLoggedInWithAnyClaim$([allowedClaim]);
+  watchUserClaim$(allowedClaim: Claim) {
+    return this.watchAnyUserClaim$([allowedClaim]);
   }
   /**
-   * @method watchLoggedInWithAnyClaim$
+   * @method watchAnyUserClaim$
    * @description Watches for changes in the login status and checks if the user has any of the specified claims.
-   * @param {Array<[string, string]>} allowedClaims - The claims to check for.
+   * @param {Array<Claim>} allowedClaims - The claims to check for.
    * @returns {Observable<boolean>} Emits true when the user is logged into any of the claims, otherwise false.
    */
-  watchLoggedInWithAnyClaim$(allowedClaims: Array<[string, string]>) {
+  watchAnyUserClaim$(allowedClaims: Array<Claim>) {
     return this.#loggedInClaimsSubject$.pipe(map(claims => this.doesUserHaveAnyClaim(allowedClaims)));
   }
 
-    /**
+  /**
    * @method doesUserHaveClaim
    * @description Checks if the user has the specified claim.
-   * @param {[string, string]} allowedClaim - The claim to check for, represented as a tuple of [claimType, claimValue].
+   * @param {Claim} allowedClaim - The claim to check for, represented as a tuple of [claimType, claimValue].
    * @returns {boolean} True if the user has the claim, false otherwise.
    * @remarks This method is suitable for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
    */
-  doesUserHaveClaim(allowedClaim: [string, string]): any {
+  doesUserHaveClaim(allowedClaim: Claim) {
     return this.doesUserHaveAnyClaim([allowedClaim]);
   }
 
   /**
    * @method doesUserHaveAnyClaim
    * @description Checks if the user has any of the specified claims.
-   * @param {Array<[string, string]>} allowedClaims - The claims to check for, each represented as a tuple of [claimType, claimValue].
+   * @param {Array<Claim>} allowedClaims - The claims to check for, each represented as a tuple of [claimType, claimValue].
    * @returns {boolean} True if the user has any of the claims, false otherwise.
    * @remarks This method is suitable for synchronous scenarios where the user is already known to be logged in (like at a guarded route).
    */
-  doesUserHaveAnyClaim(allowedClaims: Array<[string, string]>): any {
-    return allowedClaims.some(claim => this.#claims?.get(claim[0])?.includes(claim[1]));
+  doesUserHaveAnyClaim(allowedClaims: Array<Claim>) {
+    return allowedClaims.some(claim => this.#claims?.get(claim.type)?.includes(claim.value));
+  }
+
+  /**
+   * @method watchPermission$
+   * @description Watches for changes in the login status and checks if the user has any of the specified roles or claims.
+   * @param {Array<string>} allowedRoles - The roles to check for.
+   * @param {Array<Claim>} allowedClaims - The claims to check for.
+   * @returns {Observable<boolean>} Emits true when the user is logged in with any of the specified roles or claims, otherwise false.
+   * @remarks This is an "any" check. To check for "all" (cumulative permissions), use multiple calls.
+   */
+  watchUserPermission$(allowedRoles: Array<string>, allowedClaims: Array<Claim>) {
+    if (!allowedRoles?.length) {
+      if (!allowedClaims?.length) {
+        return of(false);
+      } else {
+        return this.watchAnyUserClaim$(allowedClaims);
+      }
+    }
+    if (!allowedClaims?.length) {
+      return this.watchAnyUserRole$(allowedRoles);
+    }
+
+    return this.watchAnyUserRole$(allowedRoles).pipe(
+      switchMap(isInRole => {
+        if (isInRole) return of(true);
+        return this.watchAnyUserClaim$(allowedClaims);
+      }),
+      distinctUntilChanged()
+    );
+  }
+
+    /**
+     * @method doesUserHavePermission
+     * @description Checks if the user has any of the specified roles or claims.
+     * @param {Array<string>} allowedRoles - The roles to check for.
+     * @param {Array<Claim>} allowedClaims - The claims to check for.
+     * @returns {boolean} True if the user has any of the specified roles or claims, false otherwise.
+     * @remarks This is an "any" check. To check for "all" (cumulative permissions), use multiple calls.
+     */
+  doesUserHavePermission(allowedRoles: Array<string>, allowedClaims: Array<Claim>) {
+    return this.isUserInAnyRole(allowedRoles) || this.doesUserHaveAnyClaim(allowedClaims);
   }
 
   /**

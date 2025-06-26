@@ -1,13 +1,13 @@
 import { DestroyRef, Directive, ElementRef, inject, Input, Renderer2, SimpleChanges } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { IdentityService } from "@identity";
+import { Claim, IdentityService } from "@identity";
 import { Subscription } from "rxjs";
 
 @Directive({
-  selector: "[showByRoles]",
+  selector: "[showByPermissions]",
   standalone: true,
 })
-export class ShowByRolesDirective {
+export class ShowByPermissionsDirective {
   #identityService = inject(IdentityService);
   #el = inject(ElementRef);
   #destroyRef = inject(DestroyRef);
@@ -15,20 +15,22 @@ export class ShowByRolesDirective {
   #subscription?: Subscription;
   #originalDisplay = this.#el.nativeElement.style.display;
 
-  @Input({ required: true }) roles?: Array<string> | string;
+  @Input() claims?: Array<Claim> | Claim;
+  @Input() roles?: Array<string> | string;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["roles"]) {
+    if (changes["claims"] || changes["roles"]) {
       if (this.#subscription) this.#subscription.unsubscribe();
 
+      const claims = this.claims ? (Array.isArray(this.claims) ? this.claims : [this.claims]) : [];
       const roles = this.roles ? (Array.isArray(this.roles) ? this.roles : [this.roles]) : [];
 
       this.#subscription = this.#identityService
-        .watchLoggedInToAnyRole$(roles)
+        .watchUserPermission$(roles, claims)
         .pipe(takeUntilDestroyed(this.#destroyRef))
         .subscribe({
-          next: isInRole => {
-            if (isInRole) {
+          next: hasPermission => {
+            if (hasPermission) {
               if (this.#originalDisplay?.length) {
                 this.#renderer.setStyle(this.#el.nativeElement, "display", this.#originalDisplay);
               } else {
