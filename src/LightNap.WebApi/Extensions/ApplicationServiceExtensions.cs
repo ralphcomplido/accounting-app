@@ -19,8 +19,10 @@ using LightNap.Core.User.Interfaces;
 using LightNap.Core.User.Services;
 using LightNap.DataProviders.Sqlite.Extensions;
 using LightNap.DataProviders.SqlServer.Extensions;
+using LightNap.WebApi.Authorization;
 using LightNap.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -41,6 +43,7 @@ namespace LightNap.WebApi.Extensions
         {
             services.AddCors();
             services.AddHttpContextAccessor();
+            services.AddSingleton<IAuthorizationHandler, ClaimParameterHandler>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserContext, WebUserContext>();
             services.AddScoped<ICookieManager, WebCookieManager>();
@@ -139,6 +142,11 @@ namespace LightNap.WebApi.Extensions
                     ValidAudience = configuration.GetRequiredSetting("Jwt:Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetRequiredSetting("Jwt:Key")))
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(nameof(ClaimParameterRequirement), policy => policy.Requirements.Add(new ClaimParameterRequirement()));
             });
 
             return services;
