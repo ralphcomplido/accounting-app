@@ -43,7 +43,7 @@ namespace LightNap.WebApi.Extensions
         {
             services.AddCors();
             services.AddHttpContextAccessor();
-            services.AddSingleton<IAuthorizationHandler, ClaimParameterHandler>();
+            services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserContext, WebUserContext>();
             services.AddScoped<ICookieManager, WebCookieManager>();
@@ -146,7 +146,7 @@ namespace LightNap.WebApi.Extensions
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(nameof(ClaimParameterRequirement), policy => policy.Requirements.Add(new ClaimParameterRequirement()));
+                options.AddPolicy(nameof(ClaimAuthorizationRequirement), policy => policy.Requirements.Add(new ClaimAuthorizationRequirement()));
             });
 
             return services;

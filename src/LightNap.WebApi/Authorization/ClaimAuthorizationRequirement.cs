@@ -6,12 +6,12 @@ namespace LightNap.WebApi.Authorization
     /// Represents a custom authorization requirement for enforcing claims based on runtime parameters. This specific class is a
     /// market since the main work is done in the attribute and handler.
     /// </summary>
-    public class ClaimParameterRequirement : IAuthorizationRequirement
+    public class ClaimAuthorizationRequirement : IAuthorizationRequirement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClaimParameterRequirement"/> class.
+        /// Initializes a new instance of the <see cref="ClaimAuthorizationRequirement"/> class.
         /// </summary>
-        public ClaimParameterRequirement()
+        public ClaimAuthorizationRequirement()
         {
         }
     }
