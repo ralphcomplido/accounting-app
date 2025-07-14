@@ -17,10 +17,64 @@ namespace LightNap.DataProviders.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("LightNap.Core.Data.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Balance = 1000.00m,
+                            Description = "Cash on hand",
+                            Name = "Cash",
+                            Type = "Asset"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Balance = 500.00m,
+                            Description = "Outstanding bills",
+                            Name = "Accounts Payable",
+                            Type = "Liability"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Balance = 7500.00m,
+                            Description = "Consulting services",
+                            Name = "Service Revenue",
+                            Type = "Income"
+                        });
+                });
 
             modelBuilder.Entity("LightNap.Core.Data.Entities.ApplicationRole", b =>
                 {

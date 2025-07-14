@@ -1,3 +1,5 @@
+using LightNap.Core.Accounts.Interfaces;
+using LightNap.Core.Accounts.Services;
 using LightNap.Core.Configuration;
 using LightNap.Core.Data;
 using LightNap.WebApi.Configuration;
@@ -34,6 +36,10 @@ builder.Services.AddDatabaseServices(builder.Configuration)
     .AddEmailServices(builder.Configuration)
     .AddApplicationServices()
     .AddIdentityServices(builder.Configuration);
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+
 
 var app = builder.Build();
 

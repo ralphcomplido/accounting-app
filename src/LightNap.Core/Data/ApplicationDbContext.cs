@@ -23,6 +23,12 @@ namespace LightNap.Core.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         /// <summary>
+        /// Chart of Accounts in the DB.
+        /// </summary>
+        public DbSet<Account> Accounts { get; set; } = null!;
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDbContext"/> class.
         /// </summary>
         /// <param name="options">The DbContext options.</param>
@@ -60,7 +66,36 @@ namespace LightNap.Core.Data
             builder.Entity<ApplicationUser>()
                 .Property(u => u.BrowserSettings)
                 .Metadata.SetValueComparer(new BrowserSettingsValueComparer());
+
+            builder.Entity<Account>().HasData(
+                new Account
+                {
+                    Id = 1,
+                    Name = "Cash",
+                    Type = "Asset",
+                    Description = "Cash on hand",
+                    Balance = 1000.00m
+                },
+                new Account
+                {
+                    Id = 2,
+                    Name = "Accounts Payable",
+                    Type = "Liability",
+                    Description = "Outstanding bills",
+                    Balance = 500.00m
+                },
+                new Account
+                {
+                    Id = 3,
+                    Name = "Service Revenue",
+                    Type = "Income",
+                    Description = "Consulting services",
+                    Balance = 7500.00m
+                }
+            );
+
         }
+
 
         /// <inheritdoc />
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
