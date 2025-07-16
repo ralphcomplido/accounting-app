@@ -41,8 +41,30 @@ public class AccountService : IAccountService
             Id = a.Id,
             Name = a.Name,
             Type = a.Type,
-            Description = a.Description
+            Description = a.Description,
+            Balance = a.Balance
         }).ToList();
+    }
+
+    /// <summary>
+    /// Retrieves a single account by its ID asynchronously.
+    /// </summary>
+    /// <param name="id">The unique identifier of the account.</param>
+    /// <returns>The account data transfer object, or null if not found.</returns>
+    public async Task<AccountResponseDto?> GetAsync(int id)
+    {
+        var account = await _dbContext.Accounts.FindAsync(id);
+        if (account == null)
+            return null;
+
+        return new AccountResponseDto
+        {
+            Id = account.Id,
+            Name = account.Name,
+            Type = account.Type,
+            Description = account.Description,
+            Balance = account.Balance
+        };
     }
 
     /// <summary>
@@ -56,7 +78,8 @@ public class AccountService : IAccountService
         {
             Name = dto.Name,
             Type = dto.Type,
-            Description = dto.Description
+            Description = dto.Description,
+            Balance = dto.Balance
         };
 
         _dbContext.Accounts.Add(entity);
@@ -67,7 +90,56 @@ public class AccountService : IAccountService
             Id = entity.Id,
             Name = entity.Name,
             Type = entity.Type,
-            Description = entity.Description
+            Description = entity.Description,
+            Balance = entity.Balance
         };
+    }
+
+    /// <summary>
+    /// Updates an existing account asynchronously.
+    /// </summary>
+    /// <param name="dto">The account data to update.</param>
+    /// <returns>The updated account, or null if not found.</returns>
+    public async Task<AccountResponseDto?> UpdateAsync(UpdateAccountDto dto)
+    {
+        var account = await _dbContext.Accounts.FindAsync(dto.Id);
+        if (account == null)
+            return null;
+
+        if (dto.Name is not null)
+            account.Name = dto.Name;
+        if (dto.Type is not null)
+            account.Type = dto.Type;
+        if (dto.Description is not null)
+            account.Description = dto.Description;
+        if (dto.Balance.HasValue)
+            account.Balance = dto.Balance.Value;
+
+        await _dbContext.SaveChangesAsync();
+
+        return new AccountResponseDto
+        {
+            Id = account.Id,
+            Name = account.Name,
+            Type = account.Type,
+            Description = account.Description,
+            Balance = account.Balance
+        };
+    }
+
+    /// <summary>
+    /// Deletes an account asynchronously.
+    /// </summary>
+    /// <param name="dto">The account data to delete.</param>
+    /// <returns>True if the account was deleted; otherwise, false.</returns>
+    public async Task<bool> DeleteAsync(DeleteAccountDto dto)
+    {
+        var account = await _dbContext.Accounts.FindAsync(dto.Id);
+        if (account == null)
+            return false;
+
+        _dbContext.Accounts.Remove(account);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 }

@@ -36,6 +36,11 @@ export class MenuService {
       { label: "Home", icon: "pi pi-fw pi-home", routerLink: this.#routeAlias.getRoute("admin-home") },
       { label: "Users", icon: "pi pi-fw pi-users", routerLink: this.#routeAlias.getRoute("admin-users") },
       { label: "Roles", icon: "pi pi-fw pi-lock", routerLink: this.#routeAlias.getRoute("admin-roles") },
+      {
+        label: "Account",
+        icon: "pi pi-wallet", // You can change this icon
+        routerLink: this.#routeAlias.getRoute("admin-account"),
+      },
     ],
   });
 

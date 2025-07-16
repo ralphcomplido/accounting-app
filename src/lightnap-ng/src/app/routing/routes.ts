@@ -9,6 +9,7 @@ import { Routes as PublicRoutes } from "../public/components/pages/routes";
 import { Routes as UserRoutes } from "../user/components/pages/routes";
 import { AppRoute } from "./models/app-route";
 
+
 export const Routes: AppRoute[] = [
   { path: "", component: PublicLayoutComponent, children: PublicRoutes },
   {
@@ -17,7 +18,8 @@ export const Routes: AppRoute[] = [
     canActivate: [authGuard],
     children: [
       { path: "home", data: { breadcrumb: "Home" }, children: UserRoutes },
-      { path: "profile", data: { breadcrumb: "Profile" }, children: ProfileRoutes },
+      { path: "profile", data: { breadcrumb: "Profile" }, children: ProfileRoutes }
+      
     ],
   },
   {
